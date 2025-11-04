@@ -1,0 +1,22 @@
+# Ambiente virtual
+.venv/
+venv/
+
+# Arquivos temporários do Python
+__pycache__/
+*.pyc
+*.pyo
+*.pyd
+
+# Saídas do projeto
+/out/
+*.json
+*.html
+*.png
+
+# Arquivos de sistema
+.DS_Store
+Thumbs.db
+
+# Configurações do VSCode
+.vscode/

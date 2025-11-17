@@ -1,0 +1,350 @@
+origem,destino,rua,peso
+Boa Viagem,Ibura,Rua Hélio Brandão,2.0
+Boa Viagem,Pina,Av. Boa Viagem,1.0
+Boa Viagem,Imbiribeira,Av.  Mal. Mascarenhas de Morais,1.0
+Boa Viagem,Ipsep,Av. Recife,1.0
+Boa Viagem,Setúbal,Rua Baltazar Passos,2.0
+Imbiribeira,Ipsep,Rua Itacari,2.0
+Imbiribeira,Ibura,	Rua Pontegy,2.0
+Imbiribeira,Jordão,Av. Maria Irene,1.0
+Ipsep,Ibura,Rua Jean Émile Favre,1.0
+Ipsep,Areias,Rua Aldemar de Oliveira,2.0
+Ibura,Jordão,Av. Dois Rios,1.0
+Ibura,Sancho,Rua Dracena,2.0
+Pina,Afogados,Ponte Paulo Guerra,1.0
+Afogados,Areias,Rua Dom Pedrito,2.0
+Afogados,Cordeiro,Estrada dos Remédios,2.0
+Boa Viagem,Ilha do Retiro,Viaduto Capitão Temudo,1.0
+Boa Viagem,Cabanga,Av. Eng. José Estelita,1.0
+Pina,Cabanga,Av. Herculano Bandeira,1.0
+Pina,Brasília Teimosa,Av. Brasília Teimosa,1.0
+Pina ,Imbiribeira,Rua Joaquim Bandeira,2.0
+Imbiribeira,Areias,	Av. Ten. Felipe Bandeira de Melo,1.0
+Ibura,Areias,Av. Dom Hélder Câmara,1.0
+Cohab,Jordão,Rua Dr. Luiz Regueira,2.0
+Cohab,Coqueiral,Av. Jornalista Costa Pôrto,1.0
+Cohab,Sancho,	Av. General Manoel Rabelo,1.0
+Cohab,Curado,BR-101,1.0
+Jordão,Ibura,R. Rio Xingu,2.0
+Barro,Ibura,Av. Rio São Francisco,1.0
+Barro,Tejipió,Av. General San Martin,1.0
+Barro,Jardim São Paulo,	Rua Leobina Pereira,1.0
+Barro,Cohab,Av. Doze de junho,2.0
+Barro,Sancho,Rua General Polidoro,2.0
+Coqueiral,Tejipió,Rua Alto da Bela Vista,2.0
+Coqueiral,Curado,Av. Getúlio Vargas,1.0
+Coqueiral,Sancho,Rua Aprígio Guimarães,2.0
+Coqueiral,Ibura,Rua do Sancho,2.0
+Coqueiral,Totó,Rua Alto do Paraizo,1.0
+Curado,Totó,Av. Liberdade,1.0
+Curado,Barro,BR-232,1.0
+Curado,Tejipió,Rua Papa João XXIII,2.0
+Curado,Jardim São Paulo,Rua Lorena,2.0
+Jardim São Paulo,Sancho,Av. Sancho D’Avila,1.0
+Jardim São Paulo,Tejipió,Rua Leandro Barreto,2.0
+Jardim São Paulo,Barro,Rua Leobina Pereira,2.0
+Tejipió,Totó,Rua do Curado,2.0
+Jardim São Paulo,Areias,Av. São Paulo,2.0
+Tejipió,Estância,Av. Dr. José Rufino,1.0
+Areias,Estância,Rua Cap. Jacinto da Cruz,1.0
+Areias,Barro,Av. Izabel de Góes,2.0
+Areias,Caçote,Rua Professor José dos Anjos,1.0
+Caçote,Jiquiá,Rua Cap. Gregório de Caldas,2.0
+Caçote,San Martin,Av. João Cabral de Melo Neto,2.0
+Caçote,Sancho,PE-007,1.0
+Caçote,Jardim São Paulo,Rua José Natário,2.0
+Caçote,Coqueiral,Rua Heliópolis,2.0
+Caçote,Mangueira,Av. Central,1.0
+Caçote,Estância,Av. Justiça e Paz,1.0
+Estância,Tejipió,Av. Eng. Abdias de Carvalho,1.0
+Caçote,Cohab,Rua Serra da Caiada,2.0
+Estância,Jiquiá,Rua Eng. José Estelita,2.0
+Estância,Barro,Rua S D 5519,2.0
+Estância,Imbiribeira,Rua Peroba,2.0
+Estância,Jardim São Paulo,Rua Aníbal Portela,2.0
+Estância,Sancho,Estrada do Curado,1.0
+Jiquiá,Caçote,Rua Cap. Gregório de Caldas,2.0
+Jiquiá,Estância,Rua Rocha Pombo,2.0
+Jiquiá,Afogados,Rua Passo da Santa Cruz,1.0
+Jiquiá,Mangueira,Rua Marquês de Sapucaiá,2.0
+Jiquiá,Mustardinha,Rua São Miguel,2.0
+Jiquiá,Sancho,Rua João Teixeira,2.0
+Afogados,Bongi,	Av. Manoel Gonçalves da Luz,1.0
+Afogados,Ilha Joana Bezerra,Rua Cabo Eutrópio,2.0
+Afogados,Mustardinha,Rua Joana Francisca de Azevedo,1.0
+Afogados,San Martin,Av. San Martin,2.0
+Afogados,Ilha do Retiro,Av. Abdias de carvalho,2.0
+Afogados,Ipsep,Av. Mascarenhas de Moraes,2.0
+Afogados,Prado,	Rua Vinte e Um de Abril,2.0
+Bongi,San Martin,Rua Francisco Alves,2.0
+Bongi,Mustardinha,Rua Randolfo Pinto Ferreira,2.0
+Bongi,Prado,Rua Santa Edwirges,1.0
+Bongi,Zumbi,Rua Gomes Taborda,1.0
+Mangueira,Mustardinha,Rua João de Barros,2.0
+Mangueira,Afogados,	Rua Aurino Eutíquio da Rocha,2.0
+Mangueira,Bongi,Rua Mandari,2.0
+Mangueira,Mustardinha,Rua Dr. João Elísio,2.0
+Mangueira,San Martin,Rua Benício Dias,2.0
+Mustardinha,San Martin,Rua Neto Campêlo Júnior,2.0
+San Martin,Torrões,Rua Edvaldo Maranhão Ferreira,1.0
+Aflitos,Espinheiro,Av. Rosa e Silva,1.0
+Aflitos,Graças,Av. Rui Barbosa,2.0
+Aflitos,Jaqueira,Rua do Futuro,2.0
+Aflitos,Derby,Rua Quarenta e Oito,1.0
+Alto do Mandu,Apipucos,Rua Cianorte,2.0
+Alto do Mandu,Monteiro,Rua Cametá,2.0
+Alto do Mandu,Morro da Conceição,Rua Morro da Conceição,2.0
+Alto do Mandu,Tamarineira,Rua Guimarães Peixoto,2.0
+Espinheiro,Graças,Av. João de Barros,2.0
+Espinheiro,Rosarinho,Rua Barão de Itamaracá,2.0
+Espinheiro,Torreão,Rua Djalma Farias,2.0
+Graças,Jaqueira,Rua da Amizade,1.0
+Graças,Ilha do Leite,Rua Sen. José Henrique,2.0
+Graças,Madalena,Rua Joaquim Nabuco,2.0
+Graças,Parnamirim,Rua Desembargador Góis Cavalcante,1.0
+Graças,Poço da Panela,Rua Aberlardo Carneiro Leão,2.0
+Graças,Soledade,Rua João Fernandes Viêira,2.0
+Graças,Tamarineira,Rua Senador Alberto Paiva,2.0
+Graças,Torreão,Rua Engenho Megaípe,2.0
+Casa Forte,Poço,Av. Dezessete de Agosto,2.0
+Casa Forte,Monteiro,Rua Casa Forte,1.0
+Monteiro,Apipucos,Av. Apipucos,2.0
+Apipucos,Dois Irmãos,Estrada dos Macacos,2.0
+Apipucos,Sítio dos Pintos,Av. Professor Moraes Rego,2.0
+Apipucos,Casa Forte,Rua Visconde de Ouro Preto,2.0
+Sítio dos Pintos,Dois Irmãos,Estrada dos Pintos,1.0
+Casa Amarela,Tamarineira,Av. Norte,2.0
+Casa Amarela,Alto do Mandu,Estrada do Arraial,1.0
+Casa Amarela,Casa Forte,Estrada Das Ubaias,2.0
+Casa Amarela,Poço da Panela,Rua Marechal Rondon,2.0
+Tamarineira,Aflitos,Av. Santos Dumont,2.0
+Tamarineira,Graças,Av. Rosa e Silva,2.0
+Parnamirim,Casa Forte,Rua Jerônimo de Albuquerque,2.0
+Parnamirim,Monteiro,Rua João Tude de Melo,2.0
+Poço,Santana,Rua Leonardo Bezerra Cavalcanti,2.0
+Derby,Boa Vista,Rua Henrique Dias,1.0
+Derby,Graças,Rua Das Pernambucanas,2.0
+Derby,Espinheiro,Rua do Espinheiro,2.0
+Derby,Ilha do Retiro,Rua João Elísio Ramos,2.0
+Derby,Ilha do Leite,Rua Antônio Gomes de Freitas,2.0
+Derby,Madalena,Rua Arlíndo Gouvêia,1.0
+Derby,Paissandu,Rua Amauri de Medeiros,2.0
+Derby,Santo Amaro,Rua das Creoulas,2.0
+Dois Irmãos,Brejo de Beberibe,Rua Sr. do Bonfim,2.0
+Dois Irmãos,Casa Amarela,Praça Dois Irmãos,2.0
+Dois Irmãos,Macaxeira,Rua do Monte,2.0
+Dois Irmãos,Monteiro,Rua Caetés,1.0
+Dois Irmãos,Morro da Conceição,Largo Dom Luiz,2.0
+Dois Irmãos,Pau-Ferro,Av. Carlos Laet de Lima,2.0
+Dois Irmãos,Sítio dos Pintos,R. Manuel de Medeiros,2.0
+Tamarineira,Encruzilhada,Rua Amaro Coutinho,1.0
+Espinheiro,Santo Amaro,Rua Tupinambás,1.0
+Casa Forte,Santana,Ponte D'Uchoa,1.0
+Apipucos,Macaxeira,Estrada do Arraial,1.0
+Recife,Santo Amaro,PE-001,1.5
+Recife,Santo Antônio,Av. Cais do Apolo,1.5
+Recife,São José,Av. Dantas Barreto,1.5
+Santo Amaro,Boa Vista,Av. Cruz Cabugá,1.0
+Santo Amaro,Santo Antônio,Rua Princesa Isabel,1.5
+Santo Amaro,Soledade,Rua do Hospício,1.0
+Santo Amaro,Campo Grande,Rua Odorico Mendes,1.5
+Santo Amaro,Encruzilhada,Rua Castro Alves,1.0
+Santo Amaro,Hipódromo,Rua Padre Capistrano,1.0
+Santo Amaro,Torreão,Av. Norte Miguel Arraes de Alencar,1.0
+Cabanga,São José,Av. Sul Governador Cid Sampaio,1.0
+Cabanga,Coelhos,Tv. Padre Azevedo,1.5
+Cabanga,Ilha Joana Bezerra,Rua Luís Pinheiro,1.0
+Cabanga,Afogados,Rua Imperial,2.0
+Cabanga,Brasília Teimosa,Av. Herculano Bandeira,1.5
+Ilha do Leite,Paissandu,Rua General Joaquim Inácio,1.0
+Ilha do Leite,Santo Antônio,Rua Doutor José Mariano,1.5
+Ilha do Leite,São José,Ponte Viaduto Joaquim Cardozo,1.5
+Ilha do Leite,Coelhos,Rua Capitão José da Luz,1.0
+Ilha do Leite,Ilha Joana Bezerra,Rua Água Doce,1.5
+Ilha do Leite,Ilha do Retiro,Av. Sport Clube do Recife,1.0
+Ilha do Leite,Boa Vista,Av. Manoel Borba,1.0
+Paissandu,Coelhos,Rua Francisco Alves,2.0
+Paissandu ,Ilha Joana Bezerra,Rua Água Doce,1.5
+Paissandu,Ilha do Retiro,Rua Prefeito Jorge Martins,1.0
+Paissandu,Prado,Av. Engenheiro Abdias de Carvalho,1.0
+Paissandu,Madalena,Rua Prefeito Jorge Martins,1.0
+Santo Antônio,São José,Rua das Águas Verdes,1.0
+Santo Antônio,Soledade,Rua Velha,1.0
+Santo Antônio,Coelhos,Rua da Glória,1.0
+Santo Antônio,Ilha Joana Bezerra,Av. Rio Capibaribe,1.0
+São José,Soledade,Rua da Matriz ,2.0
+São José,Coelhos,Rua Vidal de Negreiros,1.0
+São José,Ilha Joana Bezerra,Av. Agostinho Gomes,1.0
+Soledade,Boa Vista,Av. Conde da Boa Vista,1.0
+Soledade,Coelhos,Rua Dom Bosco,1.0
+Coelhos,Ilha Joana Bezerra,Rua dos Coelhos,1.0
+Coelhos,Ilha do Leite,Av. Des. Guerra Barreto,1.0
+Boa Vista,Paissandu,Av. Lins Petit,1.0
+Ilha Joana Bezerra,Ilha do Retiro,Rua Benfica,1.0
+Arruda,Campina do Barreto,Rua das Moças,1.0
+Arruda,Campo Grande,Rua Mateus Tartaruga,1.0
+Arruda,Encruzilhada,Av. Beberibe,1.0
+Arruda,Hipódromo,Rua Professora Antônia Bezerra Campos,1.0
+Arruda,Peixinhos,Rua da Regeneração,1.0
+Arruda,Ponto de Parada,Rua José Austregésilo,1.0
+Arruda,Rosarinho,Rua Couto Magalhães,1.0
+Arruda,Beberibe,Rua Alegre,1.0
+Arruda,Água Fria,Rua Japaranduba,1.0
+Arruda,Mangabeira,Rua Bolívar,1.0
+Arruda,Bomba do Hemetério,Rua Bomba do Hemetério,1.0
+Arruda,Tamarineira,Rua Sete Pecados,1.0
+Campina do Barreto,Campo Grande,Rua Garibalde,1.0
+Campina do Barreto,Peixinhos,Rua João Praxedes de Oliveira Filho,1.0
+Campina do Barreto,Água Fria,Rua Cel. Urbano Ribeiro de Sena,1.0
+Campina do Barreto,Cajueiro,Rua Iguatu,1.0
+Campina do Barreto,Fundão,Rua Constança,1.0
+Campo Grande,Encruzilhada,Estrada de Belém,1.0
+Campo Grande,Hipódromo,Rua Marquês de Abrantes,1.0
+Campo Grande,Peixinhos,Rua Franklin Távora,1.0
+Campo Grande,Ponto de Parada,Rua Mem de Sá,1.0
+Campo Grande,Torreão,Rua Professor Othon Paraíso,1.0
+Encruzilhada,Hipódromo,Rua Carlos Fernandes,1.0
+Encruzilhada,Ponto de Parada,Rua Pedro Alves,1.0
+Encruzilhada,Rosarinho,Rua Treze de Junho,1.0
+Encruzilhada,Torreão,Rua Dona Elvira,1.0
+Encruzilhada,Espinheiro,Rua Conselheiro Portela,2.0
+Hipódromo,Peixinhos,Rua Jerônimo Vilela,1.0
+Hipódromo,Ponto de Parada,Rua Me. Rosa Gatorno,2.0
+Hipódromo,Rosarinho,Rua Basílio da Gama,2.0
+Hipódromo,Torreão,Rua Fonseca Oliveira,2.0
+Hipódromo,Aflitos,Rua Professor Miranda Curió,2.0
+Peixinhos,Ponto de Parada,Rua Marquês de Baipendi,1.0
+Peixinhos ,Fundão,Rua Expedicionário Jamil Dagli,1.0
+Ponto de Parada,Rosarinho,Rua Regueira Costa,1.0
+Ponto de Parada,Torreão,Rua Antônio Rangel,1.0
+Ponto de Parada,Mangabeira,Rua Desembargador Heráclio Cavalcanti,1.0
+Rosarinho,Aflitos,Rua Quarenta e Oito,1.0
+Rosarinho,Torreão,Rua Padre Miguelinho,1.0
+Rosarinho,Graças,Rua Desembargador Martins Pereira,1.0
+Rosarinho,Tamarineira,Rua André Rebouças,1.0
+Água Fria,Bomba do Hemetério,Rua da Cutia,1.0
+Água Fria,Cajueiro,Rua Dr. Eudes Costa,1.0
+Água Fria,Fundão,Rua Maj. Davino,1.0
+Água Fria,Porto da Madeira,Rua Conselheiro Barros Barreto,1.0
+Água Fria,Beberibe,Rua Taguatinga,1.0
+Alto Santa Teresinha,Bomba do Hemetério,Rua Prof. José Amarino dos Réis,1.0
+Alto Santa Teresinha,Dois Unidos,Av. Chagas Ferreira,1.0
+Alto Santa Teresinha,Linha do Tiro,Rua Eládio Camboim,1.0
+Alto Santa Teresinha,Alto José Bonifácio,Rua Alto José Bonifácio,1.0
+Alto Santa Teresinha,Morro da Conceição,Rua Itacoatiara,1.0
+Alto Santa Teresinha,Vasco da Gama,Rua Dois de Fevereiro,1.0
+Bomba do Hemetério,Fundão,Rua São Sebastião,1.0
+Bomba do Hemetério,Linha do Tiro,Rua Chã de Alegria,1.0
+Bomba do Hemetério,Mangabeira,Rua Monte Horebe,1.0
+Cajueiro,Fundão,Rua Dr. Alberto Wanderley,1.0
+Cajueiro,Porto da Madeira,Av. Sebastião Salazar,1.0
+Cajueiro,Linha do Tiro,Rua Florestopolis,1.0
+Fundão,Porto da Madeira,Rua Carceres,1.0
+Fundão,Linha do Tiro,Rua Visconde de Alcântara,1.0
+Fundão,Mangabeira,Rua Jacob,1.0
+Porto da Madeira,Beberibe,Rua Marajó,1.0
+Porto da Madeira,Linha do Tiro,Av. Aníbal Benévolo,1.0
+Beberibe,Linha do Tiro,Rua Paraná D'Oeste,1.0
+Dois Unidos,Linha do Tiro,Rua Divisópolis,1.0
+Dois Unidos,Brejo de Beberibe,Av. Ver. Otacílio Azevedo,1.0
+Alto José Bonifácio,Alto José do Pinho,Rua Alto José Bonifácio,2.0
+Alto josé Bonifácio,Tamarineira,Rua Padre Oliveira,2.0
+Alto josé Bonifácio,Morro da Conceição,Rua Córrego do Euclides,2.0
+Alto José bonifácio,Linha do Tiro,Rua Uriel de Holanda,2.0
+Alto José bonifácio,Fundão,Rua São Bento,2.0
+Alto José bonifácio,Brejo de Beberibe,Rua São José,2.0
+Alto josé bonifácio,Bomba de Hemetério,Rua Alto da saudade,2.0
+Alto José do pinho,Alto do Mandu,Rua Mandacaru,2.0
+Alto José do pinho,Morro da conceição,Rua valeriano lobo,2.0
+Mangabeira,Morro da conceição,R dom Mauricio,2.0
+Mangabeira,Nova Descoberta,Rua Lage de úna,2.0
+Mangabeira,Vasco da Gama,Rua Severino Bernadino Pereira,2.0
+Morro da conceição,Casa Amarela,Estr do Morro da conceição,1.5
+Morro da conceição,Nova Descoberta,Rua Ipanema,2.0
+Morro da conceição,Tamarineira,Estr Velha de Agua fria,1.5
+Morro da conceição,Vasco da Gama,Rua do Sinó,2.0
+Brejo da guabiraba,Passarinho,Estr dos passarinhos,1.5
+Brejo da guabiraba,Sítio dos pintos,Córrego José Idalino,2.0
+Brejo de beberibe,Fundão,Rua dr Antônio da Rosa Borges,2.0
+Brejo de beberibe,Linha do Tiro,Rua Aidê,2.0
+Brejo de beberibe,Macaxeira,Rua Nova Descoberta,1.5
+Brejo de beberibe,Nova descoberta,Rua Córrego da areia,2.0
+Brejo de beberibe,Passarinho,Recuperação,2.0
+Córrego do Jenipapo,Alto josé do pinho,Rua Popular,2.0
+Córrego do jenipapo,Brejo de beberibe,Rua Anita,2.0
+Córrego do jenipapo,Casa amarela,Rua Francisco Campos,2.0
+Córrego do jenipapo,Dois unidos,Rua Alto do Formoso,2.0
+Córrego do jenipapo,Iputinga,Av da Recuperação,1.5
+Córrego do jenipapo,Macaxeira,Av. José Américo de Almeida	,1.0
+Córrego do jenipapo,Magabeira,Rua Maragogi,2.0
+Córrego do jenipapo,Nova descoberta,Rua dos Coquinhos,2.0
+Guabiraba,Dois irmãos,Rod. Governardor Mário Covas	,1.0
+Guabiraba,Brejo da Guabiraba,PE-016,1.0
+Guabiraba,Passarinho,Estr da Muribeca,1.5
+Guabiraba,Pau-Ferro,Rod Conselheiro João Campos,1.0
+Guabiraba,Sítio dos pintos,Estrada da Mumbeca,1.5
+Macaxeira,Brejo da guabiraba,Rua Dionísio Cerqueira,2.0
+Macaxeira,Casa Amarela,Rua Maria Cândida,2.0
+Macaxeira,Nova descoberta,Rua Maria Amália,2.0
+Nova Descoberta,Brejo da guabiraba,Rua Alto da brasileira,2.0
+Nova Descoberta,Casa amarela,Rua Padre Lemos,2.0
+Nova Descoberta,Dois unidos,Subida Alto do Cap,2.0
+Nova Descoberta,Passarinho,Estrada do passarinho,1.5
+Nova Descoberta,Vasco da gama,Rua Vasco da Gama,1.5
+Pau-Ferro,Macaxeira,Av Carlos Laet de Lima,1.0
+Pau-Ferro,Sítio dos pintos,Av Tiradentes,1.0
+Pau-Ferro,Várzea,Estrada da Aldeia,1.5
+Cordeiro,Bongi,Carlos Gomes,2.0
+Cordeiro,Engenho do Meio,Rua dr miguel vieira ferreira,2.0
+Cordeiro,Iputinga,Rua São Matheus,2.0
+Cordeiro,Madalena,Av Beira Rio,2.0
+Cordeiro,Torre,Rua Souza Bandeira,2.0
+Cordeiro,Torrões,Estr. do Forte do Arraial Novo do Bom Jesus	,2.0
+Cordeiro,Zumbi,Av Caxangá,1.0
+Iputinga,Cidade Universitária,Estrada do Barbalho,1.5
+Iputinga,Macaxeira,Rua do Palanque,2.0
+Iputinga,Nova descoberta,Rua Maurício de Nassau,2.0
+Iputinga,Torre,Rua 10 de Novembro,2.0
+Iputinga,Várzea,Rua Acdo Hélio Ramos,2.0
+Madalena,Prado,Rua Real da Torre,2.0
+Madalena,Torre,Rua Ernani Braga,2.0
+Madalena,Torreão,Rua José Osório,2.0
+Madalena,Zumbi,Rua João ivo da silva,2.0
+Prado,Torre,Rua Xavier Sobrinho,2.0
+Prado,Torrões,Rua Dr José Machado,2.0
+Prado,Zumbi,Rua Fidélis Moliterno,2.0
+Engenho do meio,Iputinga,Rua Manoel Côrte Real,2.0
+Engenho do meio,Prado,Rua Lindolfo Color,2.0
+Engenho do meio,San Martin,Rua Arsênio Calaça,2.0
+Engenho do meio,Torre,Rua Cláudio Brotherhood,2.0
+Engenho do meio,Várzea,Av dos Economistas,1.0
+Engenho do meio,Zumbi,Rua Gov Lopo Garro,2.0
+Torrões ,Bongi,Rua Onze de Fevereiro,2.0
+Caxangá,Cidade Universitária,Rua Ribeiro Pessoa,2.0
+Caxangá,Engenho do Meio,Rua Gáspar Pérez,2.0
+Caxangá,Iputinga,Av Joaquim Ribeiro,1.0
+Caxangá,Jardim são paulo,Rua Dr Dustan de Carvalho Soares,2.0
+Caxangá,San martin,Rua Francisco Tôrres,2.0
+Caxangá,Torrões,Rua Ambrósio Machado,2.0
+Caxangá,Várzea,Rua Afonso Olindense,1.5
+Cidade Universitária,Curado,Av dos reitores,1.0
+Cidade Universitária,Jardim são paulo,Av  Visc De São Leopoldo,1.0
+Cidade Universitária,Várzea,Av Prof Paulo Freire,1.0
+Jaqueira,Encruzilhada,Rua Hoel Sette,2.0
+Jaqueira,Espinheiro,Rua Ricardo Hardman,2.0
+Jaqueira,Monteiro,Rua Simão Mendes,2.0
+Jaqueira,Poço da Panela,Rua Muniz Tavares,2.0
+Jaqueira,Rosarinho,Rua General Abreu e Lima,2.0
+Jaqueira,Tamarineira,Rua Canápolis,2.0
+Monteiro,Casa Forte,Igreja Matriz de Casa Forte,2.0
+Monteiro,Sítio dos pintos,Rua Das Levadas,2.0
+Monteiro,Poço da Panela,Rua Luiz Guimarães,2.0
+Monteiro,Tamarineira,Rua Tito Rosas,2.0
+Monteiro,Zumbi,Rua Ilha do Temporal,2.0
+Parnamirim,Casa Amarela,Rua Estrela,2.0
+Parnamirim,Poço da Panela,Rua Ferreira Lopes,2.0
+Parnamirim,Santana,Rua Leonardo Bezerra Cavalcante,2.0
+Parnamirim,Tamarineira,	Rua Cônego Barata,2.0
+Santana,Monteiro,Rua Dom Malam,2.0
+Santana,Poço da Panela,Rua Álvaro Macêdo,2.0
+Santana,Zumbi,Rua José Bonifácio,2.0

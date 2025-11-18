@@ -4,8 +4,8 @@ import os
 from typing import Dict, Set, Tuple, List
 
 import pandas as pd
+from src.graphs.graph import Graph
 
-from graphs.graph import Graph
 
 # --- caminhos (ajuste se necessário) ---
 BAIRROS_CSV = "data/bairros_unique.csv"
@@ -180,6 +180,44 @@ def compute_and_save_ego(g: Graph, bairros_all: Set[str], out_path: str):
     print(f"[EGO] {len(rows)} bairros processados -> {out_path}")
     return df
 
+def compute_and_save_graus(g: Graph, bairros_all: Set[str], out_path: str):
+    """
+    Salva out/graus.csv com: bairro,grau
+    """
+    rows = []
+    for bairro in sorted(bairros_all):
+        grau = len(g.neighbors(bairro)) if g.has_node(bairro) else 0
+        rows.append({"bairro": bairro, "grau": grau})
+
+    import pandas as pd
+    df = pd.DataFrame(rows, columns=["bairro", "grau"])
+    os.makedirs(os.path.dirname(out_path) or ".", exist_ok=True)
+    df.to_csv(out_path, index=False, encoding="utf-8-sig")
+
+    print(f"[GRAUS] Arquivo gerado com {len(df)} bairros -> {out_path}")
+    return df
+
+def find_topological_highlights(df_ego, df_graus):
+    """
+    Identifica:
+      - bairro mais denso (maior densidade_ego)
+      - bairro com maior grau
+    Apenas imprime no console.
+    """
+    # Bairro mais denso
+    row_denso = df_ego.loc[df_ego["densidade_ego"].idxmax()]
+    bairro_mais_denso = row_denso["bairro"]
+    dens_max = row_denso["densidade_ego"]
+
+    # Bairro com maior grau
+    row_grau = df_graus.loc[df_graus["grau"].idxmax()]
+    bairro_maior_grau = row_grau["bairro"]
+    grau_max = row_grau["grau"]
+
+    print("\n== Rankings Topológicos (Parte 4) ==")
+    print(f"• Bairro mais denso ..........: {bairro_mais_denso}  (densidade={dens_max:.4f})")
+    print(f"• Bairro com maior grau ......: {bairro_maior_grau}  (grau={grau_max})")
+    print("=====================================\n")
 
 # -------------------------
 # Orquestração principal
@@ -216,6 +254,14 @@ def run_metrics():
 
     # 6) calcular e salvar ego por bairro
     compute_and_save_ego(g, all_bairros, OUT_EGO)
+    
+    df_ego = compute_and_save_ego(g, all_bairros, OUT_EGO)   # 7) graus por bairro (Parte 4.1)
+    graus_csv_path = os.path.join(OUT_DIR, "graus.csv")
+    df_graus = compute_and_save_graus(g, all_bairros, graus_csv_path)
+
+    # 8) rankings (Parte 4.2)
+    find_topological_highlights(df_ego, df_graus)
+
 
     print("== Métricas concluídas ==")
 

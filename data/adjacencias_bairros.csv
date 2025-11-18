@@ -214,7 +214,7 @@ Hipódromo,Rosarinho,Rua Basílio da Gama,2.0
 Hipódromo,Torreão,Rua Fonseca Oliveira,2.0
 Hipódromo,Aflitos,Rua Professor Miranda Curió,2.0
 Peixinhos,Ponto De Parada,Rua Marquês de Baipendi,2.0
-Peixinhos ,Fundão,Rua Expedicionário Jamil Dagli,2.0
+Peixinhos,Fundão,Rua Expedicionário Jamil Dagli,2.0
 Ponto De Parada,Rosarinho,Rua Regueira Costa,2.0
 Ponto De Parada,Torreão,Rua Antônio Rangel,2.0
 Ponto De Parada,Mangabeira,Rua Desembargador Heráclio Cavalcanti,2.0
@@ -222,10 +222,10 @@ Rosarinho,Aflitos,Rua Quarenta e Oito,2.0
 Rosarinho,Torreão,Rua Padre Miguelinho,2.0
 Rosarinho,Graças,Rua Desembargador Martins Pereira,2.0
 Rosarinho,Tamarineira,Rua André Rebouças,2.0
-Água Fria ,Bomba Do Hemetério,Rua da Cutia,2.0
-Água Fria ,Cajueiro,Rua Dr. Eudes Costa,2.0
-Água Fria ,Fundão,Rua Maj. Davino,2.0
-Água Fria ,Porto Da Madeira,Rua Conselheiro Barros Barreto,2.0
+Água Fria,Bomba Do Hemetério,Rua da Cutia,2.0
+Água Fria,Cajueiro,Rua Dr. Eudes Costa,2.0
+Água Fria,Fundão,Rua Maj. Davino,2.0
+Água Fria,Porto Da Madeira,Rua Conselheiro Barros Barreto,2.0
 Água Fria,Beberibe,Rua Taguatinga,2.0
 Alto Santa Teresinha,Bomba Do Hemetério,Rua Prof. José Amarino dos Réis,2.0
 Alto Santa Teresinha,Dois Unidos,Av. Chagas Ferreira,1.0
@@ -265,11 +265,11 @@ Morro Da Conceição,Tamarineira,Estr Velha de Agua fria,1.5
 Morro Da Conceição,Vasco Da Gama,Rua do Sinó,2.0
 Brejo Da Guabiraba,Passarinho,Estr dos passarinhos,1.5
 Brejo Da Guabiraba,Sítio Dos Pintos,Córrego José Idalino,2.0
-Brejo De Beberibe ,Fundão,Rua dr Antônio da Rosa Borges,2.0
-Brejo De Beberibe ,Linha Do Tiro,Rua Aidê,2.0
-Brejo De Beberibe ,Macaxeira,Rua Nova Descoberta,1.5
-Brejo De Beberibe ,Nova Descoberta,Rua Córrego da areia,2.0
-Brejo De Beberibe ,Passarinho,Recuperação,2.0
+Brejo De Beberibe,Fundão,Rua dr Antônio da Rosa Borges,2.0
+Brejo De Beberibe,Linha Do Tiro,Rua Aidê,2.0
+Brejo De Beberibe,Macaxeira,Rua Nova Descoberta,1.5
+Brejo De Beberibe,Nova Descoberta,Rua Córrego da areia,2.0
+Brejo De Beberibe,Passarinho,Recuperação,2.0
 Córrego Do Jenipapo,Alto José Do Pinho,Rua Popular,2.0
 Córrego Do Jenipapo,Brejo De Beberibe,Rua Anita,2.0
 Córrego Do Jenipapo,Casa Amarela,Rua Francisco Campos,2.0
@@ -297,7 +297,7 @@ Pau-Ferro,Várzea,Estrada da Aldeia,1.5
 Cordeiro,Bongi,Carlos Gomes,2.0
 Cordeiro,Engenho Do Meio,Rua dr miguel vieira ferreira,2.0
 Cordeiro,Iputinga,Rua São Matheus,2.0
-Cordeiro,Madalena ,Av Beira Rio,2.0
+Cordeiro,Madalena,Av Beira Rio,2.0
 Cordeiro,Torre,Rua Souza Bandeira,2.0
 Cordeiro,Torrões,Estr. do Forte do Arraial Novo do Bom Jesus	,2.0
 Cordeiro,Zumbi,Av Caxangá,1.0
@@ -319,7 +319,7 @@ Engenho Do Meio,San Martin,Rua Arsênio Calaça,2.0
 Engenho Do Meio,Torre,Rua Cláudio Brotherhood,2.0
 Engenho Do Meio,Várzea,Av dos Economistas,1.0
 Engenho Do Meio,Zumbi,Rua Gov Lopo Garro,2.0
-Torrões ,Bongi,Rua Onze de Fevereiro,2.0
+Torrões,Bongi,Rua Onze de Fevereiro,2.0
 Caxangá,Cidade Universitária,Rua Ribeiro Pessoa,2.0
 Caxangá,Engenho Do Meio,Rua Gáspar Pérez,2.0
 Caxangá,Iputinga,Av Joaquim Ribeiro,1.0

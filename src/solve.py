@@ -5,6 +5,9 @@ from typing import Dict, Set, Tuple, List
 
 import pandas as pd
 from src.graphs.graph import Graph
+from src.graphs.algorithms import dijkstra
+from src.graphs.algorithms import dijkstra_path
+
 
 
 # --- caminhos (ajuste se necessário) ---
@@ -265,6 +268,90 @@ def run_metrics():
 
     print("== Métricas concluídas ==")
 
+def calcular_distancias_enderecos(graph: Graph, path_enderecos="data/enderecos.csv"):
+    print("== Parte 6.2: cálculo de distâncias entre endereços ==")
+
+    pares = []
+    with open(path_enderecos, newline="", encoding="utf-8") as f:
+        reader = csv.DictReader(f)
+        for row in reader:
+            pares.append(row)
+
+    saida_csv = "out/distancias_enderecos.csv"
+    with open(saida_csv, "w", newline="", encoding="utf-8") as f:
+        w = csv.writer(f)
+        w.writerow(["X", "Y", "bairro_X", "bairro_Y", "custo", "caminho"])
+
+        for p in pares:
+            origem = p["bairro_X"].strip()
+            destino = p["bairro_Y"].strip()
+
+            if origem not in graph.adj or destino not in graph.adj:
+                print(f"[AVISO] Bairro desconhecido: {origem} -> {destino}")
+                continue
+
+            dist, prev = dijkstra(graph, origem)
+            custo = dist.get(destino, float("inf"))
+
+            caminho = []
+            if custo < float("inf"):
+                atual = destino
+                while atual is not None:
+                    caminho.append(atual)
+                    atual = prev.get(atual)
+                caminho.reverse()
+
+            w.writerow([
+                p["X"],
+                p["Y"],
+                origem,
+                destino,
+                custo,
+                " -> ".join(caminho) if caminho else ""
+            ])
+
+            # Caso especial obrigatório
+            if origem == "Nova Descoberta" and destino == "Boa Viagem":
+                with open("out/percurso_nova_descoberta_setubal.json", "w", encoding="utf-8") as jf:
+                    json.dump({
+                        "origem": origem,
+                        "destino": destino,
+                        "custo": custo,
+                        "caminho": caminho
+                    }, jf, ensure_ascii=False, indent=4)
+
+    print(f"[OK] Distâncias calculadas → {saida_csv}")
+
 
 if __name__ == "__main__":
-    run_metrics()
+  if __name__ == "__main__":
+    print("== Parte 3,4,6 ==")
+
+    # 1) ler mapa de bairros
+    bairros_map = read_bairros_map(BAIRROS_CSV)
+    print(f"Carregados {len(bairros_map)} bairros de {BAIRROS_CSV}")
+
+    # 2) montar grafo a partir do CSV de adjacências
+    g, names_in_adj = load_adjacencias_to_graph(ADJ_CSV)
+    print(f"Grafo montado: {len(g)} nós, {len(g.get_edges())} arestas")
+
+    # 3) conjunto completo de bairros (inclui isolados listados nas adjacências)
+    all_bairros = set(bairros_map.keys()).union(names_in_adj)
+
+    # 4) Parte 3: métricas
+    compute_and_save_global(g, OUT_GLOBAL)
+    compute_and_save_microrregioes(g, bairros_map, OUT_MICRO)
+
+    # 5) Parte 3.3 (ego) — chama apenas 1 vez e guarda o dataframe
+    df_ego = compute_and_save_ego(g, all_bairros, OUT_EGO)
+
+    # 6) Parte 4: graus e rankings
+    graus_csv_path = os.path.join(OUT_DIR, "graus.csv")
+    df_graus = compute_and_save_graus(g, all_bairros, graus_csv_path)
+    find_topological_highlights(df_ego, df_graus)
+
+    # 7) Parte 6: distâncias entre endereços (usa data/enderecos.csv)
+    calcular_distancias_enderecos(g, path_enderecos="data/enderecos.csv")
+
+    print("== Execução finalizada ==")
+

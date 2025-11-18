@@ -1,3 +1,4 @@
+origem,destino,rua,peso
 Boa Viagem,Ibura,Rua Hélio Brandão,2.0
 Boa Viagem,Pina,Av. Boa Viagem,1.0
 Boa Viagem,Imbiribeira,Av. Mal. Mascarenhas de Morais,1.0
@@ -92,7 +93,7 @@ Aflitos,Jaqueira,Rua do Futuro,2.0
 Aflitos,Derby,Rua Quarenta e Oito,1.0
 Alto Do Mandu,Apipucos,Rua Cianorte,2.0
 Alto Do Mandu,Monteiro,Rua Cametá,2.0
-Alto Do Mandu,Morro Da Conceição,Rua Morro da Conceição,2.0
+Alto Do Mandu,Morro Da Conceição,Rua Morro Da Conceição,2.0
 Alto Do Mandu,Tamarineira,Rua Guimarães Peixoto,2.0
 Espinheiro,Graças,Av. João de Barros,2.0
 Espinheiro,Rosarinho,Rua Barão de Itamaracá,2.0
@@ -101,7 +102,7 @@ Graças,Jaqueira,Rua da Amizade,1.0
 Graças,Ilha Do Leite,Rua Sen. José Henrique,2.0
 Graças,Madalena,Rua Joaquim Nabuco,2.0
 Graças,Parnamirim,Rua Desembargador Góis Cavalcante,1.0
-Graças,Poço Da Panela,Rua Aberlardo Carneiro Leão,2.0
+Graças,Poço,Rua Aberlardo Carneiro Leão,2.0
 Graças,Soledade,Rua João Fernandes Viêira,2.0
 Graças,Tamarineira,Rua Senador Alberto Paiva,2.0
 Graças,Torreão,Rua Engenho Megaípe,2.0
@@ -111,11 +112,11 @@ Monteiro,Apipucos,Av. Apipucos,2.0
 Apipucos,Dois Irmãos,Estrada dos Macacos,2.0
 Apipucos,Sítio Dos Pintos,Av. Professor Moraes Rego,2.0
 Apipucos,Casa Forte,Rua Visconde de Ouro Preto,2.0
-Sítio dos Pintos,Dois Irmãos,Estrada dos Pintos,1.0
+Sítio Dos Pintos,Dois Irmãos,Estrada dos Pintos,1.0
 Casa Amarela,Tamarineira,Av. Norte,2.0
 Casa Amarela,Alto Do Mandu,Estrada do Arraial,1.0
 Casa Amarela,Casa Forte,Estrada Das Ubaias,2.0
-Casa Amarela,Poço Da Panela,Rua Marechal Rondon,2.0
+Casa Amarela,Poço,Rua Marechal Rondon,2.0
 Tamarineira,Aflitos,Av. Santos Dumont,2.0
 Tamarineira,Graças,Av. Rosa e Silva,2.0
 Parnamirim,Casa Forte,Rua Jerônimo de Albuquerque,2.0
@@ -231,7 +232,7 @@ Alto Santa Teresinha,Dois Unidos,Av. Chagas Ferreira,1.0
 Alto Santa Teresinha,Linha Do Tiro,Rua Eládio Camboim,2.0
 Alto Santa Teresinha,Alto José Bonifácio,Rua Alto do Brasil,2.0
 Alto Santa Teresinha,Morro Da Conceição,Rua Itacoatiara,2.0
-Alto Santa Teresinha,Vasco da Gama,Rua Dois de Fevereiro,2.0
+Alto Santa Teresinha,Vasco Da Gama,Rua Dois de Fevereiro,2.0
 Bomba Do Hemetério,Fundão,Rua São Sebastião,2.0
 Bomba Do Hemetério,Linha Do Tiro,Rua Chã de Alegria,2.0
 Bomba Do Hemetério,Mangabeira,Rua Monte Horebe,2.0
@@ -248,7 +249,7 @@ Dois Unidos,Linha Do Tiro,Rua Divisópolis,2.0
 Dois Unidos,Brejo De Beberibe,Av. Ver. Otacílio Azevedo,1.0
 Alto José Bonifácio,Alto José Do Pinho,Rua Alto José Bonifácio,2.0
 Alto José Bonifácio,Tamarineira,Rua Padre Oliveira,2.0
-Alto José Bonifácio,Morro da Conceição,Rua Córrego do Euclides,2.0
+Alto José Bonifácio,Morro Da Conceição,Rua Córrego do Euclides,2.0
 Alto José Bonifácio,Linha Do Tiro,Rua Uriel de Holanda,2.0
 Alto José Bonifácio,Fundão,Rua São Bento,2.0
 Alto José Bonifácio,Brejo De Beberibe,Rua São José,2.0
@@ -258,7 +259,7 @@ Alto José Do Pinho,Morro Da Conceição,Rua valeriano lobo,2.0
 Mangabeira,Morro Da Conceição,R dom Mauricio,2.0
 Mangabeira,Nova Descoberta,Rua Lage de úna,2.0
 Mangabeira,Vasco Da Gama,Rua Severino Bernadino Pereira,2.0
-Morro Da Conceição,Casa Amarela,Estr do Morro da conceição,1.5
+Morro Da Conceição,Casa Amarela,Estr do Morro Da Conceição,1.5
 Morro Da Conceição,Nova Descoberta,Rua Ipanema,2.0
 Morro Da Conceição,Tamarineira,Estr Velha de Agua fria,1.5
 Morro Da Conceição,Vasco Da Gama,Rua do Sinó,2.0
@@ -275,7 +276,7 @@ Córrego Do Jenipapo,Casa Amarela,Rua Francisco Campos,2.0
 Córrego Do Jenipapo,Dois Unidos,Rua Alto do Formoso,2.0
 Córrego Do Jenipapo,Iputinga,Av da Recuperação,1.5
 Córrego Do Jenipapo,Macaxeira,Av. José Américo de Almeida	,1.0
-Córrego Do Jenipapo,Magabeira,Rua Maragogi,2.0
+Córrego Do Jenipapo,Mangabeira,Rua Maragogi,2.0
 Córrego Do Jenipapo,Nova Descoberta,Rua dos Coquinhos,2.0
 Guabiraba,Dois Irmãos,Rod. Governardor Mário Covas	,1.0
 Guabiraba,Brejo Da Guabiraba,PE-016,1.0
@@ -289,7 +290,7 @@ Nova Descoberta,Brejo Da Guabiraba,Rua Alto da brasileira,2.0
 Nova Descoberta,Casa Amarela,Rua Padre Lemos,2.0
 Nova Descoberta,Dois Unidos,Subida Alto do Cap,2.0
 Nova Descoberta,Passarinho,Estrada do passarinho,1.5
-Nova Descoberta,Vasco Da Gama,Rua Vasco da Gama,1.5
+Nova Descoberta,Vasco Da Gama,Rua Vasco Da Gama,1.5
 Pau-Ferro,Macaxeira,Av Carlos Laet de Lima,1.0
 Pau-Ferro,Sítio Dos Pintos,Av Tiradentes,1.0
 Pau-Ferro,Várzea,Estrada da Aldeia,1.5
@@ -332,18 +333,18 @@ Cidade Universitária,Várzea,Av Prof Paulo Freire,1.0
 Jaqueira,Encruzilhada,Rua Hoel Sette,2.0
 Jaqueira,Espinheiro,Rua Ricardo Hardman,2.0
 Jaqueira,Monteiro,Rua Simão Mendes,2.0
-Jaqueira,Poço Da Panela,Rua Muniz Tavares,2.0
+Jaqueira,Poço,Rua Muniz Tavares,2.0
 Jaqueira,Rosarinho,Rua General Abreu e Lima,2.0
 Jaqueira,Tamarineira,Rua Canápolis,2.0
 Monteiro,Casa Forte,Igreja Matriz de Casa Forte,2.0
 Monteiro,Sítio Dos Pintos,Rua Das Levadas,2.0
-Monteiro,Poço Da Panela,Rua Luiz Guimarães,2.0
+Monteiro,Poço,Rua Luiz Guimarães,2.0
 Monteiro,Tamarineira,Rua Tito Rosas,2.0
 Monteiro,Zumbi,Rua Ilha do Temporal,2.0
 Parnamirim,Casa Amarela,Rua Estrela,2.0
-Parnamirim,Poço Da Panela,Rua Ferreira Lopes,2.0
+Parnamirim,Poço,Rua Ferreira Lopes,2.0
 Parnamirim,Santana,Rua Leonardo Bezerra Cavalcante,2.0
 Parnamirim,Tamarineira,Rua Cônego Barata,2.0
 Santana,Monteiro,Rua Dom Malam,2.0
-Santana,Poço Da Panela,Rua Álvaro Macêdo,2.0
+Santana,Poço,Rua Álvaro Macêdo,2.0
 Santana,Zumbi,Rua José Bonifácio,2.0

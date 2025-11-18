@@ -5,7 +5,7 @@ from typing import Dict, Set, Tuple, List
 
 import pandas as pd
 
-from src.graphs.graph import Graph
+from graphs.graph import Graph
 
 # --- caminhos (ajuste se necessário) ---
 BAIRROS_CSV = "data/bairros_unique.csv"

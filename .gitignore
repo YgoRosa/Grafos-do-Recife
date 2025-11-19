@@ -1,6 +1,12 @@
 # Ambiente virtual
 .venv/
 venv/
+.env/
+env/
+
+
+lib/
+
 
 # Arquivos temporários do Python
 __pycache__/

@@ -7,6 +7,7 @@ import pandas as pd
 from graphs.graph import Graph
 from graphs.algorithms import dijkstra
 from graphs.algorithms import dijkstra_path
+from viz import construir_arestas_arvore_percurso, visualize_path_tree
 
 
 BAIRROS_CSV = "data/bairros_unique.csv"
@@ -287,5 +288,37 @@ if __name__ == "__main__":
 
     calcular_distancias_enderecos(g, path_enderecos="data/enderecos.csv")
 
+    calcular_distancias_enderecos(g, path_enderecos="data/enderecos.csv")
+
+    # ========================================
+    # PARTE 7: Transforme o percurso em árvore
+    # ========================================
+    
+    # 1. Recarregar o caminho obrigatório (Nova Descoberta -> Boa Viagem)
+    try:
+        path_data_file = os.path.join(OUT_DIR, "percurso_nova_descoberta_setubal.json")
+        with open(path_data_file, "r", encoding="utf-8") as f:
+            path_data = json.load(f)
+        caminho_obrig = path_data.get("caminho", [])
+        
+        # O requisito pede Boa Viagem (Setúbal), que foi mapeado para Boa Viagem
+        origem = caminho_obrig[0] if caminho_obrig else "Nova Descoberta"
+        destino = caminho_obrig[-1] if caminho_obrig else "Boa Viagem"
+
+        if caminho_obrig and len(caminho_obrig) > 1:
+            print(f"\n== Parte 7: Visualizando percurso de {origem} a {destino} ==")
+            
+            # 2. Construir as arestas do subgrafo
+            edges_path = construir_arestas_arvore_percurso(g, caminho_obrig)
+            
+            # 3. Gerar a visualização
+            output_html = os.path.join(OUT_DIR, "arvore_percurso.html")
+            visualize_path_tree(caminho_obrig, edges_path, output_html)
+        else:
+            print(f"[AVISO] Caminho obrigatório ({origem} -> {destino}) não encontrado ou muito curto em {path_data_file}. (Caminho: {caminho_obrig})")
+    except FileNotFoundError:
+        print(f"[ERRO] Arquivo de percurso obrigatório ({path_data_file}) não encontrado. Certifique-se de que 'calcular_distancias_enderecos' foi executado corretamente.")
+
     print("== Execução finalizada ==")
+
 

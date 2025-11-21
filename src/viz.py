@@ -1,9 +1,12 @@
 import os
 import json
+import pandas as pd
 from pyvis.network import Network
 from typing import List, Tuple, Dict
 from graphs.graph import Graph 
 import webbrowser
+import matplotlib.pyplot as plt
+import numpy as np 
 
 
 def construir_arestas_arvore_percurso(graph, path_nodes: List[str]) -> List[Tuple[str, str, float, Dict]]:
@@ -96,3 +99,140 @@ def visualize_path_tree(path_nodes: List[str], path_edges: List[Tuple[str, str, 
         webbrowser.open(output_file)
     except Exception as e:
         print(f"[ERRO DE ESCRITA] Não foi possível salvar ou escrever o arquivo HTML: {e}")
+
+def visualize_degree_map(graph: Graph, df_graus: pd.DataFrame, output_file: str):
+    """
+    1. Mapa de Cores por Grau do Bairro (Visualização Analítica 1)
+    Gera uma visualização do grafo onde o tamanho/cor do nó é proporcional ao seu grau.
+    """
+    print(f"[VIZ] Gerando Mapa de Cores por Grau → {output_file}")
+    
+    # Prepara a rede Pyvis
+    net = Network(height="750px", width="100%", 
+                  directed=False, 
+                  heading="Grafo de Bairros do Recife: Visualização de Grau") 
+
+    # Normaliza o Grau para Escala de Cores/Tamanhos
+    max_degree = df_graus['grau'].max()
+    min_degree = df_graus['grau'].min()
+    degree_range = max_degree - min_degree
+    
+    # Dicionário de Grau para acesso rápido
+    degree_map = df_graus.set_index('bairro')['grau'].to_dict()
+
+    # Define a escala de cor (verde escuro para alto grau, amarelo claro para baixo)
+    def degree_to_color(degree):
+        if degree_range == 0:
+            norm_degree = 0.5
+        else:
+            norm_degree = (degree - min_degree) / degree_range
+        # Mapeia 0 (min_degree) para claro (amarelo) e 1 (max_degree) para escuro (verde/azul)
+        # Escolha um esquema de cor BGR (R, G, B) em hexadecimal, por exemplo:
+        r = int(255 * (1 - norm_degree)) # Diminui Vermelho
+        g = int(255 * norm_degree)       # Aumenta Verde
+        b = int(100 * (1 - norm_degree)) # Diminui Azul
+        return f'#{r:02x}{g:02x}{b:02x}' # Ex: #FF0064 para baixo, #00FF00 para alto
+
+    # 1. Adicionar Nós
+    for node in graph.adj.keys():
+        degree = degree_map.get(node, 0)
+        color = degree_to_color(degree)
+        size = 10 + (degree * 2) # Tamanho proporcional ao grau (Ajuste o fator)
+        title_text = f"Bairro: **{node}**<br>Grau: {degree}"
+        
+        net.add_node(n_id=node, label=node, title=title_text, color=color, size=size)
+
+    # 2. Adicionar Arestas
+    for u, v, weight, meta in graph.get_edges():
+        net.add_edge(source=u, to=v, weight=weight, title=f"Custo: {weight:.2f}", color='#999999', value=weight, width=1)
+
+    # 3. Salvar o HTML
+    html_content = net.generate_html(notebook=False)
+    try:
+        with open(output_file, "w", encoding="utf-8") as out:
+            out.write(html_content)
+        print(f"[OK] Visualização de Grau gerada em {output_file}")
+    except Exception as e:
+        print(f"[ERRO VIZ] Falha ao salvar {output_file}: {e}")
+
+
+def visualize_degree_histogram(df_graus: pd.DataFrame, output_file: str):
+    """
+    2. Distribuição dos Graus (Visualização Analítica 2)
+    Gera um histograma da distribuição de graus dos bairros.
+    """
+    print(f"[VIZ] Gerando Histograma de Graus → {output_file}")
+    
+    degrees = df_graus['grau'].dropna().tolist()
+    
+    if not degrees:
+        print("[AVISO VIZ] Não há dados de grau para gerar o histograma.")
+        return
+
+    plt.figure(figsize=(10, 6))
+    
+    # Calcula os bins (caixas/intervalos)
+    bins = np.arange(min(degrees), max(degrees) + 1.5) - 0.5
+    
+    plt.hist(degrees, bins=bins, color='#4682B4', edgecolor='black', rwidth=0.9)
+    
+    plt.title('Distribuição de Graus dos Bairros do Recife', fontsize=16)
+    plt.xlabel('Grau (Número de Interconexões)', fontsize=12)
+    plt.ylabel('Frequência (Número de Bairros)', fontsize=12)
+    plt.xticks(np.arange(min(degrees), max(degrees) + 1)) # Garante ticks em números inteiros
+    plt.grid(axis='y', alpha=0.75)
+    plt.tight_layout()
+    
+    try:
+        plt.savefig(output_file)
+        plt.close() # Fecha a figura para liberar memória
+        print(f"[OK] Histograma de Graus gerado em {output_file}")
+    except Exception as e:
+        print(f"[ERRO VIZ] Falha ao salvar {output_file}: {e}")
+
+
+def visualize_top_10_degree_subgraph(graph: Graph, df_graus: pd.DataFrame, output_file: str):
+    """
+    3. Subgrafo dos 10 Bairros com Maior Grau (Visualização Analítica 3)
+    Gera uma visualização contendo apenas os 10 nós de maior grau e as arestas entre eles.
+    """
+    print(f"[VIZ] Gerando Subgrafo Top 10 por Grau → {output_file}")
+    
+    # 1. Seleciona os Top 10 Bairros por Grau
+    top_10_df = df_graus.sort_values(by='grau', ascending=False).head(10)
+    top_nodes = set(top_10_df['bairro'].tolist())
+    top_degree_map = top_10_df.set_index('bairro')['grau'].to_dict()
+
+    if not top_nodes:
+        print("[AVISO VIZ] Não há nós suficientes para o Top 10.")
+        return
+
+    # 2. Prepara a rede Pyvis para o subgrafo
+    net = Network(height="750px", width="100%", 
+                  directed=False, 
+                  heading="Subgrafo dos 10 Bairros Mais Conectados (Maior Grau)") 
+    
+    # 3. Adiciona Nós (apenas o Top 10)
+    max_degree = top_10_df['grau'].max() if not top_10_df.empty else 1
+    
+    for node in top_nodes:
+        degree = top_degree_map.get(node, 0)
+        size = 15 + (degree / max_degree) * 20 # Escala de 15 a 35
+        title_text = f"Bairro: **{node}**<br>Grau: {degree}"
+        
+        # Cor de destaque para o núcleo
+        net.add_node(n_id=node, label=node, title=title_text, color='#FFC107', size=size) 
+
+    # 4. Adiciona Arestas (apenas as que conectam nós do Top 10)
+    for u, v, weight, meta in graph.get_edges():
+        if u in top_nodes and v in top_nodes:
+             net.add_edge(source=u, to=v, weight=weight, title=f"Custo: {weight:.2f}", color='#FF9800', value=weight, width=2)
+
+    # 5. Salvar o HTML
+    html_content = net.generate_html(notebook=False)
+    try:
+        with open(output_file, "w", encoding="utf-8") as out:
+            out.write(html_content)
+        print(f"[OK] Subgrafo Top 10 gerado em {output_file}")
+    except Exception as e:
+        print(f"[ERRO VIZ] Falha ao salvar {output_file}: {e}")

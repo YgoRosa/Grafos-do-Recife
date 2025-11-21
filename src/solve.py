@@ -321,4 +321,25 @@ if __name__ == "__main__":
 
     print("== Execução finalizada ==")
 
+# ========================================
+    # PARTE 8: Explorações e Visualizações Analíticas
+    # ========================================
+    print("\n== Parte 8: Visualizações Analíticas (3 Obrigatórias) ==")
+    
+    # 1. Mapa de Cores por Grau do Bairro (HTML Interativo - pyvis)
+    from viz import visualize_degree_map
+    viz_mapa_out = os.path.join(OUT_DIR, "mapa_grau.html")
+    # df_graus já foi calculado e salvo em 'graus.csv'
+    visualize_degree_map(g, df_graus, viz_mapa_out)
 
+    # 2. Distribuição dos Graus (Histograma - Matplotlib)
+    from viz import visualize_degree_histogram
+    viz_hist_out = os.path.join(OUT_DIR, "histograma_graus.png")
+    visualize_degree_histogram(df_graus, viz_hist_out)
+
+    # 3. Subgrafo dos 10 Bairros com Maior Grau (HTML Interativo - pyvis)
+    from viz import visualize_top_10_degree_subgraph
+    viz_top10_out = os.path.join(OUT_DIR, "subgrafo_top10.html")
+    visualize_top_10_degree_subgraph(g, df_graus, viz_top10_out)
+
+    print("== Execução finalizada ==")

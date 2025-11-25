@@ -15,8 +15,11 @@ from typing import Dict, List, Any
 from viz import (
     construir_arestas_arvore_percurso, visualize_path_tree, visualize_degree_map, 
     visualize_degree_histogram, visualize_top_10_degree_subgraph,
-    # NOVA FUNÇÃO ADICIONADA:
-    visualize_interactive_graph 
+    # Funções da Parte 1/9:
+    visualize_interactive_graph,
+    # Funções da Parte 2:
+    visualize_parte2_degree_histogram,
+    compute_parte2_degrees
 )
 
 
@@ -431,6 +434,8 @@ def run_parte2_comparison(g: Graph):
     except Exception as e:
         print(f"[ERRO DE IO] Falha ao salvar {output_path}: {e}")
 
+    
+
 # =========================================================================
 # BLOCO PRINCIPAL DE EXECUÇÃO
 # =========================================================================
@@ -546,45 +551,23 @@ if __name__ == "__main__":
     except Exception as e:
          print(f"[ERRO GERAL P2] Ocorreu um erro geral na Parte 2: {e}")
 
-    print("\n== EXECUÇÃO GLOBAL FINALIZADA ==")
-
-# No seu arquivo viz.py (ou solve.py, se não tiver o viz.py)
-
-
-# Insira esta função em src/solve.py, junto com as outras funções auxiliares
-def load_combined_metrics(g, df_graus, df_ego, bairros_map) -> Dict[str, Dict]:
-    """Combina todas as métricas por bairro para uso na visualização."""
-    metrics: Dict[str, Dict] = {}
+    # ----------------------------------------------------
+    # IV. VISUALIZAÇÕES ADICIONAIS (Parte 2, Requisito 4)
+    # ----------------------------------------------------
+    print("\n--- 4. Visualização da Estrutura (Histograma) ---")
     
-    # 1. Base - Grau (de df_graus, que contém todos os bairros)
-    grau_map = df_graus.set_index('bairro')['grau'].to_dict()
-    
-    for bairro, grau in grau_map.items():
-        metrics[bairro] = {
-            "grau": grau,
-            "microrregiao": bairros_map.get(bairro, "N/A"),
-            "densidade_ego": 0.0,
-            "is_node": g.has_node(bairro), # Verifica se está no grafo
-        }
+    try:
+        # Requer que g_aereo tenha sido carregado com sucesso na seção anterior.
+        # Se a carga falhou, o NameError será capturado.
+        df_graus_p2 = compute_parte2_degrees(g_aereo) 
         
-    # 2. Adiciona Densidade Ego
-    ego_map = df_ego.set_index('bairro')['densidade_ego'].to_dict()
-    for bairro, densidade in ego_map.items():
-        if bairro in metrics:
-            metrics[bairro]["densidade_ego"] = round(densidade, 4)
-            
-    # 3. Formatação do título do Tooltip (Ponto 9: Tooltip por bairro)
-    for bairro, data in metrics.items():
-        if data["is_node"]:
-            tooltip = (
-                f"<b>{bairro}</b><br>"
-                f"Microrregião: {data['microrregiao']}<br>"
-                f"Grau: {data['grau']}<br>"
-                f"Dens. Ego: {data['densidade_ego']:.4f}"
-            )
-            data["title"] = tooltip
-        else:
-            data["title"] = f"<b>{bairro}</b><br>Microrregião: {data['microrregiao']}<br>Sem Arestas no Grafo"
-            
-    return metrics
-
+        # 2. Gerar Histograma
+        viz_hist_p2_out = os.path.join(OUT_DIR, "p2_histograma_graus_saida.png")
+        visualize_parte2_degree_histogram(df_graus_p2, viz_hist_p2_out)
+    except NameError:
+        # Captura se g_aereo não foi definida (porque a carga falhou no try/except anterior)
+        print("[AVISO P2 VIZ] Não foi possível gerar visualização da Parte 2, o grafo 'g_aereo' não foi carregado com sucesso.")
+    except Exception as e:
+        print(f"[ERRO VIZ P2] Falha ao gerar visualização de grau da Parte 2: {e}")
+        
+    print("\n== EXECUÇÃO GLOBAL FINALIZADA ==")

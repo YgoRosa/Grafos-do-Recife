@@ -6,8 +6,7 @@ from typing import List, Tuple, Dict, Any
 from graphs.graph import Graph 
 import webbrowser
 import matplotlib.pyplot as plt
-import numpy as np 
-
+import numpy as np
 
 def construir_arestas_arvore_percurso(graph, path_nodes: List[str]) -> List[Tuple[str, str, float, Dict]]:
     """

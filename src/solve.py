@@ -328,6 +328,64 @@ def run_parte2_comparison(g: Graph):
                    "tempo_s": elapsed_2, "ciclo_detectado": cycle_2})
     print(f"BF (Ciclo Negativo): Ciclo detectado={cycle_2} em {elapsed_2:.6f}s (Ciclo: A->B->C->A, Soma: -1.0)")
 
+    # ----------------------------------------------------
+    # IV. SALVAR RELATÓRIO (Parte 2, Ponto 3) - CORRIGIDO
+    # ----------------------------------------------------
+    
+    final_report = []
+    dataset_name = "Grafo Aéreo (Rotas e Volume de Tráfego)"
+    
+    for entry in report:
+        # --- 1. ARREDONDAMENTO DE TEMPO ---
+        tempo_s = entry.get("tempo_s")
+        if isinstance(tempo_s, (int, float)):
+            # Arredonda para 6 casas decimais, suficiente para a análise
+            tempo_s = round(tempo_s, 6) 
+        
+        new_entry = {
+            "algoritmo": entry.get("alg"),
+            "dataset": dataset_name,
+            "origem": entry.get("origem"),
+            "destino": entry.get("destino", "N/A"),
+            "tempo_execucao_segundos": tempo_s, # Usa o valor arredondado
+        }
+        
+        # --- 2. TRATAMENTO DE CUSTO (Infinity e Arredondamento) ---
+        custo = entry.get("custo")
+        if custo is not None:
+            if custo == "Erro":
+                 new_entry["status"] = "ERRO: Dijkstra não suporta peso negativo ou caminho não encontrado."
+            elif custo == float('inf'): 
+                 # Converte o valor float('inf') para uma string JSON válida
+                 new_entry["custo_caminho"] = "NÃO ALCANÇÁVEL"
+            elif isinstance(custo, (int, float)):
+                 # Arredonda custos válidos, se existirem
+                 new_entry["custo_caminho"] = round(custo, 6)
+            else:
+                 new_entry["custo_caminho"] = custo
+        
+        if entry.get("ciclo_detectado") is not None:
+            new_entry["detectou_ciclo_negativo"] = entry["ciclo_detectado"]
+            
+        if entry.get("caso"):
+            new_entry["caso_teste"] = entry["caso"]
+            
+        final_report.append(new_entry)
+
+    # 3. Salvar o arquivo out/parte2_report.json
+    output_path = os.path.join(OUT_DIR, "parte2_report.json")
+    os.makedirs(OUT_DIR, exist_ok=True)
+    
+    try:
+        with open(output_path, 'w', encoding='utf-8') as f:
+            # Não é necessário allow_nan=False aqui, pois tratamos float('inf') antes.
+            json.dump(final_report, f, indent=4, ensure_ascii=False)
+            
+        print(f"\n[OK] Relatório de desempenho salvo em {output_path}")
+
+    except Exception as e:
+        print(f"[ERRO DE IO] Falha ao salvar {output_path}: {e}")
+
 # =========================================================================
 # BLOCO PRINCIPAL DE EXECUÇÃO
 # =========================================================================

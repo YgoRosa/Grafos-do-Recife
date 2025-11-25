@@ -7,14 +7,15 @@ class Graph:
     Cada entrada self.adj[u] é um dict: destino -> (peso, metadados).
     """
 
-    def __init__(self):
-        # adj: node -> dict(destino -> (peso: float, meta: dict))
+    def __init__(self, is_directed: bool = False): # <--- ADICIONE is_directed AQUI
+    # adj: node -> dict(destino -> (peso: float, meta: dict))
         self.adj: Dict[str, Dict[str, Tuple[float, Dict]]] = {}
-
-    # ----------------------------------------------------
-    # --------------- Métodos de Nós ---------------------
-    # ----------------------------------------------------
-    
+        
+        # ADICIONE ESTA LINHA:
+        self.is_directed = is_directed
+        
+    # OBS: O copy() também deve ser atualizado para copiar este atributo.
+    # Já corrijo abaixo.
     def add_node(self, u: str):
         u = str(u).strip()
         if u not in self.adj:
@@ -91,7 +92,10 @@ class Graph:
     
     def copy(self) -> 'Graph':
         """Cria uma cópia profunda (deep copy) do grafo."""
-        new_graph = Graph()
+        # 1. Cria o novo grafo passando o valor de is_directed para o construtor
+        new_graph = Graph(is_directed=self.is_directed)
+        
+        # 2. Copia a lista de adjacência
         new_graph.adj = {u: {v: (w, meta.copy()) for v, (w, meta) in nbrs.items()}
                         for u, nbrs in self.adj.items()}
         return new_graph

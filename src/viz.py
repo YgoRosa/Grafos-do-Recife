@@ -2,7 +2,7 @@ import os
 import json
 import pandas as pd
 from pyvis.network import Network
-from typing import List, Tuple, Dict
+from typing import List, Tuple, Dict, Any
 from graphs.graph import Graph 
 import webbrowser
 import matplotlib.pyplot as plt
@@ -236,3 +236,89 @@ def visualize_top_10_degree_subgraph(graph: Graph, df_graus: pd.DataFrame, outpu
         print(f"[OK] Subgrafo Top 10 gerado em {output_file}")
     except Exception as e:
         print(f"[ERRO VIZ] Falha ao salvar {output_file}: {e}")
+
+def visualize_interactive_graph(g: Any, metrics: Dict[str, Dict], path_list: List[str], out_path: str):
+    """
+    Gera um HTML interativo com Pyvis.
+    
+    :param g: O objeto Graph (grafo de bairros).
+    :param metrics: Dicionário com todas as métricas por nó.
+    :param path_list: A lista do caminho a ser destacado (Nova Descoberta -> Setúbal).
+    :param out_path: O caminho de saída do arquivo HTML.
+    """
+    
+    # Inicializa a rede pyvis. Note o `select_menu` para a caixa de busca.
+    net = Network(height="750px", width="100%", notebook=False, 
+                  directed=g.is_directed, heading="Grafo Interativo dos Bairros do Recife")
+    
+    # Dicionário de cores para microrregiões
+    # Gera cores aleatórias para evitar dependência de libs externas
+    import hashlib
+    def get_color(name):
+        return "#" + hashlib.sha1(name.encode('utf-8')).hexdigest()[:6]
+
+    
+    # 1. Adiciona NÓS e define Tooltip/Cor/Tamanho
+    for bairro, data in metrics.items():
+        if not data["is_node"]:
+            continue 
+            
+        is_highlighted = bairro in path_list
+        
+        # Cor de destaque para o caminho obrigatório
+        if is_highlighted:
+            color = 'red' # Destaque do caminho
+            size = 15
+        else:
+            # Cor baseada na microrregião para legenda
+            color = get_color(data['microrregiao'])
+            # Tamanho baseado no Grau (normalizado)
+            # Normalização simples: grau + 5 (mínimo 5)
+            size = max(5, min(20, data['grau'] * 0.8 + 5))
+            
+        net.add_node(
+            n_id=bairro,
+            title=data.get("title", bairro), # Tooltip
+            label=bairro,
+            color=color,
+            size=size,
+            # Configuração para buscar pelo nome
+            group=data['microrregiao']
+        )
+
+    # 2. Adiciona ARESTAS e destaca o caminho
+    for u, v, weight, meta in g.get_edges():
+        
+        is_in_path = (u in path_list and v in path_list and 
+                      path_list.index(u) == path_list.index(v) - 1)
+        
+        edge_width = 3 if is_in_path else 0.5
+        edge_color = 'red' if is_in_path else 'gray'
+
+        net.add_edge(
+            source=u, 
+            to=v, 
+            value=weight, 
+            width=edge_width,
+            color=edge_color,
+            title=f"Peso: {weight:.4f} ({meta.get('logradouro', 'N/A')})"
+        )
+        
+    # 3. Habilita a interatividade (Caixa de Busca, Legendas e Filtros)
+    net.show_buttons(filter_=['physics', 'interaction', 'selection'])
+    net.show_buttons(filter_=['nodes', 'edges', 'groups']) # Adiciona legendas de grupo (microrregião) e filtros
+    
+    # 4. Salva o HTML
+    net.save_graph(out_path)
+    print(f"\n[INTERATIVO] Grafo gerado com sucesso -> {out_path}")
+    # Em src/viz.py, dentro da função visualize_interactive_graph:
+
+    # 3. Habilita a interatividade (Caixa de Busca, Legendas e Filtros)
+    net.show_buttons(filter_=['physics', 'interaction', 'selection'])
+    net.show_buttons(filter_=['nodes', 'edges', 'groups']) # Adiciona legendas de grupo (microrregião) e filtros
+
+    # 4. Salva o HTML
+    net.save_graph(out_path)
+    print(f"\n[INTERATIVO] Grafo gerado com sucesso -> {out_path}")
+    webbrowser.open(out_path)
+    # --------------------------------------------------------

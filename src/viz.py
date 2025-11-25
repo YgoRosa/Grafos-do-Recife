@@ -236,3 +236,49 @@ def visualize_top_10_degree_subgraph(graph: Graph, df_graus: pd.DataFrame, outpu
         print(f"[OK] Subgrafo Top 10 gerado em {output_file}")
     except Exception as e:
         print(f"[ERRO VIZ] Falha ao salvar {output_file}: {e}")
+
+def compute_parte2_degrees(g: Graph) -> pd.DataFrame:
+    """
+    Calcula o Grau de Saída (Out-Degree) para o grafo dirigido da Parte 2.
+    """
+    rows = []
+    for node in g.get_nodes():
+        # g.degree(node) retorna o grau de saída em um grafo dirigido
+        grau_saida = g.degree(node) 
+        rows.append({"aeroporto": node, "grau_saida": grau_saida})
+
+    df = pd.DataFrame(rows, columns=["aeroporto", "grau_saida"])
+    return df
+
+def visualize_parte2_degree_histogram(df_graus_p2: pd.DataFrame, output_file: str):
+    """
+    Gera um histograma da Distribuição de Graus de Saída (Out-Degree) do grafo aéreo.
+    """
+    print(f"[VIZ] Gerando Histograma de Graus (Parte 2) → {output_file}")
+    
+    degrees = df_graus_p2['grau_saida'].dropna().tolist()
+    
+    if not degrees:
+        print("[AVISO VIZ P2] Não há dados de grau para gerar o histograma da Parte 2.")
+        return
+
+    plt.figure(figsize=(10, 6))
+    
+    # Calcula os bins (caixas/intervalos)
+    bins = np.arange(min(degrees), max(degrees) + 1.5) - 0.5
+    
+    plt.hist(degrees, bins=bins, color='#CC5500', edgecolor='black', rwidth=0.9) # Cor Laranja
+    
+    plt.title('Distribuição de Graus de Saída (Rede Aérea)', fontsize=16)
+    plt.xlabel('Grau de Saída (Número de Rotas Internacionais)', fontsize=12)
+    plt.ylabel('Frequência (Número de Aeroportos)', fontsize=12)
+    plt.xticks(np.arange(min(degrees), max(degrees) + 1, step=5))
+    plt.grid(axis='y', alpha=0.75)
+    plt.tight_layout()
+    
+    try:
+        plt.savefig(output_file)
+        plt.close()
+        print(f"[OK] Histograma de Graus P2 gerado em {output_file}")
+    except Exception as e:
+        print(f"[ERRO VIZ P2] Falha ao salvar {output_file}: {e}")

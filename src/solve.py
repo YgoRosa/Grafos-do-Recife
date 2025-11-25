@@ -10,7 +10,8 @@ from graphs.algorithms import dijkstra, bfs, dfs, bellman_ford
 # Certifique-se de que estas funções estão definidas em src/viz.py
 from viz import (
     construir_arestas_arvore_percurso, visualize_path_tree, visualize_degree_map, 
-    visualize_degree_histogram, visualize_top_10_degree_subgraph
+    visualize_degree_histogram, visualize_top_10_degree_subgraph, visualize_parte2_degree_histogram,
+    compute_parte2_degrees
 )
 
 
@@ -386,6 +387,8 @@ def run_parte2_comparison(g: Graph):
     except Exception as e:
         print(f"[ERRO DE IO] Falha ao salvar {output_path}: {e}")
 
+    
+
 # =========================================================================
 # BLOCO PRINCIPAL DE EXECUÇÃO
 # =========================================================================
@@ -478,5 +481,17 @@ if __name__ == "__main__":
          print(f"[ERRO DE DADOS P2] Falha no processamento do CSV da Parte 2: {e}")
     except Exception as e:
          print(f"[ERRO GERAL P2] Ocorreu um erro geral na Parte 2: {e}")
+
+    print("\n--- 4. Visualização da Estrutura (Histograma) ---")
+    
+    # ----------------------------------------------------
+    # IV. VISUALIZAÇÕES ADICIONAIS (Parte 2, Requisito 4)
+    # ----------------------------------------------------
+    # 1. Calcular Graus de Saída
+    df_graus_p2 = compute_parte2_degrees(g)
+    
+    # 2. Gerar Histograma
+    viz_hist_p2_out = os.path.join(OUT_DIR, "p2_histograma_graus_saida.png")
+    visualize_parte2_degree_histogram(df_graus_p2, viz_hist_p2_out)
 
     print("\n== EXECUÇÃO GLOBAL FINALIZADA ==")

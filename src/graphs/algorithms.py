@@ -1,238 +1,279 @@
 import heapq
+from collections import deque
+from typing import List, Dict, Tuple, Union, Any, Optional
 
-def dijkstra(graph, start):
+# Adjust import according to your folder structure
+from .graph import Graph
 
-    # Inicialização
-    dist = {node: float("inf") for node in graph.adj}
-    prev = {node: None for node in graph.adj}
-
-    dist[start] = 0
-    pq = [(0, start)]  # heap de prioridades
-
-    while pq:
-        d_u, u = heapq.heappop(pq)
-
-        if d_u > dist[u]:
-            continue
-
-        # Aqui o formaro correto é: graph.adj[u][v] = (peso, meta)
-        for v, (peso, meta) in graph.adj[u].items():
-            weight = float(peso)
-
-            alt = d_u + weight
-            if alt < dist[v]:
-                dist[v] = alt
-                prev[v] = u
-                heapq.heappush(pq, (alt, v))
-
-    return dist, prev
-
-
-
-def dijkstra_path(graph, source, target):
+class PositiveFloat(float):
     """
-    Implementa um equivalente ao networkx.dijkstra_path()
+    Wrapper to enforce non-negative weights for Dijkstra's algorithm.
+    """
+    def __new__(cls, value):
+        if value < 0:
+            raise ValueError("Dijkstra does not accept negative weights.")
+        return super(PositiveFloat, cls).__new__(cls, value)
 
-    Retorna:
-        caminho (lista)
+class Algorithms:
+    """
+    Static implementation of classic Graph algorithms.
+    Contains: Dijkstra, Bellman-Ford, BFS, DFS.
     """
 
-    dist, prev = dijkstra(graph, source)
-
-    if dist[target] == float("inf"):
-        raise ValueError(f"Não existe caminho entre {source} e {target}")
-
-    # Reconstruir caminho
-    caminho = []
-    atual = target
-    while atual is not None:
-        caminho.append(atual)
-        atual = prev[atual]
-
-    caminho.reverse()
-    return caminho
-
-# src/graphs/algorithms.py - Continuação
-from typing import Dict, List, Tuple, Any
-from collections import deque 
-
-# Variáveis globais/auxiliares para rastrear o tempo/status na DFS
-time = 0
-status: Dict[str, str] = {} # 'white', 'gray', 'black'
-predecessor: Dict[str, str] = {}
-discovery_time: Dict[str, int] = {}
-finish_time: Dict[str, int] = {}
-has_cycle = False # Flag para detecção de ciclo
-
-
-def dfs_visit(graph, u: str):
-    global time, status, predecessor, discovery_time, finish_time, has_cycle
-    
-    status[u] = 'gray' # Nó descoberto, mas não finalizado
-    time += 1
-    discovery_time[u] = time
-    
-    # Itera sobre os vizinhos
-    for v in graph.neighbors(u): 
-        if status.get(v) == 'white': # Aresta de árvore (tree edge)
-            predecessor[v] = u
-            dfs_visit(graph, v)
-        elif status.get(v) == 'gray':
-            # Aresta de retorno (back edge): indica um ciclo em grafos dirigidos
-            has_cycle = True
-            # Adicionar lógica para classificação de arestas (opcional)
-
-    status[u] = 'black' # Nó finalizado
-    time += 1
-    finish_time[u] = time
-
-
-def dfs(graph, start_node: str) -> Tuple[Dict[str, int], Dict[str, int], bool]:
-    """
-    Busca em Profundidade. 
-    Retorna tempos de descoberta, tempos de finalização e flag de ciclo.
-    """
-    global time, status, predecessor, discovery_time, finish_time, has_cycle
-    
-    # Resetar variáveis globais para nova execução
-    time = 0
-    status = {node: 'white' for node in graph.get_nodes()}
-    predecessor = {}
-    discovery_time = {}
-    finish_time = {}
-    has_cycle = False
-    
-    # Tenta visitar o nó inicial
-    if start_node in graph.adj:
-        dfs_visit(graph, start_node)
+    @staticmethod
+    def dijkstra(graph: Graph, start: str, end: str) -> Dict[str, Any]:
+        """
+        Calculates the Shortest Path using Dijkstra's Algorithm (Binary Heap).
         
-    # Se o grafo não estiver totalmente conectado, visita o resto dos nós brancos
-    for node in graph.get_nodes():
-        if status[node] == 'white':
-             dfs_visit(graph, node)
+        Args:
+            graph: Graph instance.
+            start: Source node ID.
+            end: Target node ID.
+            
+        Returns:
+            Dict containing: 'cost', 'path' (list of nodes), 'visited_count'.
+        """
+        if not graph.has_node(start) or not graph.has_node(end):
+            return {"cost": float('inf'), "path": [], "error": "Invalid nodes"}
 
-    # Note: Para simular o modelo NetworkX, você pode retornar apenas o predecessor ou as arestas,
-    # mas para os requisitos do projeto (ciclo, camadas/tempos), a saída acima é mais útil.
-    return discovery_time, finish_time, has_cycle
-
-def dijkstra(graph, start_node: str) -> Tuple[Dict[str, float], Dict[str, str]]:
-    """
-    Encontra o caminho mais curto em grafos com pesos não-negativos.
-    Retorna distâncias e predecessores.
-    """
-    if start_node not in graph.adj:
-        return {}, {}
-    
-    # Inicialização
-    infinity = float('inf')
-    distance: Dict[str, float] = {node: infinity for node in graph.get_nodes()}
-    predecessor: Dict[str, str] = {}
-    
-    distance[start_node] = 0.0
-    
-    # Fila de prioridade: (distância, nó)
-    pq = [(0.0, start_node)]
-    
-    # Dicionário para rastrear a melhor distância encontrada para um nó
-    # (heapq pode ter entradas obsoletas)
-    
-    while pq:
-        d_u, u = heapq.heappop(pq)
+        # Initialization
+        distances = {node: float('inf') for node in graph.get_nodes()}
+        distances[start] = 0.0
+        predecessors = {start: None}
+        visited = set()
         
-        # Ignora se encontrarmos um caminho mais longo para 'u'
-        if d_u > distance[u]:
-            continue
-            
-        # Relaxamento
-        for v in graph.neighbors(u):
-            # Obtém o peso da aresta (u -> v)
-            data = graph.get_edge_data(u, v)
-            if data is None:
-                # Se for dirigido e não houver aresta, continua
-                continue 
-            
-            weight_uv, _ = data
-            
-            # ATENÇÃO: Dijkstra recusa pesos negativos. O projeto exige essa checagem!
-            if weight_uv < 0:
-                raise ValueError("Dijkstra não suporta pesos negativos.")
+        # Priority Queue: (cost, current_node)
+        pq: List[Tuple[float, str]] = []
+        heapq.heappush(pq, (0.0, start))
+        
+        visited_count = 0
 
-            if distance[u] + weight_uv < distance[v]:
-                distance[v] = distance[u] + weight_uv
-                predecessor[v] = u
-                heapq.heappush(pq, (distance[v], v))
+        while pq:
+            d_curr, u = heapq.heappop(pq)
+            
+            # Optimization: Stop if target is reached
+            if u == end:
+                break
+
+            if d_curr > distances[u]:
+                continue
+            
+            visited.add(u)
+            visited_count += 1
+            
+            for v in graph.neighbors(u):
+                if v in visited: 
+                    continue
+
+                # Safely get edge data
+                edge_data = graph.get_edge_data(u, v)
+                if not edge_data: continue
                 
-    return distance, predecessor
-
-# src/graphs/algorithms.py - Continuação
-
-def bellman_ford(graph, start_node: str) -> Tuple[Dict[str, float], Dict[str, str], bool]:
-    """
-    Encontra o caminho mais curto, suportando pesos negativos. 
-    Detecta e reporta ciclos negativos.
-    Retorna distâncias, predecessores e flag is_negative_cycle.
-    """
-    if start_node not in graph.adj:
-        return {}, {}, False
-    
-    infinity = float('inf')
-    nodes = graph.get_nodes()
-    distance: Dict[str, float] = {node: infinity for node in nodes}
-    predecessor: Dict[str, str] = {}
-    distance[start_node] = 0.0
-    
-    # Obter todas as arestas do grafo
-    # Para Bellman-Ford, precisamos de uma lista que inclua todas as arestas dirigidas (u, v, w)
-    # A função graph.get_edges() deve retornar uma lista de arestas dirigidas (u, v, w, meta)
-    all_edges = graph.get_edges()
-    
-    # 1. Relaxamento V - 1 vezes
-    for _ in range(len(nodes) - 1):
-        relaxed = False
-        for u, v, weight_uv, _ in all_edges:
-            # Relaxamento
-            if distance[u] != infinity and distance[u] + weight_uv < distance[v]:
-                distance[v] = distance[u] + weight_uv
-                predecessor[v] = u
-                relaxed = True
-        # Otimização: Se nenhuma aresta foi relaxada na iteração, podemos parar
-        if not relaxed:
-            break
-
-    # 2. V-ésima iteração para detectar ciclo negativo
-    is_negative_cycle = False
-    for u, v, weight_uv, _ in all_edges:
-        if distance[u] != infinity and distance[u] + weight_uv < distance[v]:
-            # Ciclo negativo detectado!
-            is_negative_cycle = True
-            break
-            
-    return distance, predecessor, is_negative_cycle
-
-
-def bfs(graph, start_node: str) -> Tuple[Dict[str, int], Dict[str, str]]:
-    """
-    Busca em Largura. 
-    Retorna distâncias (níveis topológicos) e predecessores a partir de start_node.
-    """
-    if start_node not in graph.adj:
-        return {}, {}
-
-    # Distância (nível topológico). Inicialmente, -1 (não visitado)
-    distance: Dict[str, int] = {node: -1 for node in graph.get_nodes()}
-    predecessor: Dict[str, str] = {}
-    
-    queue = deque([start_node])
-    distance[start_node] = 0
-
-    while queue:
-        u = queue.popleft()
-
-        # Itera sobre os vizinhos (válido para dirigido e não-dirigido)
-        for v in graph.neighbors(u): 
-            if distance[v] == -1: # Se o nó v não foi visitado
-                distance[v] = distance[u] + 1
-                predecessor[v] = u
-                queue.append(v)
+                raw_weight = edge_data[0]
                 
-    return distance, predecessor
+                try:
+                    # Enforce positive weight constraint
+                    weight = PositiveFloat(raw_weight)
+                except ValueError:
+                    continue # Ignore negative edges in Dijkstra
+
+                new_dist = distances[u] + weight
+                
+                if new_dist < distances[v]:
+                    distances[v] = new_dist
+                    predecessors[v] = u
+                    heapq.heappush(pq, (new_dist, v))
+
+        # Path Reconstruction
+        path = []
+        curr = end
+        
+        # If target unreachable
+        if distances[end] == float('inf'):
+             return {"cost": float('inf'), "path": [], "visited_count": visited_count}
+
+        # Backtrack from end to start
+        while curr is not None:
+            path.append(curr)
+            curr = predecessors.get(curr)
+            # Safety break for loops
+            if len(path) > len(graph): break 
+            
+        path.reverse()
+
+        # Validate path origin
+        if not path or path[0] != start:
+            return {"cost": float('inf'), "path": [], "visited_count": visited_count}
+
+        return {
+            "cost": distances[end],
+            "path": path,
+            "visited_count": visited_count
+        }
+
+    @staticmethod
+    def bellman_ford(graph: Graph, start: str, end: str) -> Dict[str, Any]:
+        """
+        Calculates Shortest Path using Bellman-Ford.
+        Supports negative weights and detects negative cycles.
+        
+        Returns:
+            Dict containing: 'cost', 'path', 'negative_cycle' (bool).
+        """
+        if not graph.has_node(start):
+            return {"cost": float('inf'), "path": [], "negative_cycle": False}
+
+        nodes = graph.get_nodes()
+        distances = {node: float('inf') for node in nodes}
+        distances[start] = 0.0
+        predecessors = {start: None}
+        
+        # Flatten all edges for iteration: List of (u, v, weight)
+        all_edges = []
+        for u, v, w, _ in graph.get_edges():
+            all_edges.append((u, v, w))
+
+        # 1. Relaxation Phase (V-1 times)
+        for _ in range(len(nodes) - 1):
+            relaxed = False
+            for u, v, w in all_edges:
+                if distances[u] != float('inf') and distances[u] + w < distances[v]:
+                    distances[v] = distances[u] + w
+                    predecessors[v] = u
+                    relaxed = True
+            
+            # Optimization: Early stopping if no changes occurred (crucial for positive graphs)
+            if not relaxed:
+                break
+
+        # 2. Negative Cycle Detection Phase
+        has_negative_cycle = False
+        for u, v, w in all_edges:
+            if distances[u] != float('inf') and distances[u] + w < distances[v]:
+                has_negative_cycle = True
+                break
+        
+        # Path Reconstruction
+        path = []
+        # Only reconstruct if no negative cycle and target is reachable
+        if not has_negative_cycle and end in distances and distances[end] != float('inf'):
+            curr = end
+            path_set = set()
+            
+            while curr is not None:
+                if curr in path_set: break # Avoid infinite loops
+                path_set.add(curr)
+                path.append(curr)
+                curr = predecessors.get(curr)
+                
+            path.reverse()
+            
+            if not path or path[0] != start:
+                path = []
+
+        return {
+            "cost": distances.get(end, float('inf')),
+            "path": path,
+            "negative_cycle": has_negative_cycle
+        }
+
+    @staticmethod
+    def bfs(graph: Graph, start: str) -> Dict[str, Any]:
+        """
+        Breadth-First Search.
+        Returns topological levels (distance in hops) and visitation order.
+        """
+        if not graph.has_node(start):
+            return {"error": f"Node {start} does not exist"}
+
+        visited = {start}
+        queue = deque([start])
+        
+        predecessors = {start: None}
+        levels = {start: 0} 
+        visit_order = []
+        
+        while queue:
+            u = queue.popleft()
+            visit_order.append(u)
+            
+            for v in graph.neighbors(u):
+                if v not in visited:
+                    visited.add(v)
+                    predecessors[v] = u
+                    levels[v] = levels[u] + 1
+                    queue.append(v)
+        
+        return {
+            "levels": levels,
+            "order": visit_order,
+            "parents": predecessors
+        }
+
+    @staticmethod
+    def dfs(graph: Graph, start: str) -> Dict[str, Any]:
+        """
+        Depth-First Search (Iterative).
+        Performs edge classification (Tree, Back, Forward, Cross) and detects cycles.
+        """
+        if not graph.has_node(start):
+            return {"error": f"Node {start} does not exist"}
+
+        # State tracking: 'white' (unvisited), 'gray' (visiting), 'black' (finished)
+        state = {u: 'white' for u in graph.get_nodes()}
+        discovery_time = {}
+        finish_time = {}
+        predecessors = {u: None for u in graph.get_nodes()}
+        
+        edge_classification = {} # (u, v) -> type
+        visit_order = []
+        time_counter = 0
+        has_cycle = False
+        
+        # Iterative DFS using a manual stack to simulate recursion
+        # Stack elements: (node, iterator_of_neighbors)
+        # We need to peek at stack to mark finish time (post-order)
+        
+        # Simplified recursive wrapper for clarity in edge classification logic
+        # (Python recursion limit is usually 1000, watch out for very deep graphs)
+        # Switching to recursive for correct Edge Classification logic as requested in requirements
+        
+        def dfs_visit(u: str):
+            nonlocal time_counter, has_cycle
+            
+            state[u] = 'gray'
+            time_counter += 1
+            discovery_time[u] = time_counter
+            visit_order.append(u)
+            
+            for v in graph.neighbors(u):
+                edge = (u, v)
+                
+                if state[v] == 'white':
+                    edge_classification[edge] = 'tree'
+                    predecessors[v] = u
+                    dfs_visit(v)
+                
+                elif state[v] == 'gray':
+                    edge_classification[edge] = 'back'
+                    has_cycle = True 
+                
+                elif state[v] == 'black':
+                    if discovery_time[u] < discovery_time[v]:
+                        edge_classification[edge] = 'forward'
+                    else:
+                        edge_classification[edge] = 'cross'
+
+            state[u] = 'black'
+            time_counter += 1
+            finish_time[u] = time_counter
+
+        # Start DFS
+        dfs_visit(start)
+        
+        return {
+            "order": visit_order,
+            "has_cycle": has_cycle,
+            "classification": edge_classification,
+            "times": {"discovery": discovery_time, "finish": finish_time}
+        }

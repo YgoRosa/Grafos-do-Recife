@@ -1,97 +1,125 @@
-from typing import Dict, List, Tuple, Optional, Iterable
+from typing import Dict, List, Tuple, Optional, Set
 
 class Graph:
     """
-    Grafo implementado por lista de adjacência.
-    Suporta grafos não-dirigidos (padrão) e dirigidos (com directed=True).
-    Cada entrada self.adj[u] é um dict: destino -> (peso, metadados).
+    Adjacency List Graph Implementation.
+    Supports both Undirected (default) and Directed graphs.
+    
+    Structure:
+    self.adj[u][v] = (weight, metadata)
     """
 
-    def __init__(self):
-        # adj: node -> dict(destino -> (peso: float, meta: dict))
+    def __init__(self, directed: bool = False):
+        """
+        Args:
+            directed (bool): If True, edges are one-way (u -> v). 
+                             If False, edges are bidirectional (u <-> v).
+        """
+        # adj: node -> dict(destination -> (weight: float, meta: dict))
         self.adj: Dict[str, Dict[str, Tuple[float, Dict]]] = {}
+        self.directed = directed
 
     # ----------------------------------------------------
-    # --------------- Métodos de Nós ---------------------
+    # --------------- Node Methods -----------------------
     # ----------------------------------------------------
     
     def add_node(self, u: str):
+        """Adds a node to the graph if it doesn't exist."""
         u = str(u).strip()
         if u not in self.adj:
             self.adj[u] = {}
 
     def has_node(self, u: str) -> bool:
+        """Checks if a node exists."""
         return u in self.adj
 
     def get_nodes(self) -> List[str]:
+        """Returns a list of all nodes."""
         return list(self.adj.keys())
 
     def __len__(self) -> int:
+        """Returns number of nodes (Order)."""
         return len(self.adj)
 
     # ----------------------------------------------------
-    # --------------- Métodos de Arestas -----------------
+    # --------------- Edge Methods -----------------------
     # ----------------------------------------------------
     
-    def add_edge(self, u: str, v: str, weight: float = 1.0, meta: Optional[Dict] = None, directed: bool = False):
+    def add_edge(self, u: str, v: str, weight: float = 1.0, meta: Optional[Dict] = None):
         """
-        Adiciona aresta de u para v. 
-        - Se directed=False (Parte 1), adiciona v para u também (não-dirigido).
-        - Se directed=True (Parte 2), adiciona apenas u -> v.
+        Adds an edge from u to v.
+        If self.directed is False, also adds v to u.
         """
         if meta is None:
             meta = {}
+            
         u = str(u).strip()
         v = str(v).strip()
+        
         self.add_node(u)
         self.add_node(v)
         
-        # 1. Adiciona a aresta dirigida u -> v:
+        # 1. Add forward edge u -> v
         self.adj[u][v] = (float(weight), dict(meta))
         
-        # 2. Se não for dirigido (padrão para Parte 1), adiciona o espelhamento
-        if not directed:
+        # 2. If undirected, add backward edge v -> u
+        if not self.directed:
             self.adj[v][u] = (float(weight), dict(meta))
 
     def neighbors(self, u: str) -> List[str]:
-        """ Retorna todos os vizinhos (adjacentes) de u. """
+        """Returns a list of neighbors for node u."""
         return list(self.adj.get(u, {}).keys())
 
     def degree(self, u: str) -> int:
-        """ Retorna o grau (saída para dirigidos, total para não-dirigidos) de u. """
+        """
+        Returns the degree of u.
+        - Undirected: Total connections.
+        - Directed: Out-degree.
+        """
         return len(self.adj.get(u, {}))
 
     def get_edge_data(self, u: str, v: str) -> Optional[Tuple[float, Dict]]:
-        """ Retorna os dados da aresta u -> v (peso, meta). """
+        """Returns (weight, metadata) for edge u -> v, or None."""
         return self.adj.get(u, {}).get(v)
 
     def get_edges(self) -> List[Tuple[str, str, float, Dict]]:
         """
-        Retorna lista de arestas. 
-        - Para grafos NÃO-DIRIGIDOS (Parte 1), evita duplicatas (u,v).
-        - Para grafos DIRIGIDOS (Parte 2), retorna todas as arestas (u,v).
+        Returns a list of all edges (u, v, weight, meta).
+        
+        - If Directed: Returns all directed edges.
+        - If Undirected: Returns unique pairs {u, v} to avoid duplicates in iteration.
         """
         edges = []
+        seen: Set[Tuple[str, str]] = set()
+
         for u, nbrs in self.adj.items():
-            for v, (w, meta) in nbrs.items():
+            for v, (weight, meta) in nbrs.items():
                 
-                # Heurística para evitar duplicatas: 
-                # Se a aresta tem metadados de logradouro (Parte 1) e u > v, ignoramos a duplicata
-                # Isso funciona porque o add_edge sempre adiciona u->v primeiro.
-                if 'logradouro' in meta and u > v:
-                    continue
-                
-                edges.append((u, v, w, meta))
+                if self.directed:
+                    # For directed graphs, order matters: (u, v) is different from (v, u)
+                    edges.append((u, v, weight, meta))
+                else:
+                    # For undirected, we want to avoid listing (A, B) and (B, A) twice
+                    # Logic: sort the pair to check uniqueness
+                    pair = tuple(sorted((u, v)))
+                    if pair not in seen:
+                        edges.append((u, v, weight, meta))
+                        seen.add(pair)
+                        
         return edges
 
     def __repr__(self):
+        type_str = "Directed" if self.directed else "Undirected"
         n = len(self)
         m = len(self.get_edges())
-        return f"Graph({n} nós, ~{m} arestas)"
+        return f"Graph({type_str}, {n} nodes, {m} edges)"
     
     def copy(self) -> 'Graph':
-        """Cria uma cópia profunda (deep copy) do grafo."""
-        new_graph = Graph()
-        new_graph.adj = {u: {v: (w, meta.copy()) for v, (w, meta) in nbrs.items()}
-                        for u, nbrs in self.adj.items()}
+        """Creates a deep copy of the graph."""
+        new_graph = Graph(directed=self.directed)
+        # Deep copy of the adjacency list
+        new_graph.adj = {
+            u: {v: (w, meta.copy()) for v, (w, meta) in nbrs.items()}
+            for u, nbrs in self.adj.items()
+        }
         return new_graph

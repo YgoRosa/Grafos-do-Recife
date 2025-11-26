@@ -23,6 +23,17 @@ OUT_MICRO = os.path.join(OUT_DIR, "microrregioes.json")
 OUT_EGO = os.path.join(OUT_DIR, "ego_bairro.csv")
 # AJUSTE O NOME DO ARQUIVO AQUI:
 AIRCRAFT_DATA_PATH = "data/dataset_parte2.csv"
+CAMINHO_JSON = "out/percurso_nova_descoberta_setubal.json"
+caminho_obrig = None
+
+if os.path.exists(CAMINHO_JSON):
+    try:
+        with open(CAMINHO_JSON, 'r', encoding='utf-8') as f:
+            data = json.load(f)
+            # O caminho correto com Setúbal está aqui
+            caminho_obrig = data.get('caminho', [])
+    except Exception as e:
+        print(f"Erro ao carregar o caminho obrigatório do JSON: {e}")
 
 # =========================================================================
 # FUNÇÕES DE CARREGAMENTO E MÉTRICAS DA PARTE 1
@@ -149,29 +160,68 @@ def find_topological_highlights(df_ego, df_graus):
     print(f"• Bairro com maior grau ......: {bairro_maior_grau} \t(grau={grau_max})")
     print("=====================================\n")
 
+# Arquivo: src/solve.py
+
+# ... (suas imports) ...
+
+# ... (outras funções) ...
+
 def calcular_distancias_enderecos(graph: Graph, path_enderecos="data/enderecos.csv"):
     print("== Parte 6.2: cálculo de distâncias entre endereços ==")
     pares = []
+    
     with open(path_enderecos, newline="", encoding="utf-8") as f:
         reader = csv.DictReader(f)
         for row in reader: pares.append(row)
+        
     saida_csv = "out/distancias_enderecos.csv"
+    
+    # DEFINIÇÃO DO NOME DO NÓ NO GRAFO
+    NOME_SETUBAL_PADRONIZADO = "Setúbal" 
+    
     with open(saida_csv, "w", newline="", encoding="utf-8") as f:
         w = csv.writer(f)
         w.writerow(["X", "Y", "bairro_X", "bairro_Y", "custo", "caminho"])
+        
         for p in pares:
-            origem = p["bairro_X"].strip(); destino = p["bairro_Y"].strip()
-            if origem not in graph.adj or destino not in graph.adj: continue
+            origem = p["bairro_X"].strip()
+            destino_original = p["bairro_Y"].strip() 
+            
+            # --- LÓGICA DE NORMALIZAÇÃO PARA DIJKSTRA ---
+            destino_final = destino_original
+            
+            # Se a entrada do CSV for "Boa Viagem" (ignorando caixa e espaços),
+            # e se o nó "Setúbal" existir no grafo, usamos "Setúbal" como destino.
+            if destino_original.strip().lower() == "boa viagem" and graph.has_node(NOME_SETUBAL_PADRONIZADO):
+                destino_final = NOME_SETUBAL_PADRONIZADO
+            # --------------------------------------------
+            
+            if origem not in graph.adj or destino_final not in graph.adj: 
+                w.writerow([p["X"], p["Y"], origem, destino_original, float("inf"), "Nó(s) não encontrado(s)"])
+                continue
+            
+            # O Dijkstra é chamado com o destino corrigido (destino_final)
             dist, prev = dijkstra(graph, origem)
-            custo = dist.get(destino, float("inf")); caminho = []
+            
+            custo = dist.get(destino_final, float("inf")); caminho = []
+            
             if custo < float("inf"):
-                atual = destino
-                while atual is not None: caminho.append(atual); atual = prev.get(atual)
+                atual = destino_final 
+                while atual is not None: 
+                    caminho.append(atual)
+                    atual = prev.get(atual)
                 caminho.reverse()
-            w.writerow([p["X"], p["Y"], origem, destino, custo, " -> ".join(caminho) if caminho else ""])
-            if origem == "Nova Descoberta" and destino == "Boa Viagem":
+                
+            # O destino_original é usado na coluna 'bairro_Y' (Boa Viagem)
+            # mas o 'caminho' é o que termina em Setúbal.
+            w.writerow([p["X"], p["Y"], origem, destino_original, custo, " -> ".join(caminho) if caminho else ""])
+            
+            # Salva o arquivo JSON específico do projeto
+            if origem.lower() == "nova descoberta" and destino_original.lower() == "boa viagem":
                 with open("out/percurso_nova_descoberta_setubal.json", "w", encoding="utf-8") as jf:
-                    json.dump({"origem": origem, "destino": destino, "custo": custo, "caminho": caminho}, jf, ensure_ascii=False, indent=4)
+                    # O JSON salva o destino_final que será 'Setúbal'
+                    json.dump({"origem": origem, "destino": destino_final, "custo": custo, "caminho": caminho}, jf, ensure_ascii=False, indent=4)
+                    
     print(f"[OK] Distâncias calculadas → {saida_csv}")
 
 # =========================================================================

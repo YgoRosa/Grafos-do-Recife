@@ -297,6 +297,20 @@ def visualize_interactive_graph(
     - adiciona caixa de busca e botão para destacar o caminho obrigatório
     """
     print("[VIZ] Gerando grafo interativo completo...")
+    CAMINHO_NORMALIZADO = []
+    NOME_SETUBAL_PADRONIZADO = "Setúbal" 
+    
+    setubal_existe = NOME_SETUBAL_PADRONIZADO in graph.get_nodes()
+    
+    if caminho_obrig and setubal_existe:
+        for node_name in caminho_obrig:
+            # Se o caminho lido terminar em Boa Viagem (do JSON antigo, por exemplo), 
+            # forçamos a correção para Setúbal para o destaque
+            if node_name.strip().lower() in ("boa viagem", "boa viagem (setúbal)"):
+                CAMINHO_NORMALIZADO.append(NOME_SETUBAL_PADRONIZADO)
+            else:
+                CAMINHO_NORMALIZADO.append(node_name)
+        caminho_obrig = CAMINHO_NORMALIZADO
 
     # --- Preparar dicionários a partir dos DataFrames (tolerante a nomes de colunas) ---
     # graus
@@ -431,7 +445,7 @@ def visualize_interactive_graph(
     </div>
 
     <div id="highlightBtn">
-      <button onclick="highlightPath()">Destacar: Nova Descoberta → Boa Viagem (Setúbal)</button>
+      <button onclick="highlightPath()">Destacar: Nova Descoberta → Setúbal</button>
     </div>
 
     <div id="infoBox">Nós no caminho obrigatório: {len(caminho_obrig or [])}</div>

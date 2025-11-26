@@ -7,18 +7,10 @@ import random
 import pandas as pd
 from graphs.graph import Graph
 from graphs.algorithms import dijkstra, bfs, dfs, bellman_ford 
-from pyvis.network import Network
-from typing import Dict, List, Any
-# No topo de src/solve.py:
-# ...
 # Certifique-se de que estas funções estão definidas em src/viz.py
 from viz import (
     construir_arestas_arvore_percurso, visualize_path_tree, visualize_degree_map, 
-    visualize_degree_histogram, visualize_top_10_degree_subgraph,
-    # Funções da Parte 1/9:
-    visualize_interactive_graph,
-    # Funções da Parte 2:
-    visualize_parte2_degree_histogram,
+    visualize_degree_histogram, visualize_top_10_degree_subgraph, visualize_parte2_degree_histogram,
     compute_parte2_degrees
 )
 
@@ -144,46 +136,7 @@ def compute_and_save_graus(g: Graph, bairros_all: Set[str], out_path: str):
     df.to_csv(out_path, index=False, encoding="utf-8-sig")
     print(f"[GRAUS] Arquivo gerado com {len(df)} bairros -> {out_path}")
     return df
-# Em src/solve.py, junto com as outras funções de métricas:
-# ...
 
-def load_combined_metrics(g, df_graus, df_ego, bairros_map) -> Dict[str, Dict]:
-    """Combina todas as métricas por bairro para uso na visualização."""
-    metrics: Dict[str, Dict] = {}
-    
-    # 1. Base - Grau (de df_graus, que contém todos os bairros)
-    grau_map = df_graus.set_index('bairro')['grau'].to_dict()
-    
-    for bairro, grau in grau_map.items():
-        metrics[bairro] = {
-            "grau": grau,
-            "microrregiao": bairros_map.get(bairro, "N/A"),
-            "densidade_ego": 0.0,
-            "is_node": g.has_node(bairro), # Verifica se está no grafo
-        }
-        
-    # 2. Adiciona Densidade Ego
-    ego_map = df_ego.set_index('bairro')['densidade_ego'].to_dict()
-    for bairro, densidade in ego_map.items():
-        if bairro in metrics:
-            metrics[bairro]["densidade_ego"] = round(densidade, 4)
-            
-    # 3. Formatação do título do Tooltip
-    for bairro, data in metrics.items():
-        if data["is_node"]:
-            tooltip = (
-                f"<b>{bairro}</b><br>"
-                f"Microrregião: {data['microrregiao']}<br>"
-                f"Grau: {data['grau']}<br>"
-                f"Dens. Ego: {data['densidade_ego']:.4f}"
-            )
-            data["title"] = tooltip
-        else:
-            data["title"] = f"<b>{bairro}</b><br>Microrregião: {data['microrregiao']}<br>Sem Arestas no Grafo"
-            
-    return metrics
-
-# ... (Continua com a função find_topological_highlights) ...
 def find_topological_highlights(df_ego, df_graus):
     row_denso = df_ego.loc[df_ego["densidade_ego"].idxmax()]
     bairro_mais_denso = row_denso["bairro"]
@@ -504,31 +457,9 @@ if __name__ == "__main__":
     viz_top10_out = os.path.join(OUT_DIR, "subgrafo_top10.html")
     visualize_top_10_degree_subgraph(g, df_graus, viz_top10_out)
 
-    # ... no final do seu solve.py, após a Parte 8 ...
-
-    # 3. Visualizações Analíticas (Parte 8 e 9)
-    # ... (código da Parte 8) ...
-
-    # --- PARTE 9: GRAFO INTERATIVO COMPLETO ---
-    print("\n== Parte 9: Grafo Interativo Completo ==")
-    try:
-        # 1. Consolida as Métricas (necessário para o Tooltip)
-        node_metrics = load_combined_metrics(g, df_graus, df_ego, bairros_map)
-        
-        # 2. Define o caminho obrigatório (pode ser vazio se não foi encontrado antes)
-        if 'caminho_obrig' not in locals():
-             caminho_obrig = [] 
-             print("[AVISO P9] Caminho obrigatório (Nova Descoberta -> Boa Viagem) não foi encontrado/carregado.")
-
-        # 3. Gera a Visualização
-        output_html_p9 = os.path.join(OUT_DIR, "grafo_interativo.html")
-        visualize_interactive_graph(g, node_metrics, caminho_obrig, output_html_p9)
-        
-    except Exception as e:
-        print(f"[ERRO CRÍTICO P9] Falha ao gerar grafo interativo: {e}")
-
-    # --- PARTE 2: EXECUÇÃO E COMPARAÇÃO ---
-    # ... (código da Parte 2) ...
+    # Parte 9: Grafo Interativo Completo
+    # Requer que você tenha a função load_combined_metrics definida.
+    # Exemplo: visualize_interactive_graph(g, node_metrics, caminho_obrig, os.path.join(OUT_DIR, "grafo_interativo.html"))
 
 
     # --- PARTE 2: EXECUÇÃO E COMPARAÇÃO ---
@@ -551,23 +482,16 @@ if __name__ == "__main__":
     except Exception as e:
          print(f"[ERRO GERAL P2] Ocorreu um erro geral na Parte 2: {e}")
 
+    print("\n--- 4. Visualização da Estrutura (Histograma) ---")
+    
     # ----------------------------------------------------
     # IV. VISUALIZAÇÕES ADICIONAIS (Parte 2, Requisito 4)
     # ----------------------------------------------------
-    print("\n--- 4. Visualização da Estrutura (Histograma) ---")
+    # 1. Calcular Graus de Saída
+    df_graus_p2 = compute_parte2_degrees(g)
     
-    try:
-        # Requer que g_aereo tenha sido carregado com sucesso na seção anterior.
-        # Se a carga falhou, o NameError será capturado.
-        df_graus_p2 = compute_parte2_degrees(g_aereo) 
-        
-        # 2. Gerar Histograma
-        viz_hist_p2_out = os.path.join(OUT_DIR, "p2_histograma_graus_saida.png")
-        visualize_parte2_degree_histogram(df_graus_p2, viz_hist_p2_out)
-    except NameError:
-        # Captura se g_aereo não foi definida (porque a carga falhou no try/except anterior)
-        print("[AVISO P2 VIZ] Não foi possível gerar visualização da Parte 2, o grafo 'g_aereo' não foi carregado com sucesso.")
-    except Exception as e:
-        print(f"[ERRO VIZ P2] Falha ao gerar visualização de grau da Parte 2: {e}")
-        
+    # 2. Gerar Histograma
+    viz_hist_p2_out = os.path.join(OUT_DIR, "p2_histograma_graus_saida.png")
+    visualize_parte2_degree_histogram(df_graus_p2, viz_hist_p2_out)
+
     print("\n== EXECUÇÃO GLOBAL FINALIZADA ==")

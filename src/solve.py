@@ -9,7 +9,7 @@ from graphs.graph import Graph
 from graphs.algorithms import dijkstra, bfs, dfs, bellman_ford 
 # Certifique-se de que estas funções estão definidas em src/viz.py
 from viz import (
-    construir_arestas_arvore_percurso, visualize_path_tree, visualize_degree_map, 
+    construir_arestas_arvore_percurso, visualize_interactive_graph, visualize_path_tree, visualize_degree_map, 
     visualize_degree_histogram, visualize_top_10_degree_subgraph, visualize_parte2_degree_histogram,
     compute_parte2_degrees
 )
@@ -460,7 +460,10 @@ if __name__ == "__main__":
     # Parte 9: Grafo Interativo Completo
     # Requer que você tenha a função load_combined_metrics definida.
     # Exemplo: visualize_interactive_graph(g, node_metrics, caminho_obrig, os.path.join(OUT_DIR, "grafo_interativo.html"))
+    print("\n== Parte 9: Grafo Interativo Completo ==")
+    out_grafo_interativo = os.path.join(OUT_DIR, "grafo_interativo.html")
 
+    visualize_interactive_graph(g, df_ego, df_graus, caminho_obrig, out_grafo_interativo)
 
     # --- PARTE 2: EXECUÇÃO E COMPARAÇÃO ---
     print("\n" + "="*60)

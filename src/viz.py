@@ -91,7 +91,7 @@ def visualize_degree_map(graph: Graph, df_graus: pd.DataFrame, output_file: str)
     for node in graph.get_nodes():
         degree = degree_map.get(node, 0)
         color = degree_to_color(degree)
-        size = 10 + (degree * 2)
+        size = 14 + (degree * 2)
         title_text = f"Bairro: **{node}**<br>Grau: {degree}"
         net.add_node(n_id=node, label=node, title=title_text, color=color, size=size)
 
@@ -193,148 +193,226 @@ def visualize_parte2_degree_histogram(df_graus_p2: pd.DataFrame, output_file: st
 def visualize_interactive_graph(
     graph: Graph,
     df_ego: pd.DataFrame,
-    map_micro: Dict[str, str], # ALTERADO: Agora aceita o dicionário vindo do solve.py
+    map_micro: Dict[str, str],
     caminho_obrig: list,
     output_file: str
 ):
-    """
-    Versão robusta do grafo interativo corrigida para aceitar map_micro.
-    """
-    print("[VIZ] Gerando grafo interativo completo...")
+    import math, json, webbrowser, os
+    print("[VIZ] Gerando grafo interativo (layout circular, busca exata)...")
 
-    # --- Preparar dicionários ---
-    # Pegamos o GRAU diretamente do df_ego (que tem a coluna 'grau')
-    grau_map = {}
-    if "grau" in df_ego.columns:
-        grau_map = df_ego.set_index("bairro")["grau"].to_dict()
-    
-    # ego_map e dens_map
-    ego_map = {}
-    dens_map = {}
-    
-    # Busca coluna de ordem_ego
-    ego_col = next((c for c in ["ordem_ego", "tamanho_ego"] if c in df_ego.columns), None)
-    if ego_col: ego_map = df_ego.set_index("bairro")[ego_col].to_dict()
-    
-    # Busca coluna de densidade
-    dens_col = next((c for c in ["densidade_ego", "densidade"] if c in df_ego.columns), None)
-    if dens_col: dens_map = df_ego.set_index("bairro")[dens_col].to_dict()
+    # ----- MAPAS AUXILIARES -----
+    grau_map = df_ego.set_index("bairro")["grau"].to_dict() if "grau" in df_ego.columns else {}
+    dens_map = df_ego.set_index("bairro")["densidade_ego"].to_dict() if "densidade_ego" in df_ego.columns else {}
 
-    # Usa o map_micro passado como argumento (não precisa carregar CSV)
-    micro_map = map_micro if map_micro else {}
+    nodes_list = sorted(graph.get_nodes())
+    N = len(nodes_list)
 
-    # --- Construir pyvis network ---
+    # ----- LAYOUT CIRCULAR -----
+    RADIUS = 2200
+    pos_map = {}
+    for i, node in enumerate(nodes_list):
+        ang = 2 * math.pi * i / N
+        pos_map[node] = (RADIUS * math.cos(ang), RADIUS * math.sin(ang))
+
+    # ----- CORES VIVAS -----
+    MICRO_COLORS = {
+        "1": "rgba(255, 140, 140, 0.85)",
+        "2": "rgba(255, 190, 120, 0.85)",
+        "3": "rgba(255, 240, 130, 0.85)",
+        "4": "rgba(160, 230, 140, 0.85)",
+        "5": "rgba(140, 190, 255, 0.85)",
+        "6": "rgba(200, 140, 255, 0.85)",
+    }
+
+    from pyvis.network import Network
     net = Network(height="900px", width="100%", directed=False, notebook=False,
                   heading="Grafo dos Bairros do Recife — Interativo")
-    try:
-        net.barnes_hut()
-    except Exception: pass
 
-    import math
-    nodes_list = list(graph.get_nodes())
-    N = len(nodes_list)
-    pos_map = {}
-    radius = 1000 
+    # ----- ADICIONAR NÓS -----
+    for node in nodes_list:
+        grau = grau_map.get(node, 0)
+        dens = dens_map.get(node)
+        micro_raw = str(map_micro.get(node, ""))
+        macro = micro_raw.split(".")[0] if "." in micro_raw else micro_raw
 
-    for i, node in enumerate(nodes_list):
-        angle = 2 * math.pi * i / N
-        pos_map[node] = (radius * math.cos(angle), radius * math.sin(angle))
-
-    # Adicionar nós
-    for node in graph.get_nodes():
-        grau = int(grau_map.get(node, 0))
-        ego_val = ego_map.get(node, None)
-        dens_val = dens_map.get(node, None)
-        mic = micro_map.get(node, "")
-
-        size = 12 + min(grau, 20)
-        color = "#3c78d8"
-        if caminho_obrig and node in caminho_obrig:
+        color = MICRO_COLORS.get(macro, "rgba(200,200,200,0.5)")
+        if node in caminho_obrig:
             color = "#ffcc00"
-            size = max(size, 18)
 
-        title_lines = [f"<b>{node}</b>", f"Grau: {grau}"]
-        if mic: title_lines.append(f"Microrregião: {mic}")
-        if ego_val is not None: title_lines.append(f"Ordem/Ego: {ego_val}")
-        if dens_val is not None: title_lines.append(f"Densidade ego: {float(dens_val):.4f}")
+        size = 14 + min(grau, 20)
 
-        tooltip = "<br>".join(title_lines)
-        x, y = pos_map.get(node, (0,0))
-        
-        net.add_node(n_id=node, label=node, title=tooltip, size=size, color=color, x=x, y=y, physics=False)
+        tooltip = f"<b>{node}</b><br>Microrregião: {micro_raw}<br>Grau: {grau}"
+        if dens is not None:
+            tooltip += f"<br>Densidade ego: {float(dens):.4f}"
 
-    # Adicionar arestas
+        x, y = pos_map[node]
+
+        net.add_node(
+            n_id=node,
+            label=node,
+            title=tooltip,
+            color=color,
+            originalColor=color,   # <-- usado no reset
+            size=size,
+            x=x, y=y,
+            physics=False
+        )
+
+    # ----- ADICIONAR ARESTAS -----
+    edge_color = "#cccccc"
+    adj_map = {}
+
     for u, v, weight, meta in graph.get_edges():
-        meta = meta or {}
+        adj_map.setdefault(u, []).append(v)
+        adj_map.setdefault(v, []).append(u)
+
         title = f"Peso: {weight}"
-        if "logradouro" in meta: title += f"<br>Via: {meta['logradouro']}"
-        net.add_edge(source=u, to=v, value=weight if weight else 1.0, title=title, width=1, color="#97C2FC")
+        if meta and meta.get("logradouro"):
+            title += f"<br>Via: {meta['logradouro']}"
+
+        net.add_edge(
+            source=u, to=v,
+            color=edge_color,
+            width=1,
+            value=float(weight) if weight else 1,
+            smooth={"enabled": False},
+            physics=False,
+            title=title
+        )
 
     html_str = net.generate_html()
 
-    # Injetar JS de busca e destaque
-    import json
-    caminho_json = json.dumps(caminho_obrig or [], ensure_ascii=False)
+    # ----- JS EXTRA -----
+    adj_json = json.dumps(adj_map, ensure_ascii=False)
+    path_json = json.dumps(caminho_obrig or [], ensure_ascii=False)
 
-    js_extra = f"""
-    <style>
-      #searchBox {{ position: absolute; top: 10px; left: 10px; z-index: 9999; }}
-      #highlightBtn {{ position: absolute; top: 10px; left: 300px; z-index: 9999; }}
-      #infoBox {{ position: absolute; top: 50px; left: 10px; z-index: 9999; background: rgba(255,255,255,0.9); padding:6px; border-radius:4px; }}
-    </style>
-    <div id="searchBox">
-      <input id="nodeSearch" placeholder="Buscar bairro..." style="padding:6px;width:220px;" />
-      <button onclick="doSearch()">Ir</button>
-    </div>
-    <div id="highlightBtn">
-      <button onclick="highlightPath()">Destacar: Nova Descoberta → Boa Viagem (Setúbal)</button>
-    </div>
-    <div id="infoBox">Nós no caminho obrigatório: {len(caminho_obrig or [])}</div>
-    <script>
-    const requiredPath = {caminho_json};
-    function doSearch() {{
-        const q = document.getElementById('nodeSearch').value.trim().toLowerCase();
-        if (!q) return;
-        const nodes = network.body.data.nodes.get();
-        const found = nodes.find(n => n.label.toLowerCase() === q) || nodes.find(n => n.label.toLowerCase().includes(q));
-        if (!found) {{ alert("Bairro não encontrado: " + q); return; }}
-        network.focus(found.id, {{ scale: 1.4, animation: {{ duration: 300 }} }});
-        network.selectNodes([found.id]);
-    }}
-    function highlightPath() {{
-        if (!requiredPath || requiredPath.length < 2) {{ alert("Caminho não disponível."); return; }}
-        const edges = network.body.data.edges.get();
-        const nodes = network.body.data.nodes.get();
-        
-        // Reset
-        nodes.forEach(n => network.body.data.nodes.update({{id: n.id, color: "#3c78d8"}}));
-        edges.forEach(e => network.body.data.edges.update({{id: e.id, color: "#97C2FC", width: 1}}));
+    js = f"""
+        <style>
+            #searchBox {{ position:absolute; top:10px; left:10px; z-index:9999; }}
+            #highlightBtn {{ position:absolute; top:10px; left:300px; z-index:9999; }}
+            #infoBox {{ position:absolute; top:50px; left:10px; z-index:9999; background:#fff; padding:6px; border-radius:4px; }}
+        </style>
 
-        for (let i = 0; i < requiredPath.length; i++) {{
-            network.body.data.nodes.update({{id: requiredPath[i], color: "#ffcc00", size: 25}});
-            if (i < requiredPath.length - 1) {{
-                const a = requiredPath[i], b = requiredPath[i+1];
+        <div id="searchBox">
+            <input id="nodeSearch" placeholder="Buscar bairro..." style="padding:6px; width:220px;">
+            <button onclick="doSearch()">Ir</button>
+            <button onclick="resetHighlight()">Reset</button>
+        </div>
+
+        <div id="highlightBtn">
+            <button onclick="highlightPath()">Destacar: Nova Descoberta → Boa Viagem (Setúbal)</button>
+        </div>
+
+        <div id="infoBox">Nós no caminho obrigatório: {len(caminho_obrig)}</div>
+
+        <script>
+            const ADJ = {adj_json};
+            const PATH = {path_json};
+
+            // RESET --------
+            function resetHighlight() {{
+                const nodes = network.body.data.nodes.get();
+                const edges = network.body.data.edges.get();
+
+                nodes.forEach(n => {{
+                    network.body.data.nodes.update({{
+                        id: n.id,
+                        color: n.originalColor,
+                        size: undefined
+                    }});
+                }});
+
                 edges.forEach(e => {{
-                    if ((e.from === a && e.to === b) || (e.from === b && e.to === a)) {{
-                        network.body.data.edges.update({{id: e.id, color: "#ff0000", width: 5}});
-                    }}
+                    network.body.data.edges.update({{
+                        id: e.id,
+                        color: '{edge_color}', width: 1
+                    }});
                 }});
             }}
-        }}
-        network.focus(requiredPath[0], {{ scale: 1.3, animation: {{ duration: 300 }} }});
-    }}
-    </script>
+
+            // DESTACAR BAIRRO + ARESTAS / VIZINHOS -----
+            function highlightNodeAndNeighbors(id) {{
+                resetHighlight();
+
+                const neigh = ADJ[id] || [];
+
+                network.body.data.nodes.update({{id:id, color:'#ffd24d', size:26}});
+
+                neigh.forEach(nid => {{
+                    network.body.data.nodes.update({{id:nid, color:'#7fb3ff', size:18}});
+                }});
+
+                network.body.data.edges.get().forEach(e => {{
+                    if ((e.from===id && neigh.includes(e.to)) || 
+                        (e.to===id && neigh.includes(e.from))) {{
+
+                        network.body.data.edges.update({{
+                            id:e.id, color:'#1f77b4', width:4
+                        }});
+                    }}
+                }});
+
+                network.focus(id, {{scale:1.4, animation:{{duration:300}}}});
+            }}
+
+            // BUSCA EXATA --------
+            function doSearch() {{
+                const q = document.getElementById("nodeSearch").value.toLowerCase().trim();
+                if (!q) return;
+
+                const nodes = network.body.data.nodes.get();
+                const exact = nodes.find(n => n.label.toLowerCase() === q);
+
+                if (!exact) {{
+                    alert("Bairro não encontrado: " + q);
+                    return;
+                }}
+
+                highlightNodeAndNeighbors(exact.id);
+            }}
+
+            // DESTACAR CAMINHO OBRIGATÓRIO --------
+            function highlightPath() {{
+                resetHighlight();
+                if (PATH.length < 2) return;
+
+                for (let i=0; i<PATH.length; i++) {{
+                    network.body.data.nodes.update({{
+                        id: PATH[i], color:'#ffd24d', size:26
+                    }});
+                    if (i < PATH.length-1) {{
+                        const a = PATH[i], b = PATH[i+1];
+                        network.body.data.edges.get().forEach(e => {{
+                            if ((e.from===a && e.to===b) || (e.from===b && e.to===a)) {{
+                                network.body.data.edges.update({{
+                                    id:e.id, color:'#ff3333', width:6
+                                }});
+                            }}
+                        }});
+                    }}
+                }}
+                network.focus(PATH[0], {{scale:1.2, animation:{{duration:300}}}});
+            }}
+
+            // CLICK --------
+            network.on("click", function(params) {{
+                if (params.nodes.length > 0) {{
+                    highlightNodeAndNeighbors(params.nodes[0]);
+                }}
+            }});
+        </script>
     """
 
-    if "</body>" in html_str:
-        html_str = html_str.replace("</body>", js_extra + "\n</body>")
-    else:
-        html_str += js_extra
 
+    html_str = html_str.replace("</body>", js + "</body>")
+
+    # salvar
+    os.makedirs(os.path.dirname(output_file) or ".", exist_ok=True)
+    with open(output_file, "w", encoding="utf-8") as f:
+        f.write(html_str)
+
+    print(f"[OK] Grafo interativo salvo em {output_file}")
     try:
-        with open(output_file, "w", encoding="utf-8") as f:
-            f.write(html_str)
-        print(f"[OK] Grafo interativo salvo em {output_file}")
         webbrowser.open(output_file)
-    except Exception as e:
-        print(f"[ERRO] falha ao salvar {output_file}: {e}")
+    except:
+        pass

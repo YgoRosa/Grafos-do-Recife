@@ -288,9 +288,22 @@ def visualize_interactive_graph(
 
     js = f"""
         <style>
-            #searchBox {{ position:absolute; top:10px; left:10px; z-index:9999; }}
-            #highlightBtn {{ position:absolute; top:10px; left:300px; z-index:9999; }}
-            #infoBox {{ position:absolute; top:50px; left:10px; z-index:9999; background:#fff; padding:6px; border-radius:4px; }}
+                #uiPanel {{
+        position: absolute;
+        top: 10px;
+        left: 10px;
+        z-index: 9999;
+        background: rgba(255,255,255,0.95);
+        padding: 12px;
+        border-radius: 8px;
+        box-shadow: 0 2px 6px rgba(0,0,0,0.2);
+    }}
+
+    #uiPanel button, #uiPanel input {{
+        display: block;
+        margin-top: 6px;
+    }}
+
         </style>
 
         <div id="searchBox">

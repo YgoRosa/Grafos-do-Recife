@@ -11,9 +11,6 @@ import matplotlib.colors as mcolors
 
 
 def construir_arestas_arvore_percurso(graph, path_nodes: List[str]) -> List[Tuple[str, str, float, Dict]]:
-    """
-    Constrói a lista de arestas que formam o percurso a partir de uma lista de nós.
-    """
     edges = []
     for i in range(len(path_nodes) - 1):
         u = path_nodes[i]
@@ -29,12 +26,8 @@ def construir_arestas_arvore_percurso(graph, path_nodes: List[str]) -> List[Tupl
     return edges
 
 def visualize_path_tree(path_nodes: List[str], path_edges: List[Tuple[str, str, float, Dict]], output_file: str):
-    """
-    Gera a visualização interativa do subgrafo do percurso.
-    """
     net = Network(height="750px", width="100%", directed=False, heading="Percurso: Nova Descoberta → Setúbal") 
 
-    # 1. Adicionar Nós
     for node in path_nodes:
         color = '#38761d' if node == path_nodes[0] else \
                 '#cc0000' if node == path_nodes[-1] else \
@@ -42,7 +35,6 @@ def visualize_path_tree(path_nodes: List[str], path_edges: List[Tuple[str, str, 
         title_text = f"Bairro: **{node}**"
         net.add_node(n_id=node, label=node, title=title_text, color=color, size=15)
 
-    # 2. Adicionar Arestas
     FATOR_ESCALA = 4.0 
     MIN_WIDTH = 2.0
     MAX_WIDTH = 15.0
@@ -58,7 +50,6 @@ def visualize_path_tree(path_nodes: List[str], path_edges: List[Tuple[str, str, 
         net.add_edge(source=u, to=v, weight=weight, title=label, 
                      color='#ff9900', value=weight, width=edge_width)
 
-    # 3. Salvar HTML
     html_content = net.generate_html(notebook=False)
     try:
         with open(output_file, "w", encoding="utf-8") as out:
@@ -69,9 +60,6 @@ def visualize_path_tree(path_nodes: List[str], path_edges: List[Tuple[str, str, 
         print(f"[ERRO DE ESCRITA] Não foi possível salvar arquivo HTML: {e}")
 
 def visualize_degree_map(graph: Graph, df_graus: pd.DataFrame, output_file: str):
-    """
-    1. Mapa de Cores por Grau do Bairro
-    """
     print(f"[VIZ] Gerando Mapa de Cores por Grau → {output_file}")
     net = Network(height="750px", width="100%", directed=False, heading="Grafo de Bairros do Recife: Visualização de Grau") 
 
@@ -108,9 +96,6 @@ def visualize_degree_map(graph: Graph, df_graus: pd.DataFrame, output_file: str)
 
 
 def visualize_degree_histogram(df_graus: pd.DataFrame, output_file: str):
-    """
-    2. Distribuição dos Graus
-    """
     print(f"[VIZ] Gerando Histograma de Graus → {output_file}")
     degrees = df_graus['grau'].dropna().tolist()
     if not degrees: return
@@ -133,9 +118,6 @@ def visualize_degree_histogram(df_graus: pd.DataFrame, output_file: str):
 
 
 def visualize_top_10_degree_subgraph(graph: Graph, df_graus: pd.DataFrame, output_file: str):
-    """
-    3. Subgrafo dos 10 Bairros com Maior Grau
-    """
     print(f"[VIZ] Gerando Subgrafo Top 10 por Grau → {output_file}")
     top_10_df = df_graus.sort_values(by='grau', ascending=False).head(10)
     top_nodes = set(top_10_df['bairro'].tolist())
@@ -200,21 +182,17 @@ def visualize_interactive_graph(
     import math, json, webbrowser, os
     print("[VIZ] Gerando grafo interativo (layout circular, busca exata)...")
 
-    # ----- MAPAS AUXILIARES -----
     grau_map = df_ego.set_index("bairro")["grau"].to_dict() if "grau" in df_ego.columns else {}
     dens_map = df_ego.set_index("bairro")["densidade_ego"].to_dict() if "densidade_ego" in df_ego.columns else {}
 
     nodes_list = sorted(graph.get_nodes())
     N = len(nodes_list)
 
-    # ----- LAYOUT CIRCULAR -----
     RADIUS = 2200
     pos_map = {}
     for i, node in enumerate(nodes_list):
         ang = 2 * math.pi * i / N
         pos_map[node] = (RADIUS * math.cos(ang), RADIUS * math.sin(ang))
-
-    # ----- CORES VIVAS -----
     MICRO_COLORS = {
         "1": "rgba(255, 140, 140, 0.85)",
         "2": "rgba(255, 190, 120, 0.85)",
@@ -227,8 +205,6 @@ def visualize_interactive_graph(
     from pyvis.network import Network
     net = Network(height="900px", width="100%", directed=False, notebook=False,
                   heading="Grafo dos Bairros do Recife — Interativo")
-
-    # ----- ADICIONAR NÓS -----
     for node in nodes_list:
         grau = grau_map.get(node, 0)
         dens = dens_map.get(node)
@@ -252,13 +228,12 @@ def visualize_interactive_graph(
             label=node,
             title=tooltip,
             color=color,
-            originalColor=color,   # <-- usado no reset
+            originalColor=color,
             size=size,
             x=x, y=y,
             physics=False
         )
 
-    # ----- ADICIONAR ARESTAS -----
     edge_color = "#cccccc"
     adj_map = {}
 
@@ -282,7 +257,6 @@ def visualize_interactive_graph(
 
     html_str = net.generate_html()
 
-    # ----- JS EXTRA -----
     adj_json = json.dumps(adj_map, ensure_ascii=False)
     path_json = json.dumps(caminho_obrig or [], ensure_ascii=False)
 
@@ -419,7 +393,6 @@ def visualize_interactive_graph(
 
     html_str = html_str.replace("</body>", js + "</body>")
 
-    # salvar
     os.makedirs(os.path.dirname(output_file) or ".", exist_ok=True)
     with open(output_file, "w", encoding="utf-8") as f:
         f.write(html_str)

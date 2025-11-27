@@ -4,37 +4,17 @@ from typing import List, Dict, Tuple, Union, Any, Optional
 from .graph import Graph
 
 class PositiveFloat(float):
-    """
-    Wrapper to enforce non-negative weights for Dijkstra's algorithm.
-    """
     def __new__(cls, value):
         if value < 0:
             raise ValueError("Dijkstra does not accept negative weights.")
         return super(PositiveFloat, cls).__new__(cls, value)
 
 class Algorithms:
-    """
-    Static implementation of classic Graph algorithms.
-    Contains: Dijkstra, Bellman-Ford, BFS, DFS.
-    """
-
     @staticmethod
     def dijkstra(graph: Graph, start: str, end: str) -> Dict[str, Any]:
-        """
-        Calculates the Shortest Path using Dijkstra's Algorithm (Binary Heap).
-        
-        Args:
-            graph: Graph instance.
-            start: Source node ID.
-            end: Target node ID.
-            
-        Returns:
-            Dict containing: 'cost', 'path' (list of nodes), 'visited_count'.
-        """
         if not graph.has_node(start) or not graph.has_node(end):
             return {"cost": float('inf'), "path": [], "error": "Invalid nodes"}
 
-        # Initialization
         distances = {node: float('inf') for node in graph.get_nodes()}
         distances[start] = 0.0
         predecessors = {start: None}
@@ -102,13 +82,6 @@ class Algorithms:
 
     @staticmethod
     def bellman_ford(graph: Graph, start: str, end: str) -> Dict[str, Any]:
-        """
-        Calculates Shortest Path using Bellman-Ford.
-        Supports negative weights and detects negative cycles.
-        
-        Returns:
-            Dict containing: 'cost', 'path', 'negative_cycle' (bool).
-        """
         if not graph.has_node(start):
             return {"cost": float('inf'), "path": [], "negative_cycle": False}
 
@@ -162,10 +135,6 @@ class Algorithms:
 
     @staticmethod
     def bfs(graph: Graph, start: str) -> Dict[str, Any]:
-        """
-        Breadth-First Search.
-        Returns topological levels (distance in hops) and visitation order.
-        """
         if not graph.has_node(start):
             return {"error": f"Node {start} does not exist"}
 
@@ -195,10 +164,6 @@ class Algorithms:
 
     @staticmethod
     def dfs(graph: Graph, start: str) -> Dict[str, Any]:
-        """
-        Depth-First Search (Iterative).
-        Performs edge classification (Tree, Back, Forward, Cross) and detects cycles.
-        """
         if not graph.has_node(start):
             return {"error": f"Node {start} does not exist"}
 
@@ -207,7 +172,7 @@ class Algorithms:
         finish_time = {}
         predecessors = {u: None for u in graph.get_nodes()}
         
-        edge_classification = {} # (u, v) -> type
+        edge_classification = {}
         visit_order = []
         time_counter = 0
         has_cycle = False

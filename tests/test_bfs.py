@@ -3,7 +3,6 @@ from src.graphs.graph import Graph
 import pytest
 
 def test_bfs_niveis_corretos():
-    """Testa se o BFS calcula os níveis (distâncias de salto) corretos."""
     g = Graph(directed=True)
     g.add_edge("A", "B")
     g.add_edge("A", "C")

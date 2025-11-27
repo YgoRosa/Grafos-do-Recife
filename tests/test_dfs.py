@@ -3,7 +3,6 @@ from src.graphs.graph import Graph
 
 import pytest
 def test_dfs_classificacao_arestas_sem_ciclo():
-    """Testa a classificação de arestas (tree, cross, forward) e ausência de ciclo."""
     g = Graph(directed=True)
     g.add_edge("A", "B")
     g.add_edge("A", "C")
@@ -22,7 +21,6 @@ def test_dfs_classificacao_arestas_sem_ciclo():
     
 
 def test_dfs_deteccao_ciclo():
-    """Testa a detecção de ciclo e a classificação 'back'."""
     g = Graph(directed=True)
     g.add_edge("A", "B")
     g.add_edge("B", "C")

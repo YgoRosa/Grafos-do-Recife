@@ -1,0 +1,104 @@
+[
+  {
+    "microrregiao": "1.1",
+    "ordem": 2,
+    "tamanho": 1,
+    "densidade": 1.0
+  },
+  {
+    "microrregiao": "1.2",
+    "ordem": 7,
+    "tamanho": 6,
+    "densidade": 0.2857142857142857
+  },
+  {
+    "microrregiao": "1.3",
+    "ordem": 2,
+    "tamanho": 1,
+    "densidade": 1.0
+  },
+  {
+    "microrregiao": "2.1",
+    "ordem": 9,
+    "tamanho": 16,
+    "densidade": 0.4444444444444444
+  },
+  {
+    "microrregiao": "2.2",
+    "ordem": 9,
+    "tamanho": 5,
+    "densidade": 0.1388888888888889
+  },
+  {
+    "microrregiao": "3.1",
+    "ordem": 16,
+    "tamanho": 37,
+    "densidade": 0.30833333333333335
+  },
+  {
+    "microrregiao": "3.2",
+    "ordem": 5,
+    "tamanho": 0,
+    "densidade": 0.0
+  },
+  {
+    "microrregiao": "3.3",
+    "ordem": 8,
+    "tamanho": 5,
+    "densidade": 0.17857142857142858
+  },
+  {
+    "microrregiao": "4.1",
+    "ordem": 7,
+    "tamanho": 10,
+    "densidade": 0.47619047619047616
+  },
+  {
+    "microrregiao": "4.2",
+    "ordem": 2,
+    "tamanho": 0,
+    "densidade": 0.0
+  },
+  {
+    "microrregiao": "4.3",
+    "ordem": 3,
+    "tamanho": 3,
+    "densidade": 1.0
+  },
+  {
+    "microrregiao": "5.1",
+    "ordem": 5,
+    "tamanho": 10,
+    "densidade": 1.0
+  },
+  {
+    "microrregiao": "5.2",
+    "ordem": 4,
+    "tamanho": 5,
+    "densidade": 0.8333333333333334
+  },
+  {
+    "microrregiao": "5.3",
+    "ordem": 7,
+    "tamanho": 14,
+    "densidade": 0.6666666666666666
+  },
+  {
+    "microrregiao": "6.1",
+    "ordem": 5,
+    "tamanho": 6,
+    "densidade": 0.6
+  },
+  {
+    "microrregiao": "6.2",
+    "ordem": 2,
+    "tamanho": 1,
+    "densidade": 1.0
+  },
+  {
+    "microrregiao": "6.3",
+    "ordem": 1,
+    "tamanho": 0,
+    "densidade": 0.0
+  }
+]

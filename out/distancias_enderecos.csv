@@ -1,0 +1,6 @@
+X,Y,bairro_X,bairro_Y,custo,caminho
+Rua Hoel Sette 120,Rua Ricardo Hardman 50,Torre,Jaqueira,5.0,Torre -> Madalena -> Graças -> Jaqueira
+Rua Simão Mendes 300,Rua Muniz Tavares 100,Campina Do Barreto,Campina Do Barreto,0.0,Campina Do Barreto
+Rua General Abreu e Lima 800,Rua Canápolis 45,Paissandu,Ibura,5.0,Paissandu -> Ilha Do Retiro -> Boa Viagem -> Ibura
+Rua Luiz Guimarães 900,Rua Tito Rosas 210,Casa Amarela,Água Fria,6.0,Casa Amarela -> Tamarineira -> Arruda -> Água Fria
+Rua Nova Descoberta 2200,Rua Setúbal 1500,Nova Descoberta,Boa Viagem,10.0,Nova Descoberta -> Iputinga -> Cordeiro -> Afogados -> Pina -> Boa Viagem -> Setúbal

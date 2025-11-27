@@ -1,0 +1,172 @@
+<html>
+    <head>
+        <meta charset="utf-8">
+        
+            <script src="lib/bindings/utils.js"></script>
+            <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/vis-network/9.1.2/dist/dist/vis-network.min.css" integrity="sha512-WgxfT5LWjfszlPHXRmBWHkV2eceiWTOBvrKCNbdgDYTHrT2AeLCGbF4sZlZw3UMN3WtL0tGUoIAKsu8mllg/XA==" crossorigin="anonymous" referrerpolicy="no-referrer" />
+            <script src="https://cdnjs.cloudflare.com/ajax/libs/vis-network/9.1.2/dist/vis-network.min.js" integrity="sha512-LnvoEWDFrqGHlHmDD2101OrLcbsfkrzoSpvtSQtxK3RMnRV0eOkhhBN2dXHKRrUU8p2DGRTk35n4O8nWSVe1mQ==" crossorigin="anonymous" referrerpolicy="no-referrer"></script>
+            
+        
+
+<!-- <link rel="stylesheet" href="../node_modules/vis/dist/vis.min.css" type="text/css" />
+<script type="text/javascript" src="../node_modules/vis/dist/vis.js"> </script>-->
+        <link
+          href="https://cdn.jsdelivr.net/npm/bootstrap@5.0.0-beta3/dist/css/bootstrap.min.css"
+          rel="stylesheet"
+          integrity="sha384-eOJMYsd53ii+scO/bJGFsiCZc+5NDVN2yr8+0RDqr0Ql0h+rP48ckxlpbzKgwra6"
+          crossorigin="anonymous"
+        />
+        <script
+          src="https://cdn.jsdelivr.net/npm/bootstrap@5.0.0-beta3/dist/js/bootstrap.bundle.min.js"
+          integrity="sha384-JEW9xMcG8R+pH31jmWH6WWP0WintQrMb4s7ZOdauHnUtxwoG2vI5DkLtS3qm9Ekf"
+          crossorigin="anonymous"
+        ></script>
+
+
+       <div id="pageTitle">
+            <span class="title-main">Percurso Entre Bairros</span>
+            <span class="title-sub">Nova Descoberta → Setúbal</span>
+        </div>
+
+        <style type="text/css">
+
+             #mynetwork {
+                 width: 100%;
+                 height: 750px;
+                 background-color: #ffffff;
+                 border: 1px solid lightgray;
+                 position: relative;
+                 float: left;
+             }
+             
+            #pageTitle {
+                text-align: center;
+                margin-top: 25px;
+                margin-bottom: 20px;
+                font-family: "Segoe UI", Arial, sans-serif;
+            }
+
+            #pageTitle .title-main {
+                display: block;
+                font-size: 30px;
+                font-weight: 800;
+                color: #1f3b5c;
+                text-shadow: 0px 2px 4px rgba(0,0,0,0.12);
+                letter-spacing: 0.5px;
+            }
+
+            #pageTitle .title-sub {
+                display: block;
+                margin-top: 6px;
+                font-size: 17px;
+                color: #4a90e2;
+                font-weight: 500;
+                text-shadow: 0 1px 3px rgba(0,0,0,0.1);
+            }    
+        </style>
+    </head>
+
+
+    <body>
+        <div class="card" style="width: 100%">
+            
+            
+            <div id="mynetwork" class="card-body"></div>
+        </div>
+
+        
+        
+
+        <script type="text/javascript">
+
+              var edges;
+              var nodes;
+              var allNodes;
+              var allEdges;
+              var nodeColors;
+              var originalNodes;
+              var network;
+              var container;
+              var options, data;
+              var filter = {
+                  item : '',
+                  property : '',
+                  value : []
+              };
+
+              
+
+              
+
+             
+              function drawGraph() {
+                  var container = document.getElementById('mynetwork');
+
+                  
+
+                  
+                  nodes = new vis.DataSet([{"color": "#38761d", "id": "Nova Descoberta", "label": "Nova Descoberta", "shape": "dot", "size": 15, "title": "Bairro: **Nova Descoberta**"}, {"color": "#3c78d8", "id": "Iputinga", "label": "Iputinga", "shape": "dot", "size": 15, "title": "Bairro: **Iputinga**"}, {"color": "#3c78d8", "id": "Cordeiro", "label": "Cordeiro", "shape": "dot", "size": 15, "title": "Bairro: **Cordeiro**"}, {"color": "#3c78d8", "id": "Afogados", "label": "Afogados", "shape": "dot", "size": 15, "title": "Bairro: **Afogados**"}, {"color": "#3c78d8", "id": "Pina", "label": "Pina", "shape": "dot", "size": 15, "title": "Bairro: **Pina**"}, {"color": "#3c78d8", "id": "Boa Viagem", "label": "Boa Viagem", "shape": "dot", "size": 15, "title": "Bairro: **Boa Viagem**"}, {"color": "#cc0000", "id": "Set\u00fabal", "label": "Set\u00fabal", "shape": "dot", "size": 15, "title": "Bairro: **Set\u00fabal**"}]);
+                  edges = new vis.DataSet([{"color": "#ff9900", "from": "Nova Descoberta", "title": "Custo: 2.00", "to": "Iputinga", "value": 2.0, "weight": 2.0, "width": 8.0}, {"color": "#ff9900", "from": "Iputinga", "title": "Custo: 2.00", "to": "Cordeiro", "value": 2.0, "weight": 2.0, "width": 8.0}, {"color": "#ff9900", "from": "Cordeiro", "title": "Custo: 2.00", "to": "Afogados", "value": 2.0, "weight": 2.0, "width": 8.0}, {"color": "#ff9900", "from": "Afogados", "title": "Custo: 1.00", "to": "Pina", "value": 1.0, "weight": 1.0, "width": 4.0}, {"color": "#ff9900", "from": "Pina", "title": "Custo: 1.00", "to": "Boa Viagem", "value": 1.0, "weight": 1.0, "width": 4.0}, {"color": "#ff9900", "from": "Boa Viagem", "title": "Custo: 2.00", "to": "Set\u00fabal", "value": 2.0, "weight": 2.0, "width": 8.0}]);
+
+                  nodeColors = {};
+                  allNodes = nodes.get({ returnType: "Object" });
+                  for (nodeId in allNodes) {
+                    nodeColors[nodeId] = allNodes[nodeId].color;
+                  }
+                  allEdges = edges.get({ returnType: "Object" });
+                  
+                  data = {nodes: nodes, edges: edges};
+
+                  var options = {
+    "configure": {
+        "enabled": false
+    },
+    "edges": {
+        "color": {
+            "inherit": true
+        },
+        "smooth": {
+            "enabled": true,
+            "type": "dynamic"
+        }
+    },
+    "interaction": {
+        "dragNodes": true,
+        "hideEdgesOnDrag": false,
+        "hideNodesOnDrag": false
+    },
+    "physics": {
+        "enabled": true,
+        "stabilization": {
+            "enabled": true,
+            "fit": true,
+            "iterations": 1000,
+            "onlyDynamicEdges": false,
+            "updateInterval": 50
+        }
+    }
+};
+
+                  
+
+
+                  
+
+                  network = new vis.Network(container, data, options);
+
+                  
+
+                  
+
+                  
+
+
+                  
+
+                  return network;
+
+              }
+              drawGraph();
+        </script>
+    </body>
+</html>

@@ -1,0 +1,14 @@
+{
+    "caminho": [
+        "Nova Descoberta",
+        "Iputinga",
+        "Cordeiro",
+        "Afogados",
+        "Pina",
+        "Boa Viagem",
+        "Setúbal"
+    ],
+    "custo": 10.0,
+    "origem": "Nova Descoberta",
+    "destino": "Setúbal"
+}

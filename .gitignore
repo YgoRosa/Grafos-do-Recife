@@ -15,9 +15,6 @@ __pycache__/
 *.pyd
 
 # Saídas do projeto
-/out/
-*.json
-*.png
 
 # Arquivos de sistema
 .DS_Store

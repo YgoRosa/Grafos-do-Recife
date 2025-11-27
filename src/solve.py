@@ -27,7 +27,6 @@ OUT_EGO = os.path.join(OUT_DIR, "ego_bairro.csv")
 AIRCRAFT_DATA_PATH = "data/dataset_parte2.csv"
 CAMINHO_JSON = "out/percurso_nova_descoberta_setubal.json"
 
-
 def read_bairros_map(path: str) -> Dict[str, str]:
     if not os.path.exists(path):
         raise FileNotFoundError(f"{path} não encontrado.")
@@ -42,7 +41,7 @@ def read_bairros_map(path: str) -> Dict[str, str]:
 def load_adjacencias_to_graph(adj_path: str) -> Tuple[Graph, Set[str]]:
     if not os.path.exists(adj_path):
         raise FileNotFoundError(f"{adj_path} não encontrado.")
-
+    
     g = Graph(directed=False)
     names = set()
     
@@ -68,7 +67,7 @@ def load_adjacencias_to_graph(adj_path: str) -> Tuple[Graph, Set[str]]:
                 weight = float(row[peso_col]) if peso_col and row.get(peso_col) not in (None, "") else 1.0
             except Exception:
                 weight = 1.0
-            
+
             g.add_edge(a, b, weight=weight, meta=meta) 
             
     return g, names
@@ -184,13 +183,14 @@ def calcular_distancias_enderecos(graph: Graph, path_enderecos="data/enderecos.c
             if origem not in graph.adj or destino_final not in graph.adj: 
                 print(f"[SKIP] {origem} ou {destino_final} não encontrados.")
                 continue
+
             res = Algorithms.dijkstra(graph, origem, destino_final)
             custo = res["cost"]
             caminho = res["path"]
             
             caminho_str = " -> ".join(caminho) if caminho else ""
             w.writerow([p.get("X",""), p.get("Y",""), origem, destino_original, custo, caminho_str])
-  
+
             if "nova descoberta" in origem.lower() and ("boa viagem" in destino_original.lower() or "setúbal" in destino_original.lower()):
                 with open("out/percurso_nova_descoberta_setubal.json", "w", encoding="utf-8") as jf:
                     json.dump({"caminho": caminho, "custo": custo, "origem": origem, "destino": destino_final}, jf, ensure_ascii=False, indent=4)
@@ -198,9 +198,11 @@ def calcular_distancias_enderecos(graph: Graph, path_enderecos="data/enderecos.c
                 
     print(f"[OK] Distâncias calculadas → {saida_csv}")
 
+
 def load_parte2_graph(data_path: str) -> Graph:
     if not os.path.exists(data_path):
         raise FileNotFoundError(f"Dataset da Parte 2 não encontrado em {data_path}")
+    
     g = Graph(directed=True)
     
     df = pd.read_csv(data_path, encoding='utf-8')
@@ -225,6 +227,7 @@ def load_parte2_graph(data_path: str) -> Graph:
     return g
 
 def run_parte2_comparison(g: Graph):
+    """ Executa os 4 algoritmos no grafo maior e coleta métricas de desempenho. """
     print("\n" + "="*50)
     print("== PARTE 2: COMPARAÇÃO DE ALGORITMOS ==")
     print("="*50)
@@ -240,10 +243,10 @@ def run_parte2_comparison(g: Graph):
     test_pairs = []
     test_sources = []
     attempts = 0
-
+    
     while len(test_pairs) < 5 and attempts < 50:
         src = random.choice(nodes)
-   
+
         bfs_data = Algorithms.bfs(g, src)
         reachable = bfs_data.get("order", [])
 
@@ -267,7 +270,7 @@ def run_parte2_comparison(g: Graph):
         count = len(res_bfs.get("order", []))
         report.append({"alg": "BFS", "origem": source, "destino": "N/A", "tempo_s": elapsed})
         print(f"BFS ({source}): {count} nós alcançados em {elapsed:.6f}s")
-
+        
         start_time = time.perf_counter()
         res_dfs = Algorithms.dfs(g, source) 
         elapsed = time.perf_counter() - start_time
@@ -288,6 +291,7 @@ def run_parte2_comparison(g: Graph):
             custo = "Erro"
             
         report.append({"alg": "Dijkstra", "origem": origem, "destino": destino, "custo": custo, "tempo_s": elapsed})
+        
 
         val_custo = f"{custo:.4f}" if isinstance(custo, (int, float)) else str(custo)
         print(f"Dijkstra ({i+1}): {origem} -> {destino} Custo={val_custo} em {elapsed:.6f}s")
@@ -299,9 +303,9 @@ def run_parte2_comparison(g: Graph):
             A, B, C = random.sample(nodes, 3)
         else:
             A = B = C = test_sources[0]
-    
+            
         g_neg_weight = g.copy()
-        g_neg_weight.add_edge(A, B, weight=-0.01)
+        g_neg_weight.add_edge(A, B, weight=-0.01) 
 
         start_time = time.perf_counter()
         res_bf1 = Algorithms.bellman_ford(g_neg_weight, A, B)
@@ -311,7 +315,7 @@ def run_parte2_comparison(g: Graph):
         report.append({"alg": "Bellman-Ford", "caso": "Peso Negativo (Sem Ciclo)", "origem": A, 
                     "tempo_s": elapsed_1, "ciclo_detectado": cycle_1})
         print(f"BF (Peso Negativo): Ciclo detectado={cycle_1} em {elapsed_1:.6f}s")
-    
+        
         g_neg_cycle = g.copy()
         g_neg_cycle.add_edge(A, B, weight=1.0)
         g_neg_cycle.add_edge(B, C, weight=1.0)
@@ -364,7 +368,7 @@ def run_parte2_comparison(g: Graph):
 if __name__ == "__main__":
     
     print("\n" + "="*60)
-    print("== PARTE 1: GRAFO DOS BAIRROS DO RECIFE ==")
+    print("== PARTE 1: GRAPHO DOS BAIRROS DO RECIFE ==")
     print("="*60)
 
     try:
@@ -400,7 +404,7 @@ if __name__ == "__main__":
         visualize_degree_map(g, df_graus, os.path.join(OUT_DIR, "mapa_grau.html"))
         visualize_degree_histogram(df_graus, os.path.join(OUT_DIR, "histograma_graus.png"))
         visualize_top_10_degree_subgraph(g, df_graus, os.path.join(OUT_DIR, "subgrafo_top10.html"))
-
+       
         map_micro = {b: m for b, m in bairros_map.items()} 
         visualize_interactive_graph(g, df_ego, map_micro, caminho_obrig, os.path.join(OUT_DIR, "grafo_interativo.html"))
 
@@ -416,6 +420,7 @@ if __name__ == "__main__":
     try:
         g_aereo = load_parte2_graph(AIRCRAFT_DATA_PATH)
         run_parte2_comparison(g_aereo)
+        
         df_graus_p2 = compute_parte2_degrees(g_aereo)
         visualize_parte2_degree_histogram(df_graus_p2, os.path.join(OUT_DIR, "p2_histograma_graus_saida.png"))
         

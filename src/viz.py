@@ -11,6 +11,9 @@ import matplotlib.colors as mcolors
 
 
 def construir_arestas_arvore_percurso(graph, path_nodes: List[str]) -> List[Tuple[str, str, float, Dict]]:
+    """
+    Constrói a lista de arestas que formam o percurso a partir de uma lista de nós.
+    """
     edges = []
     for i in range(len(path_nodes) - 1):
         u = path_nodes[i]
@@ -26,6 +29,9 @@ def construir_arestas_arvore_percurso(graph, path_nodes: List[str]) -> List[Tupl
     return edges
 
 def visualize_path_tree(path_nodes: List[str], path_edges: List[Tuple[str, str, float, Dict]], output_file: str):
+    """
+    Gera a visualização interativa do subgrafo do percurso.
+    """
     net = Network(height="750px", width="100%", directed=False, heading="Percurso: Nova Descoberta → Setúbal") 
 
     for node in path_nodes:
@@ -60,6 +66,9 @@ def visualize_path_tree(path_nodes: List[str], path_edges: List[Tuple[str, str, 
         print(f"[ERRO DE ESCRITA] Não foi possível salvar arquivo HTML: {e}")
 
 def visualize_degree_map(graph: Graph, df_graus: pd.DataFrame, output_file: str):
+    """
+    1. Mapa de Cores por Grau do Bairro
+    """
     print(f"[VIZ] Gerando Mapa de Cores por Grau → {output_file}")
     net = Network(height="750px", width="100%", directed=False, heading="Grafo de Bairros do Recife: Visualização de Grau") 
 
@@ -96,6 +105,9 @@ def visualize_degree_map(graph: Graph, df_graus: pd.DataFrame, output_file: str)
 
 
 def visualize_degree_histogram(df_graus: pd.DataFrame, output_file: str):
+    """
+    2. Distribuição dos Graus
+    """
     print(f"[VIZ] Gerando Histograma de Graus → {output_file}")
     degrees = df_graus['grau'].dropna().tolist()
     if not degrees: return
@@ -118,6 +130,9 @@ def visualize_degree_histogram(df_graus: pd.DataFrame, output_file: str):
 
 
 def visualize_top_10_degree_subgraph(graph: Graph, df_graus: pd.DataFrame, output_file: str):
+    """
+    3. Subgrafo dos 10 Bairros com Maior Grau
+    """
     print(f"[VIZ] Gerando Subgrafo Top 10 por Grau → {output_file}")
     top_10_df = df_graus.sort_values(by='grau', ascending=False).head(10)
     top_nodes = set(top_10_df['bairro'].tolist())
@@ -188,11 +203,13 @@ def visualize_interactive_graph(
     nodes_list = sorted(graph.get_nodes())
     N = len(nodes_list)
 
+
     RADIUS = 2200
     pos_map = {}
     for i, node in enumerate(nodes_list):
         ang = 2 * math.pi * i / N
         pos_map[node] = (RADIUS * math.cos(ang), RADIUS * math.sin(ang))
+
     MICRO_COLORS = {
         "1": "rgba(255, 140, 140, 0.85)",
         "2": "rgba(255, 190, 120, 0.85)",
@@ -205,6 +222,7 @@ def visualize_interactive_graph(
     from pyvis.network import Network
     net = Network(height="900px", width="100%", directed=False, notebook=False,
                   heading="Grafo dos Bairros do Recife — Interativo")
+
     for node in nodes_list:
         grau = grau_map.get(node, 0)
         dens = dens_map.get(node)

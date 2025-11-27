@@ -4,12 +4,20 @@ import os
 from src.graphs.graph import Graph
 
 def normalize_bairro_name(name: str) -> str:
+    """Remove acentos, espaços extras e coloca tudo em minúsculas."""
     if pd.isna(name):
         return None
     name = name.strip().title()
     return name
 
 def melt_bairros(input_path: str, output_path: str):
+    """
+    Derrete o CSV de microrregiões para uma lista única de bairros.
+
+    Args:
+        input_path (str): Caminho do CSV original (bairros agrupados).
+        output_path (str): Caminho para salvar o CSV derretido.
+    """
 
     df = pd.read_csv(input_path)
 
@@ -31,6 +39,7 @@ def melt_bairros(input_path: str, output_path: str):
 
 
 def carregar_bairros(csv_path: str) -> Graph:
+    """Lê o CSV de bairros e cria um grafo com cada bairro como nó."""
     df = pd.read_csv(csv_path)
     g = Graph()
 

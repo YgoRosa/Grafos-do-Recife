@@ -17,7 +17,6 @@ __pycache__/
 # Saídas do projeto
 /out/
 *.json
-*.html
 *.png
 
 # Arquivos de sistema

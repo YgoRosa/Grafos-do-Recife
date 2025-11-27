@@ -2,7 +2,7 @@
 O projeto tem como objetivo modelar as conexões dos bairros da cidade de Recife e das pontes aéreas como grafos, aplicar os algoritmos estudados de busca e menor caminho (BFS, DFS, Dijkstra e Bellman-Ford) para extrair as métricas e calcular as melhores e mais eficientes rotas, além de comparar os desempenhos de cada um dos algoritmos e a aplicação destes em diferentes cenários.
 <br>
 
-# Como executar o projeto:
+## Como executar o projeto:
 **1. Certifique-se de ter o Python (versão 3.x) instalado.**  
 
 **2. Criar Ambiente Virtual**    
@@ -33,16 +33,12 @@ O projeto tem como objetivo modelar as conexões dos bairros da cidade de Recife
   **6. Execução dos testes**  
   Certifique-se de que o ambiente virtual está ativo e execute o pytest a partir da raiz do projeto: 
 
-      pytest
 
-  
-  Se der erro, executar:  
-  
       python -m pytest -v 
-  também na raiz do projeto, com o ambiente virtual ativado. O sistema executará todos os arquivos em tests/.  
+O sistema executará todos os arquivos em tests/.  
 <br>
 
-# Estrutura do projeto
+## Estrutura do projeto
      grafos-do-recife/
     ├─ README.md
     ├─ requirements.txt
@@ -68,7 +64,7 @@ O projeto tem como objetivo modelar as conexões dos bairros da cidade de Recife
     └─ test_bellman_ford.py
 <br>
 
-# Time 
+## Time 
 [Beatriz Pereira](https://github.com/biapereira2)  
 
 [Manuela Cavalcanti](https://github.com/Manuelaamorim)  

@@ -70,7 +70,12 @@ O sistema executará todos os arquivos em tests/.
 [Manuela Cavalcanti](https://github.com/Manuelaamorim)  
 
 [Ygor Rosa](https://github.com/YgoRosa)  
+<br>
 
+## Relatório
+
+
+[Relatório do Projeto](https://docs.google.com/document/d/1X9077cSb50-AJDHxxAh41bEl2SmpYJs01ElboQQyVSE/edit?usp=sharing)  
 
 
 

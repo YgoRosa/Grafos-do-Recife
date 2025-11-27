@@ -5,14 +5,11 @@ import time
 import random
 import pandas as pd
 from typing import Dict, Set, Tuple, List, Any
-
-# --- IMPORTS CORRIGIDOS ---
 from graphs.graph import Graph
-from graphs.algorithms import Algorithms # Usamos a classe agora
-# Certifique-se de que viz.py tem a função visualize_interactive_complete
+from graphs.algorithms import Algorithms 
 from viz import (
     construir_arestas_arvore_percurso, 
-    visualize_interactive_graph, # Nome atualizado da função interativa
+    visualize_interactive_graph, 
     visualize_path_tree, 
     visualize_degree_map, 
     visualize_degree_histogram, 
@@ -21,7 +18,6 @@ from viz import (
     compute_parte2_degrees
 )
 
-# Configurações de Arquivos
 BAIRROS_CSV = "data/bairros_unique.csv"
 ADJ_CSV = "data/adjacencias_bairros.csv"
 OUT_DIR = "out"

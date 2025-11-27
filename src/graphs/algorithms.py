@@ -1,8 +1,6 @@
 import heapq
 from collections import deque
 from typing import List, Dict, Tuple, Union, Any, Optional
-
-# Adjust import according to your folder structure
 from .graph import Graph
 
 class PositiveFloat(float):
@@ -42,7 +40,6 @@ class Algorithms:
         predecessors = {start: None}
         visited = set()
         
-        # Priority Queue: (cost, current_node)
         pq: List[Tuple[float, str]] = []
         heapq.heappush(pq, (0.0, start))
         
@@ -51,7 +48,6 @@ class Algorithms:
         while pq:
             d_curr, u = heapq.heappop(pq)
             
-            # Optimization: Stop if target is reached
             if u == end:
                 break
 
@@ -65,17 +61,15 @@ class Algorithms:
                 if v in visited: 
                     continue
 
-                # Safely get edge data
                 edge_data = graph.get_edge_data(u, v)
                 if not edge_data: continue
                 
                 raw_weight = edge_data[0]
                 
                 try:
-                    # Enforce positive weight constraint
                     weight = PositiveFloat(raw_weight)
                 except ValueError:
-                    continue # Ignore negative edges in Dijkstra
+                    continue 
 
                 new_dist = distances[u] + weight
                 
@@ -84,24 +78,19 @@ class Algorithms:
                     predecessors[v] = u
                     heapq.heappush(pq, (new_dist, v))
 
-        # Path Reconstruction
         path = []
         curr = end
         
-        # If target unreachable
         if distances[end] == float('inf'):
              return {"cost": float('inf'), "path": [], "visited_count": visited_count}
 
-        # Backtrack from end to start
         while curr is not None:
             path.append(curr)
             curr = predecessors.get(curr)
-            # Safety break for loops
             if len(path) > len(graph): break 
             
         path.reverse()
 
-        # Validate path origin
         if not path or path[0] != start:
             return {"cost": float('inf'), "path": [], "visited_count": visited_count}
 
@@ -127,13 +116,11 @@ class Algorithms:
         distances = {node: float('inf') for node in nodes}
         distances[start] = 0.0
         predecessors = {start: None}
-        
-        # Flatten all edges for iteration: List of (u, v, weight)
+
         all_edges = []
         for u, v, w, _ in graph.get_edges():
             all_edges.append((u, v, w))
 
-        # 1. Relaxation Phase (V-1 times)
         for _ in range(len(nodes) - 1):
             relaxed = False
             for u, v, w in all_edges:
@@ -141,27 +128,23 @@ class Algorithms:
                     distances[v] = distances[u] + w
                     predecessors[v] = u
                     relaxed = True
-            
-            # Optimization: Early stopping if no changes occurred (crucial for positive graphs)
+
             if not relaxed:
                 break
 
-        # 2. Negative Cycle Detection Phase
         has_negative_cycle = False
         for u, v, w in all_edges:
             if distances[u] != float('inf') and distances[u] + w < distances[v]:
                 has_negative_cycle = True
                 break
-        
-        # Path Reconstruction
+
         path = []
-        # Only reconstruct if no negative cycle and target is reachable
         if not has_negative_cycle and end in distances and distances[end] != float('inf'):
             curr = end
             path_set = set()
             
             while curr is not None:
-                if curr in path_set: break # Avoid infinite loops
+                if curr in path_set: break 
                 path_set.add(curr)
                 path.append(curr)
                 curr = predecessors.get(curr)
@@ -219,7 +202,6 @@ class Algorithms:
         if not graph.has_node(start):
             return {"error": f"Node {start} does not exist"}
 
-        # State tracking: 'white' (unvisited), 'gray' (visiting), 'black' (finished)
         state = {u: 'white' for u in graph.get_nodes()}
         discovery_time = {}
         finish_time = {}
@@ -229,14 +211,6 @@ class Algorithms:
         visit_order = []
         time_counter = 0
         has_cycle = False
-        
-        # Iterative DFS using a manual stack to simulate recursion
-        # Stack elements: (node, iterator_of_neighbors)
-        # We need to peek at stack to mark finish time (post-order)
-        
-        # Simplified recursive wrapper for clarity in edge classification logic
-        # (Python recursion limit is usually 1000, watch out for very deep graphs)
-        # Switching to recursive for correct Edge Classification logic as requested in requirements
         
         def dfs_visit(u: str):
             nonlocal time_counter, has_cycle
@@ -268,7 +242,6 @@ class Algorithms:
             time_counter += 1
             finish_time[u] = time_counter
 
-        # Start DFS
         dfs_visit(start)
         
         return {

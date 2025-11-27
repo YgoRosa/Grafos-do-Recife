@@ -15,13 +15,8 @@ class Graph:
             directed (bool): If True, edges are one-way (u -> v). 
                              If False, edges are bidirectional (u <-> v).
         """
-        # adj: node -> dict(destination -> (weight: float, meta: dict))
         self.adj: Dict[str, Dict[str, Tuple[float, Dict]]] = {}
         self.directed = directed
-
-    # ----------------------------------------------------
-    # --------------- Node Methods -----------------------
-    # ----------------------------------------------------
     
     def add_node(self, u: str):
         """Adds a node to the graph if it doesn't exist."""
@@ -41,10 +36,6 @@ class Graph:
         """Returns number of nodes (Order)."""
         return len(self.adj)
 
-    # ----------------------------------------------------
-    # --------------- Edge Methods -----------------------
-    # ----------------------------------------------------
-    
     def add_edge(self, u: str, v: str, weight: float = 1.0, meta: Optional[Dict] = None):
         """
         Adds an edge from u to v.
@@ -59,10 +50,8 @@ class Graph:
         self.add_node(u)
         self.add_node(v)
         
-        # 1. Add forward edge u -> v
         self.adj[u][v] = (float(weight), dict(meta))
-        
-        # 2. If undirected, add backward edge v -> u
+
         if not self.directed:
             self.adj[v][u] = (float(weight), dict(meta))
 
@@ -96,11 +85,8 @@ class Graph:
             for v, (weight, meta) in nbrs.items():
                 
                 if self.directed:
-                    # For directed graphs, order matters: (u, v) is different from (v, u)
                     edges.append((u, v, weight, meta))
                 else:
-                    # For undirected, we want to avoid listing (A, B) and (B, A) twice
-                    # Logic: sort the pair to check uniqueness
                     pair = tuple(sorted((u, v)))
                     if pair not in seen:
                         edges.append((u, v, weight, meta))
@@ -117,7 +103,6 @@ class Graph:
     def copy(self) -> 'Graph':
         """Creates a deep copy of the graph."""
         new_graph = Graph(directed=self.directed)
-        # Deep copy of the adjacency list
         new_graph.adj = {
             u: {v: (w, meta.copy()) for v, (w, meta) in nbrs.items()}
             for u, nbrs in self.adj.items()

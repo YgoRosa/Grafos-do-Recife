@@ -1,4 +1,3 @@
-# test_dfs.py
 from src.graphs.algorithms import Algorithms
 from src.graphs.graph import Graph
 
@@ -10,7 +9,7 @@ def test_dfs_classificacao_arestas_sem_ciclo():
     g.add_edge("A", "C")
     g.add_edge("B", "D")
     g.add_edge("C", "D") 
-    g.add_edge("A", "D") # Aresta forward ou cross
+    g.add_edge("A", "D") 
     
     resultado = Algorithms.dfs(g, "A")
     
@@ -18,8 +17,8 @@ def test_dfs_classificacao_arestas_sem_ciclo():
     
     assert "back" not in classificacoes
     assert resultado["has_cycle"] is False
-    assert classificacoes.count('tree') >= 3 # Deve ter pelo menos 3 tree edges
-    assert classificacoes.count('cross') >= 1 # Deve ter pelo menos 1 cross edge
+    assert classificacoes.count('tree') >= 3 
+    assert classificacoes.count('cross') >= 1 
     
 
 def test_dfs_deteccao_ciclo():
@@ -27,8 +26,7 @@ def test_dfs_deteccao_ciclo():
     g = Graph(directed=True)
     g.add_edge("A", "B")
     g.add_edge("B", "C")
-    g.add_edge("C", "A") # Ciclo: C -> A é uma aresta de retorno
-    
+    g.add_edge("C", "A")
     resultado = Algorithms.dfs(g, "A")
     
     classificacoes = resultado.get("classification", {}).values()

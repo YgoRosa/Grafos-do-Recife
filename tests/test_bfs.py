@@ -1,7 +1,5 @@
-# test_bfs.py
-from src.graphs.algorithms import Algorithms # Ajuste o caminho de importação
+from src.graphs.algorithms import Algorithms 
 from src.graphs.graph import Graph
- # Ajuste o caminho de importação
 import pytest
 
 def test_bfs_niveis_corretos():
@@ -24,6 +22,5 @@ def test_bfs_niveis_corretos():
         "F": 3
     }
     
-    # O BFS na sua implementação retorna "levels"
     assert resultado.get("levels") == niveis_esperados
     assert "back" not in resultado.get("order")

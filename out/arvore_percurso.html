@@ -7,6 +7,9 @@
             <script src="https://cdnjs.cloudflare.com/ajax/libs/vis-network/9.1.2/dist/vis-network.min.js" integrity="sha512-LnvoEWDFrqGHlHmDD2101OrLcbsfkrzoSpvtSQtxK3RMnRV0eOkhhBN2dXHKRrUU8p2DGRTk35n4O8nWSVe1mQ==" crossorigin="anonymous" referrerpolicy="no-referrer"></script>
             
         
+<center>
+<h1></h1>
+</center>
 
 <!-- <link rel="stylesheet" href="../node_modules/vis/dist/vis.min.css" type="text/css" />
 <script type="text/javascript" src="../node_modules/vis/dist/vis.js"> </script>-->
@@ -23,11 +26,9 @@
         ></script>
 
 
-       <div id="pageTitle">
-            <span class="title-main">Percurso Entre Bairros</span>
-            <span class="title-sub">Nova Descoberta → Setúbal</span>
-        </div>
-
+        <center>
+          <h1></h1>
+        </center>
         <style type="text/css">
 
              #mynetwork {
@@ -38,31 +39,12 @@
                  position: relative;
                  float: left;
              }
+
              
-            #pageTitle {
-                text-align: center;
-                margin-top: 25px;
-                margin-bottom: 20px;
-                font-family: "Segoe UI", Arial, sans-serif;
-            }
 
-            #pageTitle .title-main {
-                display: block;
-                font-size: 30px;
-                font-weight: 800;
-                color: #1f3b5c;
-                text-shadow: 0px 2px 4px rgba(0,0,0,0.12);
-                letter-spacing: 0.5px;
-            }
+             
 
-            #pageTitle .title-sub {
-                display: block;
-                margin-top: 6px;
-                font-size: 17px;
-                color: #4a90e2;
-                font-weight: 500;
-                text-shadow: 0 1px 3px rgba(0,0,0,0.1);
-            }    
+             
         </style>
     </head>
 
@@ -71,7 +53,46 @@
         <div class="card" style="width: 100%">
             
             
-            <div id="mynetwork" class="card-body"></div>
+            
+    <style>
+    #pageTitle {
+        text-align: center;
+        margin-top: 25px;
+        margin-bottom: 20px;
+        font-family: "Segoe UI", Arial, sans-serif;
+    }
+    #pageTitle .title-main {
+        display: block;
+        font-size: 30px;
+        font-weight: 800;
+        color: #1f3b5c;
+        text-shadow: 0px 2px 4px rgba(0,0,0,0.12);
+        letter-spacing: 0.5px;
+    }
+    #pageTitle .title-sub {
+        display: block;
+        margin-top: 6px;
+        font-size: 17px;
+        color: #4a90e2;
+        font-weight: 500;
+        text-shadow: 0 1px 3px rgba(0,0,0,0.1);
+    }
+    #mynetwork {
+        width: 100%;
+        height: 750px;
+        background-color: #ffffff;
+        border: 1px solid lightgray;
+        position: relative;
+        float: left;
+    }
+    </style>
+
+    <div id="pageTitle">
+        <span class="title-main">Percurso Entre Bairros</span>
+        <span class="title-sub">Nova Descoberta → Setúbal</span>
+    </div>
+    
+<div id="mynetwork" class="card-body"></div>
         </div>
 
         
@@ -79,6 +100,7 @@
 
         <script type="text/javascript">
 
+              // initialize global variables.
               var edges;
               var nodes;
               var allNodes;
@@ -98,15 +120,15 @@
 
               
 
-             
+              // This method is responsible for drawing the graph, returns the drawn network
               function drawGraph() {
                   var container = document.getElementById('mynetwork');
 
                   
 
-                  
-                  nodes = new vis.DataSet([{"color": "#38761d", "id": "Nova Descoberta", "label": "Nova Descoberta", "shape": "dot", "size": 15, "title": "Bairro: **Nova Descoberta**"}, {"color": "#3c78d8", "id": "Iputinga", "label": "Iputinga", "shape": "dot", "size": 15, "title": "Bairro: **Iputinga**"}, {"color": "#3c78d8", "id": "Cordeiro", "label": "Cordeiro", "shape": "dot", "size": 15, "title": "Bairro: **Cordeiro**"}, {"color": "#3c78d8", "id": "Afogados", "label": "Afogados", "shape": "dot", "size": 15, "title": "Bairro: **Afogados**"}, {"color": "#3c78d8", "id": "Pina", "label": "Pina", "shape": "dot", "size": 15, "title": "Bairro: **Pina**"}, {"color": "#3c78d8", "id": "Boa Viagem", "label": "Boa Viagem", "shape": "dot", "size": 15, "title": "Bairro: **Boa Viagem**"}, {"color": "#cc0000", "id": "Set\u00fabal", "label": "Set\u00fabal", "shape": "dot", "size": 15, "title": "Bairro: **Set\u00fabal**"}]);
-                  edges = new vis.DataSet([{"color": "#ff9900", "from": "Nova Descoberta", "title": "Custo: 2.00", "to": "Iputinga", "value": 2.0, "weight": 2.0, "width": 8.0}, {"color": "#ff9900", "from": "Iputinga", "title": "Custo: 2.00", "to": "Cordeiro", "value": 2.0, "weight": 2.0, "width": 8.0}, {"color": "#ff9900", "from": "Cordeiro", "title": "Custo: 2.00", "to": "Afogados", "value": 2.0, "weight": 2.0, "width": 8.0}, {"color": "#ff9900", "from": "Afogados", "title": "Custo: 1.00", "to": "Pina", "value": 1.0, "weight": 1.0, "width": 4.0}, {"color": "#ff9900", "from": "Pina", "title": "Custo: 1.00", "to": "Boa Viagem", "value": 1.0, "weight": 1.0, "width": 4.0}, {"color": "#ff9900", "from": "Boa Viagem", "title": "Custo: 2.00", "to": "Set\u00fabal", "value": 2.0, "weight": 2.0, "width": 8.0}]);
+                  // parsing and collecting nodes and edges from the python
+                  nodes = new vis.DataSet([{"color": "#38761d", "id": "Nova Descoberta", "label": "Nova Descoberta", "originalColor": "#38761d", "physics": false, "shape": "dot", "size": 15, "title": "\u003cb\u003eNova Descoberta\u003c/b\u003e"}, {"color": "#3c78d8", "id": "Iputinga", "label": "Iputinga", "originalColor": "#3c78d8", "physics": false, "shape": "dot", "size": 15, "title": "\u003cb\u003eIputinga\u003c/b\u003e"}, {"color": "#3c78d8", "id": "Cordeiro", "label": "Cordeiro", "originalColor": "#3c78d8", "physics": false, "shape": "dot", "size": 15, "title": "\u003cb\u003eCordeiro\u003c/b\u003e"}, {"color": "#3c78d8", "id": "Afogados", "label": "Afogados", "originalColor": "#3c78d8", "physics": false, "shape": "dot", "size": 15, "title": "\u003cb\u003eAfogados\u003c/b\u003e"}, {"color": "#3c78d8", "id": "Pina", "label": "Pina", "originalColor": "#3c78d8", "physics": false, "shape": "dot", "size": 15, "title": "\u003cb\u003ePina\u003c/b\u003e"}, {"color": "#3c78d8", "id": "Boa Viagem", "label": "Boa Viagem", "originalColor": "#3c78d8", "physics": false, "shape": "dot", "size": 15, "title": "\u003cb\u003eBoa Viagem\u003c/b\u003e"}, {"color": "#cc0000", "id": "Set\u00fabal", "label": "Set\u00fabal", "originalColor": "#cc0000", "physics": false, "shape": "dot", "size": 15, "title": "\u003cb\u003eSet\u00fabal\u003c/b\u003e"}]);
+                  edges = new vis.DataSet([{"color": "#ff9900", "from": "Nova Descoberta", "physics": false, "smooth": {"enabled": false}, "title": "Custo: 2.00", "to": "Iputinga", "value": 2.0, "weight": 2.0, "width": 8.0}, {"color": "#ff9900", "from": "Iputinga", "physics": false, "smooth": {"enabled": false}, "title": "Custo: 2.00", "to": "Cordeiro", "value": 2.0, "weight": 2.0, "width": 8.0}, {"color": "#ff9900", "from": "Cordeiro", "physics": false, "smooth": {"enabled": false}, "title": "Custo: 2.00", "to": "Afogados", "value": 2.0, "weight": 2.0, "width": 8.0}, {"color": "#ff9900", "from": "Afogados", "physics": false, "smooth": {"enabled": false}, "title": "Custo: 1.00", "to": "Pina", "value": 1.0, "weight": 1.0, "width": 4.0}, {"color": "#ff9900", "from": "Pina", "physics": false, "smooth": {"enabled": false}, "title": "Custo: 1.00", "to": "Boa Viagem", "value": 1.0, "weight": 1.0, "width": 4.0}, {"color": "#ff9900", "from": "Boa Viagem", "physics": false, "smooth": {"enabled": false}, "title": "Custo: 2.00", "to": "Set\u00fabal", "value": 2.0, "weight": 2.0, "width": 8.0}]);
 
                   nodeColors = {};
                   allNodes = nodes.get({ returnType: "Object" });
@@ -114,7 +136,7 @@
                     nodeColors[nodeId] = allNodes[nodeId].color;
                   }
                   allEdges = edges.get({ returnType: "Object" });
-                  
+                  // adding nodes and edges to the graph
                   data = {nodes: nodes, edges: edges};
 
                   var options = {

@@ -7,9 +7,9 @@
             <script src="https://cdnjs.cloudflare.com/ajax/libs/vis-network/9.1.2/dist/vis-network.min.js" integrity="sha512-LnvoEWDFrqGHlHmDD2101OrLcbsfkrzoSpvtSQtxK3RMnRV0eOkhhBN2dXHKRrUU8p2DGRTk35n4O8nWSVe1mQ==" crossorigin="anonymous" referrerpolicy="no-referrer"></script>
             
         
-        <div id="pageTitle">
-            <span class="title-main">Subgrafo dos 10 Bairros mais conectados</span>
-        </div>
+<center>
+<h1></h1>
+</center>
 
 <!-- <link rel="stylesheet" href="../node_modules/vis/dist/vis.min.css" type="text/css" />
 <script type="text/javascript" src="../node_modules/vis/dist/vis.js"> </script>-->
@@ -25,6 +25,10 @@
           crossorigin="anonymous"
         ></script>
 
+
+        <center>
+          <h1></h1>
+        </center>
         <style type="text/css">
 
              #mynetwork {
@@ -35,21 +39,7 @@
                  position: relative;
                  float: left;
              }
-            #pageTitle {
-                text-align: center;
-                margin-top: 25px;
-                margin-bottom: 20px;
-                font-family: "Segoe UI", Arial, sans-serif;
-            }
 
-            #pageTitle .title-main {
-                display: block;
-                font-size: 30px;
-                font-weight: 800;
-                color: #1f3b5c;
-                text-shadow: 0px 2px 4px rgba(0,0,0,0.12);
-                letter-spacing: 0.5px;
-            }
              
 
              
@@ -63,7 +53,37 @@
         <div class="card" style="width: 100%">
             
             
-            <div id="mynetwork" class="card-body"></div>
+            
+    <style>
+    #pageTitle {
+        text-align: center;
+        margin-top: 25px;
+        margin-bottom: 20px;
+        font-family: "Segoe UI", Arial, sans-serif;
+    }
+    #pageTitle .title-main {
+        display: block;
+        font-size: 30px;
+        font-weight: 800;
+        color: #1f3b5c;
+        text-shadow: 0px 2px 4px rgba(0,0,0,0.12);
+        letter-spacing: 0.5px;
+    }
+    #mynetwork {
+        width: 100%;
+        height: 750px;
+        background-color: #ffffff;
+        border: 1px solid lightgray;
+        position: relative;
+        float: left;
+    }
+    </style>
+
+    <div id="pageTitle">
+        <span class="title-main">Subgrafo dos 10 Bairros mais conectados</span>
+    </div>
+    
+<div id="mynetwork" class="card-body"></div>
         </div>
 
         
@@ -98,8 +118,8 @@
                   
 
                   // parsing and collecting nodes and edges from the python
-                  nodes = new vis.DataSet([{"color": "#FFC107", "id": "Gra\u00e7as", "label": "Gra\u00e7as", "shape": "dot", "size": 33.46153846153847, "title": "Bairro: **Gra\u00e7as**\u003cbr\u003eGrau: 12"}, {"color": "#FFC107", "id": "Monteiro", "label": "Monteiro", "shape": "dot", "size": 31.923076923076923, "title": "Bairro: **Monteiro**\u003cbr\u003eGrau: 11"}, {"color": "#FFC107", "id": "Santo Amaro", "label": "Santo Amaro", "shape": "dot", "size": 30.384615384615387, "title": "Bairro: **Santo Amaro**\u003cbr\u003eGrau: 10"}, {"color": "#FFC107", "id": "Casa Amarela", "label": "Casa Amarela", "shape": "dot", "size": 30.384615384615387, "title": "Bairro: **Casa Amarela**\u003cbr\u003eGrau: 10"}, {"color": "#FFC107", "id": "Fund\u00e3o", "label": "Fund\u00e3o", "shape": "dot", "size": 30.384615384615387, "title": "Bairro: **Fund\u00e3o**\u003cbr\u003eGrau: 10"}, {"color": "#FFC107", "id": "Afogados", "label": "Afogados", "shape": "dot", "size": 35.0, "title": "Bairro: **Afogados**\u003cbr\u003eGrau: 13"}, {"color": "#FFC107", "id": "Rosarinho", "label": "Rosarinho", "shape": "dot", "size": 30.384615384615387, "title": "Bairro: **Rosarinho**\u003cbr\u003eGrau: 10"}, {"color": "#FFC107", "id": "Arruda", "label": "Arruda", "shape": "dot", "size": 33.46153846153847, "title": "Bairro: **Arruda**\u003cbr\u003eGrau: 12"}, {"color": "#FFC107", "id": "Nova Descoberta", "label": "Nova Descoberta", "shape": "dot", "size": 31.923076923076923, "title": "Bairro: **Nova Descoberta**\u003cbr\u003eGrau: 11"}, {"color": "#FFC107", "id": "Tamarineira", "label": "Tamarineira", "shape": "dot", "size": 33.46153846153847, "title": "Bairro: **Tamarineira**\u003cbr\u003eGrau: 12"}]);
-                  edges = new vis.DataSet([{"color": "#FF9800", "from": "Gra\u00e7as", "title": "Custo: 2.00", "to": "Tamarineira", "value": 2.0, "weight": 2.0, "width": 2}, {"color": "#FF9800", "from": "Gra\u00e7as", "title": "Custo: 2.00", "to": "Rosarinho", "value": 2.0, "weight": 2.0, "width": 2}, {"color": "#FF9800", "from": "Monteiro", "title": "Custo: 2.00", "to": "Tamarineira", "value": 2.0, "weight": 2.0, "width": 2}, {"color": "#FF9800", "from": "Tamarineira", "title": "Custo: 2.00", "to": "Casa Amarela", "value": 2.0, "weight": 2.0, "width": 2}, {"color": "#FF9800", "from": "Tamarineira", "title": "Custo: 2.00", "to": "Arruda", "value": 2.0, "weight": 2.0, "width": 2}, {"color": "#FF9800", "from": "Tamarineira", "title": "Custo: 2.00", "to": "Rosarinho", "value": 2.0, "weight": 2.0, "width": 2}, {"color": "#FF9800", "from": "Rosarinho", "title": "Custo: 2.00", "to": "Arruda", "value": 2.0, "weight": 2.0, "width": 2}, {"color": "#FF9800", "from": "Casa Amarela", "title": "Custo: 2.00", "to": "Nova Descoberta", "value": 2.0, "weight": 2.0, "width": 2}]);
+                  nodes = new vis.DataSet([{"color": "#FFC107", "id": "Afogados", "label": "Afogados", "originalColor": "#FFC107", "physics": false, "shape": "dot", "size": 35.0, "title": "\u003cb\u003eAfogados\u003c/b\u003e\u003cbr\u003eGrau: 13", "x": 1200.0, "y": 0.0}, {"color": "#FFC107", "id": "Arruda", "label": "Arruda", "originalColor": "#FFC107", "physics": false, "shape": "dot", "size": 33.46153846153847, "title": "\u003cb\u003eArruda\u003c/b\u003e\u003cbr\u003eGrau: 12", "x": 970.820393249937, "y": 705.3423027509677}, {"color": "#FFC107", "id": "Casa Amarela", "label": "Casa Amarela", "originalColor": "#FFC107", "physics": false, "shape": "dot", "size": 30.384615384615387, "title": "\u003cb\u003eCasa Amarela\u003c/b\u003e\u003cbr\u003eGrau: 10", "x": 370.82039324993696, "y": 1141.2678195541841}, {"color": "#FFC107", "id": "Fund\u00e3o", "label": "Fund\u00e3o", "originalColor": "#FFC107", "physics": false, "shape": "dot", "size": 30.384615384615387, "title": "\u003cb\u003eFund\u00e3o\u003c/b\u003e\u003cbr\u003eGrau: 10", "x": -370.8203932499368, "y": 1141.2678195541844}, {"color": "#FFC107", "id": "Gra\u00e7as", "label": "Gra\u00e7as", "originalColor": "#FFC107", "physics": false, "shape": "dot", "size": 33.46153846153847, "title": "\u003cb\u003eGra\u00e7as\u003c/b\u003e\u003cbr\u003eGrau: 12", "x": -970.8203932499368, "y": 705.3423027509679}, {"color": "#FFC107", "id": "Monteiro", "label": "Monteiro", "originalColor": "#FFC107", "physics": false, "shape": "dot", "size": 31.923076923076923, "title": "\u003cb\u003eMonteiro\u003c/b\u003e\u003cbr\u003eGrau: 11", "x": -1200.0, "y": 1.4695761589768238e-13}, {"color": "#FFC107", "id": "Nova Descoberta", "label": "Nova Descoberta", "originalColor": "#FFC107", "physics": false, "shape": "dot", "size": 31.923076923076923, "title": "\u003cb\u003eNova Descoberta\u003c/b\u003e\u003cbr\u003eGrau: 11", "x": -970.820393249937, "y": -705.3423027509676}, {"color": "#FFC107", "id": "Rosarinho", "label": "Rosarinho", "originalColor": "#FFC107", "physics": false, "shape": "dot", "size": 30.384615384615387, "title": "\u003cb\u003eRosarinho\u003c/b\u003e\u003cbr\u003eGrau: 10", "x": -370.82039324993707, "y": -1141.2678195541841}, {"color": "#FFC107", "id": "Santo Amaro", "label": "Santo Amaro", "originalColor": "#FFC107", "physics": false, "shape": "dot", "size": 30.384615384615387, "title": "\u003cb\u003eSanto Amaro\u003c/b\u003e\u003cbr\u003eGrau: 10", "x": 370.82039324993667, "y": -1141.2678195541844}, {"color": "#FFC107", "id": "Tamarineira", "label": "Tamarineira", "originalColor": "#FFC107", "physics": false, "shape": "dot", "size": 33.46153846153847, "title": "\u003cb\u003eTamarineira\u003c/b\u003e\u003cbr\u003eGrau: 12", "x": 970.8203932499368, "y": -705.342302750968}]);
+                  edges = new vis.DataSet([{"color": "#FF9800", "from": "Gra\u00e7as", "physics": false, "smooth": {"enabled": false}, "title": "Custo: 2.00", "to": "Tamarineira", "value": 2.0, "width": 2}, {"color": "#FF9800", "from": "Gra\u00e7as", "physics": false, "smooth": {"enabled": false}, "title": "Custo: 2.00", "to": "Rosarinho", "value": 2.0, "width": 2}, {"color": "#FF9800", "from": "Monteiro", "physics": false, "smooth": {"enabled": false}, "title": "Custo: 2.00", "to": "Tamarineira", "value": 2.0, "width": 2}, {"color": "#FF9800", "from": "Tamarineira", "physics": false, "smooth": {"enabled": false}, "title": "Custo: 2.00", "to": "Casa Amarela", "value": 2.0, "width": 2}, {"color": "#FF9800", "from": "Tamarineira", "physics": false, "smooth": {"enabled": false}, "title": "Custo: 2.00", "to": "Arruda", "value": 2.0, "width": 2}, {"color": "#FF9800", "from": "Tamarineira", "physics": false, "smooth": {"enabled": false}, "title": "Custo: 2.00", "to": "Rosarinho", "value": 2.0, "width": 2}, {"color": "#FF9800", "from": "Rosarinho", "physics": false, "smooth": {"enabled": false}, "title": "Custo: 2.00", "to": "Arruda", "value": 2.0, "width": 2}, {"color": "#FF9800", "from": "Casa Amarela", "physics": false, "smooth": {"enabled": false}, "title": "Custo: 2.00", "to": "Nova Descoberta", "value": 2.0, "width": 2}]);
 
                   nodeColors = {};
                   allNodes = nodes.get({ returnType: "Object" });

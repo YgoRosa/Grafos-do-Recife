@@ -392,21 +392,16 @@ def visualize_interactive_graph(
 
     print("[VIZ] Gerando grafo interativo (layout circular, busca exata)...")
 
-    # ----- MAPAS AUXILIARES -----
     grau_map = df_ego.set_index("bairro")["grau"].to_dict() if "grau" in df_ego.columns else {}
     dens_map = df_ego.set_index("bairro")["densidade_ego"].to_dict() if "densidade_ego" in df_ego.columns else {}
 
     nodes_list = sorted(graph.get_nodes())
     N = len(nodes_list)
 
-    # ----- LAYOUT CIRCULAR -----
     RADIUS = 2200
-    pos_map = {}
-    for i, node in enumerate(nodes_list):
-        ang = 2 * math.pi * i / N
-        pos_map[node] = (RADIUS * math.cos(ang), RADIUS * math.sin(ang))
+    pos_map = {node: (RADIUS * math.cos(2*math.pi*i/N), RADIUS * math.sin(2*math.pi*i/N))
+               for i, node in enumerate(nodes_list)}
 
-    # ----- CORES -----
     MICRO_COLORS = {
         "1": "rgba(255, 140, 140, 0.85)",
         "2": "rgba(255, 190, 120, 0.85)",
@@ -416,15 +411,9 @@ def visualize_interactive_graph(
         "6": "rgba(200, 140, 255, 0.85)",
     }
 
-    net = Network(
-        height="900px",
-        width="100%",
-        directed=False,
-        notebook=False,
-        heading=""
-    )
+    net = Network(height="900px", width="100%", directed=False, notebook=False, heading="")
 
-    # ----- ADICIONAR NÓS -----
+    orig_nodes = []
     for node in nodes_list:
         grau = grau_map.get(node, 0)
         dens = dens_map.get(node)
@@ -438,6 +427,7 @@ def visualize_interactive_graph(
         if dens is not None:
             tooltip += f"<br>Densidade ego: {float(dens):.4f}"
         x, y = pos_map[node]
+
         net.add_node(
             n_id=node,
             label=node,
@@ -449,74 +439,37 @@ def visualize_interactive_graph(
             physics=False
         )
 
-    # ----- ADICIONAR ARESTAS -----
+        orig_nodes.append({
+            "id": node, "label": node, "title": tooltip,
+            "color": color, "originalColor": color, "size": size,
+            "x": x, "y": y
+        })
+
     edge_color = "#cccccc"
     adj_map = {}
     for u, v, weight, meta in graph.get_edges():
         adj_map.setdefault(u, []).append(v)
         adj_map.setdefault(v, []).append(u)
-        title = f"Peso: {weight}"
-        if meta and meta.get("logradouro"):
-            title += f"<br>Via: {meta['logradouro']}"
-        net.add_edge(
-            source=u, to=v,
-            color=edge_color,
-            width=1,
-            value=float(weight) if weight else 1,
-            smooth={"enabled": False},
-            physics=False,
-            title=title
-        )
+        title = f"Peso: {weight}" + (f"<br>Via: {meta['logradouro']}" if meta and meta.get("logradouro") else "")
+        net.add_edge(source=u, to=v, color=edge_color, width=1,
+                     value=float(weight) if weight else 1, smooth={"enabled": False},
+                     physics=False, title=title)
 
     html_str = net.generate_html()
 
-    # ----- INSERIR TÍTULO E NAVBAR CORRETOS -----
     header_html = """
     <style>
-    #pageTitle {
-        text-align: center;
-        margin-top: 20px;
-        margin-bottom: 15px;
-        font-family: "Segoe UI", Arial, sans-serif;
-    }
-    #pageTitle .title-main {
-        display: block;
-        font-size: 30px;
-        font-weight: 800;
-        color: #1f3b5c;
-        text-shadow: 0px 2px 4px rgba(0,0,0,0.12);
-        letter-spacing: 0.5px;
-    }
-    #pageTitle .title-sub {
-        display: block;
-        margin-top: 4px;
-        font-size: 16px;
-        color: #4a90e2;
-        font-weight: 500;
-        text-shadow: 0 1px 3px rgba(0,0,0,0.1);
-    }
-    .navbar-custom {
-        background-color: #4a90e2; 
-        text-align: center;
-        font-family: "Segoe UI", Arial, sans-serif;
-        border-radius: 8px;
-        margin: 20px auto 10px auto; 
-    }
-    .navbar-custom a {
-        display: inline-block;
-        background-color: #4a90e2;
-        color: white;
-        text-decoration: none;
-        padding: 8px 16px; 
-        margin: 0 8px;    
-        border-radius: 6px;
-        font-weight: 600;
-        transition: background 0.2s, transform 0.15s;
-    }
-    .navbar-custom a:hover {
-        color: #1f3b5c; 
-        transform: translateY(-1px);
-    }
+    #pageTitle { text-align: center; margin-top: 20px; margin-bottom: 15px; font-family: "Segoe UI", Arial, sans-serif; }
+    #pageTitle .title-main { display: block; font-size: 30px; font-weight: 800; color: #1f3b5c;
+                             text-shadow: 0px 2px 4px rgba(0,0,0,0.12); letter-spacing: 0.5px; }
+    #pageTitle .title-sub { display: block; margin-top: 4px; font-size: 16px; color: #4a90e2;
+                            font-weight: 500; text-shadow: 0 1px 3px rgba(0,0,0,0.1); }
+    .navbar-custom { background-color: #4a90e2; text-align: center; font-family: "Segoe UI", Arial, sans-serif;
+                      border-radius: 8px; margin: 20px auto 10px auto; }
+    .navbar-custom a { display: inline-block; background-color: #4a90e2; color: white; text-decoration: none;
+                       padding: 8px 16px; margin: 0 8px; border-radius: 6px; font-weight: 600;
+                       transition: background 0.2s, transform 0.15s; }
+    .navbar-custom a:hover { color: #1f3b5c; transform: translateY(-1px); }
     </style>
 
     <div id="pageTitle">
@@ -530,43 +483,28 @@ def visualize_interactive_graph(
         <a href="subgrafo_top10.html">Bairros mais conectados</a>
     </nav>
     """
-
     html_str = html_str.replace('<div id="mynetwork"', f'{header_html}\n<div id="mynetwork"')
 
-    # ----- JS E PAINEL CONTROLES -----
     adj_json = json.dumps(adj_map, ensure_ascii=False)
     path_json = json.dumps(caminho_obrig or [], ensure_ascii=False)
+    nodes_json = json.dumps(orig_nodes, ensure_ascii=False)  # NÓS ORIGINAIS
 
     js_panel = f"""
     <style>
-        #uiPanel {{
-            position: absolute;
-            top: 20px;
-            left: 20px;
-            z-index: 9999;
-            background: #ffffffd9;
-            backdrop-filter: blur(6px);
-            padding: 16px 18px;
-            width: 260px;
-            border-radius: 14px;
-            box-shadow: 0 6px 18px rgba(0,0,0,0.20);
-            font-family: Arial, sans-serif;
-        }}
-        #uiTitle {{ font-size: 17px; font-weight: bold; margin-bottom: 10px; color: #1f3b5c; }}
-        #uiPanel input {{
-            width: 100%; padding: 8px 10px; border-radius: 8px; border: 1px solid #d0d0d0;
-            margin-bottom: 8px; outline: none; transition: 0.2s;
-        }}
-        #uiPanel input:focus {{ border-color: #4a90e2; box-shadow: 0 0 5px #4a90e255; }}
-        #uiPanel button {{
-            width: 100%; padding: 8px; margin-top: 6px; background: #4a90e2;
-            color: white; border: none; border-radius: 8px; cursor: pointer;
-            font-size: 14px; font-weight: bold; transition: background .25s, transform .15s;
-        }}
-        #uiPanel button:hover {{ background: #357acb; transform: translateY(-1px); }}
-        #uiPanel button:active {{ transform: translateY(0px); }}
-        .btn-secondary {{ background: #666; }}
-        .btn-secondary:hover {{ background: #555; }}
+    #uiPanel {{ position:absolute; top:20px; left:20px; z-index:9999; background:#ffffffd9;
+                backdrop-filter: blur(6px); padding:16px 18px; width:260px; border-radius:14px;
+                box-shadow:0 6px 18px rgba(0,0,0,0.20); font-family: Arial,sans-serif; }}
+    #uiTitle {{ font-size:17px; font-weight:bold; margin-bottom:10px; color:#1f3b5c; }}
+    #uiPanel input {{ width:100%; padding:8px 10px; border-radius:8px; border:1px solid #d0d0d0;
+                     margin-bottom:8px; outline:none; transition:0.2s; }}
+    #uiPanel input:focus {{ border-color:#4a90e2; box-shadow:0 0 5px #4a90e255; }}
+    #uiPanel button {{ width:100%; padding:8px; margin-top:6px; background:#4a90e2; color:white;
+                       border:none; border-radius:8px; cursor:pointer; font-size:14px; font-weight:bold;
+                       transition: background .25s, transform .15s; }}
+    #uiPanel button:hover {{ background:#357acb; transform:translateY(-1px); }}
+    #uiPanel button:active {{ transform:translateY(0px); }}
+    .btn-secondary {{ background:#666; }}
+    .btn-secondary:hover {{ background:#555; }}
     </style>
 
     <div id="uiPanel">
@@ -578,65 +516,64 @@ def visualize_interactive_graph(
     </div>
 
     <script>
-        const ADJ = {adj_json};
-        const PATH = {path_json};
-        const edgeColor = '{edge_color}';
+    const ADJ = {adj_json};
+    const PATH = {path_json};
+    const ORIG_NODES = {nodes_json};
+    const edgeColor = '{edge_color}';
 
-        function resetHighlight() {{
-            const nodes = network.body.data.nodes.get();
-            const edges = network.body.data.edges.get();
-            nodes.forEach(n => network.body.data.nodes.update({{id:n.id, color:n.originalColor, size:undefined}}));
-            edges.forEach(e => network.body.data.edges.update({{id:e.id, color:edgeColor, width:1}}));
-        }}
+    function resetHighlight(){{
+        network.body.data.nodes.clear();
+        ORIG_NODES.forEach(n => network.body.data.nodes.add(n));
+        network.body.data.edges.get().forEach(e => network.body.data.edges.update({{id:e.id, color:edgeColor, width:1}}));
+    }}
 
-        function highlightNodeAndNeighbors(id) {{
-            resetHighlight();
-            const neigh = ADJ[id] || [];
-            network.body.data.nodes.update({{id:id, color:'#ffd24d', size:26}});
-            neigh.forEach(nid => network.body.data.nodes.update({{id:nid, color:'#7fb3ff', size:18}}));
-            network.body.data.edges.get().forEach(e => {{
-                if ((e.from===id && neigh.includes(e.to)) || (e.to===id && neigh.includes(e.from))) {{
-                    network.body.data.edges.update({{id:e.id, color:'#1f77b4', width:4}});
-                }}
-            }});
-            network.focus(id, {{scale:1.4, animation:{{duration:300}}}});
-        }}
-
-        function doSearch() {{
-            const q = document.getElementById("nodeSearch").value.toLowerCase().trim();
-            if (!q) return;
-            const nodes = network.body.data.nodes.get();
-            const exact = nodes.find(n => n.label.toLowerCase() === q);
-            if (!exact) return alert("Bairro não encontrado: " + q);
-            highlightNodeAndNeighbors(exact.id);
-        }}
-
-        function highlightPath() {{
-            resetHighlight();
-            if (PATH.length < 2) return;
-            for (let i=0; i<PATH.length; i++) {{
-                network.body.data.nodes.update({{id: PATH[i], color:'#ffd24d', size:26}});
-                if (i < PATH.length-1) {{
-                    const a = PATH[i], b = PATH[i+1];
-                    network.body.data.edges.get().forEach(e => {{
-                        if ((e.from===a && e.to===b) || (e.from===b && e.to===a)) {{
-                            network.body.data.edges.update({{id:e.id, color:'#ff3333', width:6}});
-                        }}
-                    }});
-                }}
+    function highlightNodeAndNeighbors(id){{
+        resetHighlight();
+        const neigh = ADJ[id] || [];
+        network.body.data.nodes.update({{id:id, color:'#ffd24d', size:26}});
+        neigh.forEach(nid => network.body.data.nodes.update({{id:nid, color:'#7fb3ff', size:18}}));
+        network.body.data.edges.get().forEach(e => {{
+            if((e.from===id && neigh.includes(e.to))||(e.to===id && neigh.includes(e.from))) {{
+                network.body.data.edges.update({{id:e.id, color:'#1f77b4', width:4}});
             }}
-            network.focus(PATH[0], {{scale:1.2, animation:{{duration:300}}}});
-        }}
-
-        network.on("click", function(params) {{
-            if (params.nodes.length > 0) highlightNodeAndNeighbors(params.nodes[0]);
         }});
+        network.focus(id, {{scale:1.4, animation:{{duration:300}}}});
+    }}
+
+    function doSearch(){{
+        const q=document.getElementById("nodeSearch").value.toLowerCase().trim();
+        if(!q) return;
+        const nodes=network.body.data.nodes.get();
+        const exact=nodes.find(n=>n.label.toLowerCase()===q);
+        if(!exact) return alert("Bairro não encontrado: "+q);
+        highlightNodeAndNeighbors(exact.id);
+    }}
+
+    function highlightPath(){{
+        resetHighlight();
+        if(PATH.length<2) return;
+        for(let i=0;i<PATH.length;i++){{
+            network.body.data.nodes.update({{id:PATH[i], color:'#ffd24d', size:26}});
+            if(i<PATH.length-1){{
+                const a=PATH[i], b=PATH[i+1];
+                network.body.data.edges.get().forEach(e=>{{
+                    if((e.from===a && e.to===b)||(e.from===b && e.to===a)){{
+                        network.body.data.edges.update({{id:e.id, color:'#ff3333', width:6}});
+                    }}
+                }});
+            }}
+        }}
+        network.focus(PATH[0], {{scale:1.2, animation:{{duration:300}}}});
+    }}
+
+    network.on("click", function(params){{
+        if(params.nodes.length>0) highlightNodeAndNeighbors(params.nodes[0]);
+    }});
     </script>
     """
 
     html_str = html_str.replace("</body>", js_panel + "</body>")
 
-    # ----- SALVAR E ABRIR -----
     os.makedirs(os.path.dirname(output_file) or ".", exist_ok=True)
     with open(output_file, "w", encoding="utf-8") as f:
         f.write(html_str)
@@ -644,3 +581,4 @@ def visualize_interactive_graph(
     print(f"[OK] Grafo interativo salvo em {output_file}")
     try: webbrowser.open(output_file)
     except: pass
+

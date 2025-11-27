@@ -2,103 +2,103 @@
     {
         "algoritmo": "BFS",
         "dataset": "Grafo Aéreo",
-        "origem": "LWB",
+        "origem": "DET",
         "destino": "N/A",
-        "tempo_execucao_segundos": 0.005218
+        "tempo_execucao_segundos": 9.7e-05
     },
     {
         "algoritmo": "DFS",
         "dataset": "Grafo Aéreo",
-        "origem": "LWB",
+        "origem": "DET",
         "destino": "N/A",
-        "tempo_execucao_segundos": 0.000466,
+        "tempo_execucao_segundos": 0.001905,
         "detectou_ciclo_negativo": false
     },
     {
         "algoritmo": "BFS",
         "dataset": "Grafo Aéreo",
-        "origem": "CXO",
+        "origem": "WQM",
         "destino": "N/A",
-        "tempo_execucao_segundos": 3.4e-05
+        "tempo_execucao_segundos": 3.6e-05
     },
     {
         "algoritmo": "DFS",
         "dataset": "Grafo Aéreo",
-        "origem": "CXO",
+        "origem": "WQM",
         "destino": "N/A",
-        "tempo_execucao_segundos": 0.000769,
+        "tempo_execucao_segundos": 0.001075,
         "detectou_ciclo_negativo": false
     },
     {
         "algoritmo": "BFS",
         "dataset": "Grafo Aéreo",
-        "origem": "OGG",
+        "origem": "CPX",
         "destino": "N/A",
-        "tempo_execucao_segundos": 5.2e-05
+        "tempo_execucao_segundos": 3.2e-05
     },
     {
         "algoritmo": "DFS",
         "dataset": "Grafo Aéreo",
-        "origem": "OGG",
+        "origem": "CPX",
         "destino": "N/A",
-        "tempo_execucao_segundos": 0.000374,
+        "tempo_execucao_segundos": 0.000664,
         "detectou_ciclo_negativo": false
     },
     {
         "algoritmo": "Dijkstra",
         "dataset": "Grafo Aéreo",
-        "origem": "LWB",
-        "destino": "AXA",
-        "tempo_execucao_segundos": 0.00441,
+        "origem": "DET",
+        "destino": "YYQ",
+        "tempo_execucao_segundos": 0.003004,
         "custo_caminho": 1.0
     },
     {
         "algoritmo": "Dijkstra",
         "dataset": "Grafo Aéreo",
-        "origem": "CXO",
-        "destino": "UVF",
-        "tempo_execucao_segundos": 0.001385,
+        "origem": "WQM",
+        "destino": "OSL",
+        "tempo_execucao_segundos": 0.002074,
+        "custo_caminho": 1.0
+    },
+    {
+        "algoritmo": "Dijkstra",
+        "dataset": "Grafo Aéreo",
+        "origem": "CPX",
+        "destino": "EIS",
+        "tempo_execucao_segundos": 0.002488,
         "custo_caminho": 0.5
     },
     {
         "algoritmo": "Dijkstra",
         "dataset": "Grafo Aéreo",
-        "origem": "OGG",
-        "destino": "OAX",
-        "tempo_execucao_segundos": 0.002799,
+        "origem": "LWB",
+        "destino": "YQX",
+        "tempo_execucao_segundos": 0.002103,
         "custo_caminho": 1.0
     },
     {
         "algoritmo": "Dijkstra",
         "dataset": "Grafo Aéreo",
-        "origem": "HIO",
-        "destino": "STR",
-        "tempo_execucao_segundos": 0.000793,
-        "custo_caminho": 0.25
-    },
-    {
-        "algoritmo": "Dijkstra",
-        "dataset": "Grafo Aéreo",
-        "origem": "SAC",
-        "destino": "YYZ",
-        "tempo_execucao_segundos": 0.000377,
+        "origem": "PSG",
+        "destino": "YXY",
+        "tempo_execucao_segundos": 0.002472,
         "custo_caminho": 1.0
     },
     {
         "algoritmo": "Bellman-Ford",
         "dataset": "Grafo Aéreo",
-        "origem": "MAO",
+        "origem": "FOE",
         "destino": "N/A",
-        "tempo_execucao_segundos": 0.036511,
+        "tempo_execucao_segundos": 0.284279,
         "detectou_ciclo_negativo": false,
         "caso_teste": "Peso Negativo (Sem Ciclo)"
     },
     {
         "algoritmo": "Bellman-Ford",
         "dataset": "Grafo Aéreo",
-        "origem": "MAO",
+        "origem": "FOE",
         "destino": "N/A",
-        "tempo_execucao_segundos": 12.7601,
+        "tempo_execucao_segundos": 39.704174,
         "detectou_ciclo_negativo": true,
         "caso_teste": "Ciclo Negativo Detectado"
     }

@@ -349,22 +349,36 @@ def compute_parte2_degrees(g: Graph) -> pd.DataFrame:
 
 def visualize_parte2_degree_histogram(df_graus_p2: pd.DataFrame, output_file: str):
     print(f"[VIZ] Gerando Histograma de Graus (Parte 2) → {output_file}")
-    degrees = df_graus_p2['grau_saida'].dropna().tolist()
-    if not degrees: return
+
+    degrees = df_graus_p2['grau_saida'].dropna().astype(int).tolist()
+    if not degrees:
+        print("[ERRO] Sem graus para plotar.")
+        return
 
     plt.figure(figsize=(10, 6))
-    bins = np.arange(min(degrees), max(degrees) + 1.5) - 0.5
-    plt.hist(degrees, bins=bins, color='#CC5500', edgecolor='black', rwidth=0.9)
+
+    # histograma com bins automáticos e escala log
+    plt.hist(
+        degrees,
+        bins='auto',          # deixa o numpy escolher (melhor p/ distribuição grande)
+        color='#CC5500',
+        edgecolor='black',
+    )
+
+    plt.yscale('log')         # <<< transforma o gráfico, fica perfeito
     plt.title('Distribuição de Graus de Saída (Rede Aérea)', fontsize=16)
     plt.xlabel('Grau de Saída', fontsize=12)
-    plt.ylabel('Frequência', fontsize=12)
+    plt.ylabel('Frequência (escala log)', fontsize=12)
+
     plt.tight_layout()
+
     try:
-        plt.savefig(output_file)
+        plt.savefig(output_file, dpi=300)
         plt.close()
         print(f"[OK] Histograma de Graus P2 gerado em {output_file}")
     except Exception as e:
         print(f"[ERRO VIZ P2] Falha ao salvar {output_file}: {e}")
+
 
 def visualize_interactive_graph(
     graph,

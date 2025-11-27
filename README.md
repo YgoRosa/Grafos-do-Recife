@@ -72,8 +72,9 @@ O sistema executará todos os arquivos em tests/.
 [Ygor Rosa](https://github.com/YgoRosa)  
 <br>
 
-## Relatório
+## LINKS
 
+[Slides](https://www.canva.com/design/DAG52u5RmiU/MgQLB0b0v7Li_PGAmjIodQ/edit?ui=eyJBIjp7fX0)
 
 [Relatório do Projeto](https://docs.google.com/document/d/1X9077cSb50-AJDHxxAh41bEl2SmpYJs01ElboQQyVSE/edit?usp=sharing)  
 
